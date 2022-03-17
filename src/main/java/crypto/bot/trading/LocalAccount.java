@@ -4,8 +4,6 @@ import com.binance.client.model.trade.AccountInformation;
 
 import crypto.bot.system.Formatter;
 
-import java.lang.reflect.InvocationTargetException;
-
 public class LocalAccount {
     private AccountInformation realAccount;
     public static boolean injected;
@@ -16,14 +14,12 @@ public class LocalAccount {
             realAccount = CurrentAPI.getClient().getAccountInformation();
         } catch (RuntimeException runtimeException){
             System.out.println(runtimeException.getMessage());
-            while (!injected){
-                try {
-                    System.out.println("waiting for injection");
-                    Thread.sleep(60 * 1000);
-                    realAccount = CurrentAPI.getClient().getAccountInformation();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            System.out.println("waiting change ip");
+            try {
+                Thread.sleep(2 * 60 * 1000);
+                realAccount = CurrentAPI.getClient().getAccountInformation();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
         if (!realAccount.getCanTrade()) {
