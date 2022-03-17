@@ -12,11 +12,6 @@ public final class CurrentAPI {
     private static SyncRequestClient client;
 
     public static void login(String apiKey, String secretKey) {
-//        try {
-//
-//        } catch (RuntimeException runtimeException){
-//            runtimeException.printStackTrace();
-//        }
         client = BinanceApiInternalFactory
                 .getInstance()
                 .createSyncRequestClient(apiKey, secretKey, new RequestOptions());

@@ -4,12 +4,28 @@ import com.binance.client.model.trade.AccountInformation;
 
 import crypto.bot.system.Formatter;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class LocalAccount {
-    private final AccountInformation realAccount;
+    private AccountInformation realAccount;
+    public static boolean injected;
 
     public LocalAccount(String apiKey, String secretApiKey) {
         CurrentAPI.login(apiKey, secretApiKey);
-        realAccount = CurrentAPI.getClient().getAccountInformation();
+        try {
+            realAccount = CurrentAPI.getClient().getAccountInformation();
+        } catch (RuntimeException runtimeException){
+            System.out.println(runtimeException.getMessage());
+            while (!injected){
+                try {
+                    System.out.println("waiting for injection");
+                    Thread.sleep(60 * 1000);
+                    realAccount = CurrentAPI.getClient().getAccountInformation();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         if (!realAccount.getCanTrade()) {
             System.out.println("Can't trade!");
         }
