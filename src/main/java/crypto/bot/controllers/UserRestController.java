@@ -10,12 +10,26 @@ import crypto.bot.data.Credentials;
 import crypto.bot.modes.Live;
 import lombok.AllArgsConstructor;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("api")
 public class UserRestController {
     @GetMapping
     public String ping() {
+        InetAddress ip;
+        String hostname;
+        try {
+            ip = InetAddress.getLocalHost();
+            hostname = ip.getHostName();
+            System.out.println("Your current IP address : " + ip);
+            System.out.println("Your current Hostname : " + hostname);
+
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
        return "pong";
     }
 
