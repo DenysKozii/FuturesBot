@@ -25,16 +25,7 @@ public final class Live {
                 e.printStackTrace();
             }
         }
-        LocalAccount localAccount = null;
-        while (localAccount == null){
-            localAccount = new LocalAccount(apiKey, apiSecret);
-            try {
-                System.out.println("waiting ip");
-                Thread.sleep(10 * 1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        LocalAccount localAccount = new LocalAccount(apiKey, apiSecret);
         BuySell.setAccount(localAccount);
 
         String current = "";
