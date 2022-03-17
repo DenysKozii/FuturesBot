@@ -19,7 +19,7 @@ public class Scheduler {
 
     private final static String URL = "https://futures-crypto-bot.herokuapp.com/api";
 
-    @Scheduled(fixedRate = 1000 * 30)
+    @Scheduled(fixedRate = 1000 * 60 * 5)
     public void timer() throws IOException {
         try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
             HttpUriRequest request = new HttpGet(URL);
