@@ -56,7 +56,7 @@ public class Currency {
     public Currency(String coin) {
         this.pair = coin + ConfigSetup.getFiat();
         //Every currency needs to contain and update our crypto.bot.indicators
-        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIVE_MINUTES, null, null, 5000);
+        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIVE_MINUTES, null, null, 1000);
         List<Double> closingPrices = history.stream().map(candle -> candle.getClose().doubleValue()).collect(Collectors.toList());
         indicators.add(new RSI(closingPrices, 14));
 
