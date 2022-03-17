@@ -71,13 +71,13 @@ public class Currency {
             double newPrice = response.getLastPrice().doubleValue();
             long newTime = response.getEventTime();
             currentPrice = newPrice;
-//            if (newTime > candleTime) {
-//                accept(new PriceBean(candleTime, currentPrice, true));
-//                candleTime += 300000L;
-//                log(this.toString());
-//            }
-//            accept(new PriceBean(newTime, newPrice));
-            System.out.println(currentPrice);
+            if (newTime > candleTime) {
+                accept(new PriceBean(candleTime, currentPrice, true));
+                candleTime += 300000L;
+                log(this.toString());
+            }
+            accept(new PriceBean(newTime, newPrice));
+//            System.out.println(currentPrice);
         }), null);
         log("---SETUP DONE FOR " + this);
     }
