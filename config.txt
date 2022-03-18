@@ -1,4 +1,4 @@
-RSI long open:35
+RSI long open:40
 RSI long close:70
 RSI long half close:60
 RSI short open:75
