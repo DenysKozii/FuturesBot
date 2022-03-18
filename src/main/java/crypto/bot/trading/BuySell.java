@@ -46,7 +46,9 @@ public class BuySell {
     }
 
     private static double nextAmount() {
+        System.out.println("nextAmount");
         AccountInformation accountInformation = CurrentAPI.getClient().getAccountInformation();
+        System.out.println(accountInformation.getAvailableBalance().doubleValue());
         return accountInformation.getAvailableBalance().doubleValue() - MONEY_LIMIT - MONEY_PER_TRADE > 0 ? MONEY_PER_TRADE : 0;
     }
 
