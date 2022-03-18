@@ -88,18 +88,18 @@ public class RSI implements Indicator {
         if (currency.isInLong() && temp > LONG_CLOSE) {
             return 2;
         }
-        if (currency.isInLong() && !currency.isHalfClosed() && temp > LONG_HALF_CLOSE) {
-            return 3;
-        }
+//        if (currency.isInLong() && !currency.isHalfClosed() && temp > LONG_HALF_CLOSE) {
+//            return 3;
+//        }
         if (!currency.isInShort() && !currency.isInLong() && temp > SHORT_OPEN) {
             return -1;
         }
         if (currency.isInShort() && temp < SHORT_CLOSE) {
             return -2;
         }
-        if (currency.isInShort() && !currency.isHalfClosed() && temp < SHORT_HALF_CLOSE) {
-            return -3;
-        }
+//        if (currency.isInShort() && !currency.isHalfClosed() && temp < SHORT_HALF_CLOSE) {
+//            return -3;
+//        }
         return 0;
     }
 

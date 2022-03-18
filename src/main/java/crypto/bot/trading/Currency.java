@@ -42,7 +42,7 @@ public class Currency {
     private long    currentTime;
     private boolean inLong;
     private boolean inShort;
-    private boolean halfClosed;
+    private boolean halfClosed = true;
 
     static {
         File myFoo = new File(LOG_PATH);
@@ -72,7 +72,7 @@ public class Currency {
             long newTime = response.getEventTime();
             currentPrice = newPrice;
             if (newTime > candleTime) {
-                accept(new PriceBean(candleTime, currentPrice, true));
+                accept(new PriceBean(candleTime, newPrice, true));
                 candleTime += 300000L;
                 log(this.toString());
             }
@@ -109,15 +109,15 @@ public class Currency {
             if (confluence == CONFLUENCE_LONG_CLOSE) {
                 log(this + " close by confluence = " + confluence);
                 BuySell.close(this);
-                halfClosed = false;
+//                halfClosed = false;
                 inLong = false;
                 high = 0;
             }
-            if (confluence == CONFLUENCE_LONG_HALF_CLOSE) {
-                log(this + " half close by confluence = " + confluence);
-                BuySell.close(this);
-                halfClosed = true;
-            }
+//            if (confluence == CONFLUENCE_LONG_HALF_CLOSE) {
+//                log(this + " half close by confluence = " + confluence);
+//                BuySell.close(this);
+//                halfClosed = true;
+//            }
         }
 
         if (inShort) {
@@ -125,14 +125,14 @@ public class Currency {
                 log(this + " close by confluence = " + confluence);
                 BuySell.close(this);
                 inShort = false;
-                halfClosed = false;
+//                halfClosed = false;
                 high = 0;
             }
-            if (confluence == CONFLUENCE_SHORT_HALF_CLOSE) {
-                log(this + " half close by confluence = " + confluence);
-                BuySell.close(this);
-                halfClosed = true;
-            }
+//            if (confluence == CONFLUENCE_SHORT_HALF_CLOSE) {
+//                log(this + " half close by confluence = " + confluence);
+//                BuySell.close(this);
+//                halfClosed = true;
+//            }
         }
 
     }
