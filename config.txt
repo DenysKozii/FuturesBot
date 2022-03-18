@@ -1,4 +1,4 @@
-RSI long open:25
+RSI long open:35
 RSI long close:70
 RSI long half close:60
 RSI short open:75
@@ -15,5 +15,5 @@ Confluence short open:-1
 Confluence short close:-2
 Confluence short half close:-3
 Leverage:4
-Currencies to track:XRP, DOGE, SAND, MANA, TRX, VET, ZIL, XLM, ZRX, ONE, ONT, WAVES, NEAR, REEF, LUNA, LINK, EOS, ALGO, ADA, IOTA, LRC
+Currencies to track:XLM
 FIAT:USDT
