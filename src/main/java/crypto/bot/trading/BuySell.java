@@ -8,6 +8,7 @@ import com.binance.client.model.enums.OrderSide;
 import com.binance.client.model.enums.OrderType;
 import com.binance.client.model.enums.PositionSide;
 import com.binance.client.model.trade.AccountInformation;
+import com.binance.client.model.trade.Order;
 import com.binance.client.model.trade.Position;
 
 import java.util.Optional;
@@ -40,8 +41,7 @@ public class BuySell {
         Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
         position.ifPresent(value -> placeOrder(
                 currency,
-                currency.isHalfClosed() ?
-                value.getPositionAmt().doubleValue() : value.getPositionAmt().doubleValue() / 2,
+                value.getPositionAmt().doubleValue(),
                 false));
     }
 
@@ -70,21 +70,21 @@ public class BuySell {
                     positionAmount = String.valueOf((int) amount);
                     currency.log("positionAmount = " + positionAmount);
                     if ((int) amount != 0) {
-                        clientFutures.postOrder(
+                        Order order = clientFutures.postOrder(
                                 currency.getPair(), OrderSide.BUY, PositionSide.BOTH, OrderType.MARKET, null,
                                 positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
                         currency.setEntryPrice(currency.getPrice());
-                        currency.log("open long = " + positionAmount);
+                        currency.log(order.getStatus() + " open long = " + positionAmount);
                     } else {
                         currency.setInLong(false);
                     }
                 }
                 if (!open && currency.isInLong()){
                     currency.log("positionAmount = " + positionAmount);
-                    clientFutures.postOrder(
+                    Order order = clientFutures.postOrder(
                             currency.getPair(), OrderSide.SELL, PositionSide.BOTH, OrderType.MARKET, null,
                             positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
-                    currency.log("close long = " + positionAmount);
+                    currency.log(order.getStatus() + " close long = " + positionAmount);
                     currency.setInLong(false);
                 }
                 if (open && currency.isInShort()){
@@ -93,11 +93,11 @@ public class BuySell {
                     positionAmount = String.valueOf((int) amount);
                     currency.log("positionAmount = " + positionAmount);
                     if ((int) amount != 0) {
-                        clientFutures.postOrder(
+                        Order order = clientFutures.postOrder(
                                 currency.getPair(), OrderSide.SELL, PositionSide.BOTH, OrderType.MARKET, null,
                                 positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
                         currency.setEntryPrice(currency.getPrice());
-                        currency.log("open short = " + positionAmount);
+                        currency.log(order.getStatus() + " open short = " + positionAmount);
                     } else {
                         currency.setInShort(false);
                     }
@@ -105,10 +105,10 @@ public class BuySell {
                 if (!open && currency.isInShort()) {
                     positionAmount = String.valueOf(-1 * Double.parseDouble(positionAmount));
                     currency.log("positionAmount = " + positionAmount);
-                    clientFutures.postOrder(
+                    Order order = clientFutures.postOrder(
                             currency.getPair(), OrderSide.BUY, PositionSide.BOTH, OrderType.MARKET, null,
                             positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
-                    currency.log("close short = " + positionAmount);
+                    currency.log(order.getStatus() + "close short = " + positionAmount);
                     currency.setInShort(false);
                 }
             } catch (BinanceApiException e) {

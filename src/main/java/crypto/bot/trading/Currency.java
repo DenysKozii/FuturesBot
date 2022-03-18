@@ -42,7 +42,6 @@ public class Currency {
     private long    currentTime;
     private boolean inLong;
     private boolean inShort;
-    private boolean halfClosed = true;
 
     static {
         File myFoo = new File(LOG_PATH);
@@ -77,7 +76,6 @@ public class Currency {
                 log(this.toString());
             }
             accept(new PriceBean(newTime, newPrice));
-//            System.out.println(currentPrice);
         }), null);
         log("---SETUP DONE FOR " + this);
     }
@@ -109,15 +107,9 @@ public class Currency {
             if (confluence == CONFLUENCE_LONG_CLOSE) {
                 log(this + " close by confluence = " + confluence);
                 BuySell.close(this);
-//                halfClosed = false;
                 inLong = false;
                 high = 0;
             }
-//            if (confluence == CONFLUENCE_LONG_HALF_CLOSE) {
-//                log(this + " half close by confluence = " + confluence);
-//                BuySell.close(this);
-//                halfClosed = true;
-//            }
         }
 
         if (inShort) {
@@ -125,14 +117,8 @@ public class Currency {
                 log(this + " close by confluence = " + confluence);
                 BuySell.close(this);
                 inShort = false;
-//                halfClosed = false;
                 high = 0;
             }
-//            if (confluence == CONFLUENCE_SHORT_HALF_CLOSE) {
-//                log(this + " half close by confluence = " + confluence);
-//                BuySell.close(this);
-//                halfClosed = true;
-//            }
         }
 
     }
@@ -162,10 +148,6 @@ public class Currency {
 
     public int check() {
         return indicators.stream().mapToInt(indicator -> indicator.check(currentPrice, this)).sum();
-    }
-
-    public boolean isHalfClosed() {
-        return halfClosed;
     }
 
     public boolean isInShort() {
