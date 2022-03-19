@@ -197,7 +197,7 @@ public class Currency {
             indicators.forEach(indicator -> s.append(", ").append(indicator.getClass().getSimpleName()).append(": ").append(Formatter.formatDecimal(indicator.get())));
         else
             indicators.forEach(indicator -> s.append(", ").append(indicator.getClass().getSimpleName()).append(": ").append(Formatter.formatDecimal(indicator.getTemp(currentPrice))));
-        s.append(", in long: ").append(inLong).append(", in short: ").append(inShort).append(")");
+        s.append(", in long: ").append(inLong).append(", in short: ").append(inShort).append(", active: ").append(active).append(")");
         return s.toString();
     }
 
