@@ -109,7 +109,7 @@ public class Currency {
                 log(this + " close by confluence = " + confluence);
                 BuySell.close(this);
             } else {
-                if (ROE < -0.01) {
+                if (ROE < -0.02) {
                     log(this + " close by SL ROE = " + ROE);
                     BuySell.close(this);
                     active = false;
@@ -124,7 +124,7 @@ public class Currency {
                 log(this + " close by confluence = " + confluence);
                 BuySell.close(this);
             } else {
-                if (-ROE < -0.01) {
+                if (-ROE < -0.02) {
                     log(this + " close by SL ROE = " + ROE);
                     BuySell.close(this);
                     active = false;
