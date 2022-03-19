@@ -102,24 +102,27 @@ public class Currency {
 
     private void update(double newPrice, int confluence){
         if (newPrice > high) high = newPrice;
-        double ROE = 4 * ((newPrice / entryPrice) - 1);
-        if (inLong) {
-            if (confluence == CONFLUENCE_LONG_CLOSE) {
-                log(this + " close by confluence = " + confluence);
-                BuySell.close(this);
-                inLong = false;
-                high = 0;
-            }
-        }
+        double ROE = ((newPrice / entryPrice) - 1);
+        System.out.println("ROE = " + ROE + " with price = " + newPrice);
+        //        if (inLong) {
+////            if (confluence == CONFLUENCE_LONG_CLOSE) {
+//            if (ROE > 0.01) {
+//                log(this + " close by confluence = " + confluence);
+//                BuySell.close(this);
+//                inLong = false;
+//                high = 0;
+//            }
+//        }
 
-        if (inShort) {
-            if (confluence == CONFLUENCE_SHORT_CLOSE) {
-                log(this + " close by confluence = " + confluence);
-                BuySell.close(this);
-                inShort = false;
-                high = 0;
-            }
-        }
+//        if (inShort) {
+////            if (confluence == CONFLUENCE_SHORT_CLOSE) {
+//            if (ROE < -0.01) {
+//                log(this + " close by confluence = " + confluence);
+//                BuySell.close(this);
+//                inShort = false;
+//                high = 0;
+//            }
+//        }
 
     }
 

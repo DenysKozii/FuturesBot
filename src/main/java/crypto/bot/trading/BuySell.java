@@ -85,7 +85,6 @@ public class BuySell {
                             currency.getPair(), OrderSide.SELL, PositionSide.BOTH, OrderType.MARKET, null,
                             positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
                     currency.log(order.getStatus() + " close long = " + positionAmount);
-                    currency.setInLong(false);
                 }
                 if (open && currency.isInShort()){
                     amount /= currency.getPrice();
@@ -109,7 +108,6 @@ public class BuySell {
                             currency.getPair(), OrderSide.BUY, PositionSide.BOTH, OrderType.MARKET, null,
                             positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
                     currency.log(order.getStatus() + "close short = " + positionAmount);
-                    currency.setInShort(false);
                 }
             } catch (BinanceApiException e) {
                 System.out.println(e.getMessage());
