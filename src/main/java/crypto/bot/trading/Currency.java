@@ -93,9 +93,11 @@ public class Currency {
         } else if (confluence == CONFLUENCE_LONG_OPEN && active) {
             inLong = true;
             log("LONG for: " + confluence + " | " + this);
+            entryPrice = currentPrice;
             BuySell.open(Currency.this);
         } else if (confluence == CONFLUENCE_SHORT_OPEN && active) {
             inShort = true;
+            entryPrice = currentPrice;
             log("SHORT for: " + confluence + " | " + this);
             BuySell.open(Currency.this);
         }
@@ -108,14 +110,15 @@ public class Currency {
                 active = true;
                 log(this + " close by confluence = " + confluence);
                 BuySell.close(this);
+                inLong = false;
             } else {
                 if (ROE < -0.02) {
                     log(this + " close by SL ROE = " + ROE);
                     BuySell.close(this);
                     active = false;
+                    inLong = false;
                 }
             }
-            inLong = false;
         }
 
         if (inShort) {
@@ -123,14 +126,15 @@ public class Currency {
                 active = true;
                 log(this + " close by confluence = " + confluence);
                 BuySell.close(this);
+                inShort = false;
             } else {
                 if (-ROE < -0.02) {
                     log(this + " close by SL ROE = " + ROE);
                     BuySell.close(this);
                     active = false;
+                    inShort = false;
                 }
             }
-            inShort = false;
         }
 
     }
