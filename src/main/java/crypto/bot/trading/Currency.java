@@ -106,35 +106,39 @@ public class Currency {
         if (inLong) {
             if (confluence == CONFLUENCE_LONG_CLOSE) {
                 active = true;
-            }
-            if (ROE > 0.01) {
-                log(this + " close by TP ROE = " + ROE);
+                log(this + " close by confluence = " + confluence);
                 BuySell.close(this);
-                inLong = false;
+            } else {
+                if (ROE > 0.01) {
+                    log(this + " close by TP ROE = " + ROE);
+                    BuySell.close(this);
+                }
+                if (ROE < -0.01) {
+                    log(this + " close by SL ROE = " + ROE);
+                    BuySell.close(this);
+                    active = false;
+                }
             }
-            if (ROE < -0.01) {
-                log(this + " close by SL ROE = " + ROE);
-                BuySell.close(this);
-                inLong = false;
-                active = false;
-            }
+            inLong = false;
         }
 
         if (inShort) {
             if (confluence == CONFLUENCE_SHORT_CLOSE) {
                 active = true;
-            }
-            if (-ROE > 0.01) {
-                log(this + " close by TP ROE = " + ROE);
+                log(this + " close by confluence = " + confluence);
                 BuySell.close(this);
-                inShort = false;
+            } else {
+                if (-ROE > 0.01) {
+                    log(this + " close by TP ROE = " + ROE);
+                    BuySell.close(this);
+                }
+                if (-ROE < -0.01) {
+                    log(this + " close by SL ROE = " + ROE);
+                    BuySell.close(this);
+                    active = false;
+                }
             }
-            if (-ROE < -0.01) {
-                log(this + " close by SL ROE = " + ROE);
-                BuySell.close(this);
-                inShort = false;
-                active = false;
-            }
+            inShort = false;
         }
 
     }
