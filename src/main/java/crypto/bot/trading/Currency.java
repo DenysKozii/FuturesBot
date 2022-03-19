@@ -42,6 +42,7 @@ public class Currency {
     private long    currentTime;
     private boolean inLong;
     private boolean inShort;
+    private boolean active = true;
 
     static {
         File myFoo = new File(LOG_PATH);
@@ -89,49 +90,50 @@ public class Currency {
         int confluence = check();
         if (inLong || inShort) {
             update(currentPrice, confluence);
-        } else if (confluence == CONFLUENCE_LONG_OPEN) {
-            log("LONG for: " + confluence + " | " + this);
+        } else if (confluence == CONFLUENCE_LONG_OPEN && active) {
             inLong = true;
+            log("LONG for: " + confluence + " | " + this);
             BuySell.open(Currency.this);
-        } else if (confluence == CONFLUENCE_SHORT_OPEN) {
-            log("SHORT for: " + confluence + " | " + this);
+        } else if (confluence == CONFLUENCE_SHORT_OPEN && active) {
             inShort = true;
+            log("SHORT for: " + confluence + " | " + this);
             BuySell.open(Currency.this);
         }
     }
 
     private void update(double newPrice, int confluence){
-        if (newPrice > high) high = newPrice;
         double ROE = ((newPrice / entryPrice) - 1);
         if (inLong) {
-//            if (confluence == CONFLUENCE_LONG_CLOSE) {
+            if (confluence == CONFLUENCE_LONG_CLOSE) {
+                active = true;
+            }
             if (ROE > 0.01) {
                 log(this + " close by TP ROE = " + ROE);
                 BuySell.close(this);
                 inLong = false;
-                high = 0;
             }
             if (ROE < -0.01) {
                 log(this + " close by SL ROE = " + ROE);
                 BuySell.close(this);
                 inLong = false;
-                high = 0;
+                active = false;
             }
         }
 
         if (inShort) {
-//            if (confluence == CONFLUENCE_SHORT_CLOSE) {
+            if (confluence == CONFLUENCE_SHORT_CLOSE) {
+                active = true;
+            }
             if (-ROE > 0.01) {
                 log(this + " close by TP ROE = " + ROE);
                 BuySell.close(this);
                 inShort = false;
-                high = 0;
             }
             if (-ROE < -0.01) {
                 log(this + " close by SL ROE = " + ROE);
                 BuySell.close(this);
                 inShort = false;
-                high = 0;
+                active = false;
             }
         }
 
