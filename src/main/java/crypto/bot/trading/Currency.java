@@ -88,6 +88,9 @@ public class Currency {
             indicators.forEach(indicator -> indicator.update(bean.getPrice()));
         }
         int confluence = check();
+        if (!active){
+            activate(confluence);
+        }
         if (inLong || inShort) {
             update(currentPrice, confluence);
         } else if (confluence == CONFLUENCE_LONG_OPEN && active) {
@@ -100,6 +103,12 @@ public class Currency {
             entryPrice = currentPrice;
             log("SHORT for: " + confluence + " | " + this);
             BuySell.open(Currency.this);
+        }
+    }
+
+    private void activate(int confluence){
+        if (confluence == CONFLUENCE_LONG_CLOSE || confluence == CONFLUENCE_SHORT_CLOSE) {
+            active = true;
         }
     }
 
@@ -141,16 +150,16 @@ public class Currency {
 
     public void log(String log) {
         System.out.println(log);
-        try {
-            String content = read();
-            File myFoo = new File(LOG_PATH);
-            FileWriter fooStream = new FileWriter(myFoo);
-            fooStream.write(content);
-            fooStream.write("\n" + log);
-            fooStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            String content = read();
+//            File myFoo = new File(LOG_PATH);
+//            FileWriter fooStream = new FileWriter(myFoo);
+//            fooStream.write(content);
+//            fooStream.write("\n" + log);
+//            fooStream.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public static String read() throws IOException {
