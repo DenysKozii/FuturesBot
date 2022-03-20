@@ -175,6 +175,14 @@ public class Currency {
         return indicators.stream().mapToInt(indicator -> indicator.check(currentPrice, this)).sum();
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public boolean isInShort() {
         return inShort;
     }

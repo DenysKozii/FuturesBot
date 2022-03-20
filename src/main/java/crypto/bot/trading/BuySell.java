@@ -42,10 +42,9 @@ public class BuySell {
 
     public static void close(Currency currency) {
         Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
-        position.ifPresent(value -> placeOrder(
-                currency,
-                value.getPositionAmt().doubleValue(),
-                false));
+        if (position.isPresent() && position.get().getPositionAmt().doubleValue() != 0) {
+            placeOrder(currency, position.get().getPositionAmt().doubleValue(), false);
+        }
     }
 
     private static double nextAmount() {
