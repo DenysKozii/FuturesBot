@@ -15,5 +15,5 @@ Confluence short open:-1
 Confluence short close:-2
 Confluence short half close:-3
 Leverage:5
-Currencies to track:XRP, DOGE, SAND, MANA, TRX, VET, ZIL, XLM, ZRX, ONE, ONT, WAVES, NEAR, REEF, LUNA, LINK, EOS, ALGO, ADA, LRC
+Currencies to track:XRP, DOGE, SAND, MANA, TRX, VET, ZIL, XLM, ZRX, ONE, ONT, WAVES, NEAR, REEF, LUNA, LINK, EOS, ALGO, ADA, LRC, DENT
 FIAT:USDT
