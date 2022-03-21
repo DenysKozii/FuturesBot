@@ -120,14 +120,15 @@ public class Currency {
                 log(this + " close by confluence = " + confluence);
                 BuySell.close(this);
                 inLong = false;
-            } else {
-                if (ROE < -0.02) {
-                    log(this + " close by SL ROE = " + ROE);
-                    BuySell.close(this);
-                    active = false;
-                    inLong = false;
-                }
             }
+//            else {
+//                if (ROE < -0.02) {
+//                    log(this + " close by SL ROE = " + ROE);
+//                    BuySell.close(this);
+//                    active = false;
+//                    inLong = false;
+//                }
+//            }
         }
 
         if (inShort) {
@@ -136,14 +137,15 @@ public class Currency {
                 log(this + " close by confluence = " + confluence);
                 BuySell.close(this);
                 inShort = false;
-            } else {
-                if (-ROE < -0.02) {
-                    log(this + " close by SL ROE = " + ROE);
-                    BuySell.close(this);
-                    active = false;
-                    inShort = false;
-                }
             }
+//            else {
+//                if (-ROE < -0.02) {
+//                    log(this + " close by SL ROE = " + ROE);
+//                    BuySell.close(this);
+//                    active = false;
+//                    inShort = false;
+//                }
+//            }
         }
 
     }
