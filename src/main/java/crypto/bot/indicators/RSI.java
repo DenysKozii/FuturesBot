@@ -12,10 +12,8 @@ public class RSI implements Indicator {
     private final int period;
     public static int LONG_OPEN;
     public static int LONG_CLOSE;
-    public static int LONG_HALF_CLOSE;
     public static int SHORT_OPEN;
     public static int SHORT_CLOSE;
-    public static int SHORT_HALF_CLOSE;
 
     public RSI(List<Double> closingPrice, int period) {
         avgUp = 0;
@@ -85,13 +83,13 @@ public class RSI implements Indicator {
         if (!currency.isInShort() && !currency.isInLong() && temp < LONG_OPEN) {
             return 1;
         }
-        if ((currency.isInLong() || !currency.isActive()) && temp > LONG_CLOSE) {
+        if (currency.isInLong() && temp > LONG_CLOSE) {
             return 2;
         }
         if (!currency.isInShort() && !currency.isInLong() && temp > SHORT_OPEN) {
             return -1;
         }
-        if ((currency.isInShort() || !currency.isActive()) && temp < SHORT_CLOSE) {
+        if (currency.isInShort() && temp < SHORT_CLOSE) {
             return -2;
         }
         return 0;

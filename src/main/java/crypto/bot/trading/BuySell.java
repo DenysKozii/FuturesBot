@@ -72,7 +72,6 @@ public class BuySell {
                     Order order = clientFutures.postOrder(
                             currency.getPair(), OrderSide.BUY, PositionSide.BOTH, OrderType.MARKET, null,
                             positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
-                    currency.setEntryPrice(currency.getPrice());
                     currency.log(order.getStatus() + " open long = " + positionAmount);
                 } else {
                     currency.setInLong(false);
@@ -94,7 +93,6 @@ public class BuySell {
                         Order order = clientFutures.postOrder(
                                 currency.getPair(), OrderSide.SELL, PositionSide.BOTH, OrderType.MARKET, null,
                                 positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
-                        currency.setEntryPrice(currency.getPrice());
                         currency.log(order.getStatus() + " open short = " + positionAmount);
                     } else {
                         currency.setInShort(false);

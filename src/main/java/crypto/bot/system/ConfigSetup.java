@@ -56,17 +56,11 @@ public class ConfigSetup {
                     case "RSI long close":
                         RSI.LONG_CLOSE = Integer.parseInt(arr[1]);
                         break;
-                    case "RSI long half close":
-                        RSI.LONG_HALF_CLOSE = Integer.parseInt(arr[1]);
-                        break;
                     case "RSI short open":
                         RSI.SHORT_OPEN = Integer.parseInt(arr[1]);
                         break;
                     case "RSI short close":
                         RSI.SHORT_CLOSE = Integer.parseInt(arr[1]);
-                        break;
-                    case "RSI short half close":
-                        RSI.SHORT_HALF_CLOSE = Integer.parseInt(arr[1]);
                         break;
                     case "Currencies to track":
                         currencies = Collections.unmodifiableList(Arrays.asList(arr[1].toUpperCase().split(", ")));

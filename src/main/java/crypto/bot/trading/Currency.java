@@ -42,7 +42,6 @@ public class Currency {
     private long    currentTime;
     private boolean inLong;
     private boolean inShort;
-    private boolean active = true;
 
     static {
         File myFoo = new File(LOG_PATH);
@@ -88,17 +87,14 @@ public class Currency {
             indicators.forEach(indicator -> indicator.update(bean.getPrice()));
         }
         int confluence = check();
-        if (!active){
-            activate(confluence);
-        }
         if (inLong || inShort) {
             update(currentPrice, confluence);
-        } else if (confluence == CONFLUENCE_LONG_OPEN && active) {
+        } else if (confluence == CONFLUENCE_LONG_OPEN) {
             inLong = true;
-            log("LONG for: " + confluence + " | " + this);
             entryPrice = currentPrice;
+            log("LONG for: " + confluence + " | " + this);
             BuySell.open(Currency.this);
-        } else if (confluence == CONFLUENCE_SHORT_OPEN && active) {
+        } else if (confluence == CONFLUENCE_SHORT_OPEN) {
             inShort = true;
             entryPrice = currentPrice;
             log("SHORT for: " + confluence + " | " + this);
@@ -106,46 +102,21 @@ public class Currency {
         }
     }
 
-    private void activate(int confluence){
-        if (confluence == CONFLUENCE_LONG_CLOSE || confluence == CONFLUENCE_SHORT_CLOSE) {
-            active = true;
-        }
-    }
-
     private void update(double newPrice, int confluence){
-        double ROE = ((newPrice / entryPrice) - 1);
+//        double ROE = ((newPrice / entryPrice) - 1);
         if (inLong) {
             if (confluence == CONFLUENCE_LONG_CLOSE) {
-                active = true;
                 log(this + " close by confluence = " + confluence);
                 BuySell.close(this);
                 inLong = false;
             }
-//            else {
-//                if (ROE < -0.02) {
-//                    log(this + " close by SL ROE = " + ROE);
-//                    BuySell.close(this);
-//                    active = false;
-//                    inLong = false;
-//                }
-//            }
         }
-
         if (inShort) {
             if (confluence == CONFLUENCE_SHORT_CLOSE) {
-                active = true;
                 log(this + " close by confluence = " + confluence);
                 BuySell.close(this);
                 inShort = false;
             }
-//            else {
-//                if (-ROE < -0.02) {
-//                    log(this + " close by SL ROE = " + ROE);
-//                    BuySell.close(this);
-//                    active = false;
-//                    inShort = false;
-//                }
-//            }
         }
 
     }
@@ -175,14 +146,6 @@ public class Currency {
 
     public int check() {
         return indicators.stream().mapToInt(indicator -> indicator.check(currentPrice, this)).sum();
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     public boolean isInShort() {
@@ -220,7 +183,7 @@ public class Currency {
             indicators.forEach(indicator -> s.append(", ").append(indicator.getClass().getSimpleName()).append(": ").append(Formatter.formatDecimal(indicator.get())));
         else
             indicators.forEach(indicator -> s.append(", ").append(indicator.getClass().getSimpleName()).append(": ").append(Formatter.formatDecimal(indicator.getTemp(currentPrice))));
-        s.append(", in long: ").append(inLong).append(", in short: ").append(inShort).append(", active: ").append(active).append(")");
+        s.append(", in long: ").append(inLong).append(", in short: ").append(inShort).append(")");
         return s.toString();
     }
 
