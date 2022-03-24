@@ -113,7 +113,6 @@ public class Currency {
             if (ROE > -0.03){
                 log(this + " close by stop loss = " + ROE);
                 BuySell.close(this);
-                inLong = false;
             }
         }
         if (inShort) {
@@ -125,7 +124,6 @@ public class Currency {
             if (-ROE > -0.03){
                 log(this + " close by stop loss = " + ROE);
                 BuySell.close(this);
-                inShort = false;
             }
         }
 

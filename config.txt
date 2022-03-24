@@ -1,7 +1,7 @@
-RSI long open:12
+RSI long open:15
 RSI long close:35
 RSI long half close:60
-RSI short open:88
+RSI short open:85
 RSI short close:65
 RSI short half close:37
 Money per trade:50
