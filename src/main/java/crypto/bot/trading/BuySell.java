@@ -111,7 +111,7 @@ public class BuySell {
                     positionAmount = String.valueOf(-1 * Double.parseDouble(positionAmount));
                     currency.log("positionAmount = " + positionAmount);
                     Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
-                    if (position.isPresent() && position.get().getPositionAmt().doubleValue() == 0) {
+                    if (position.isPresent() && position.get().getPositionAmt().doubleValue() != 0) {
                         Order order = clientFutures.postOrder(
                                 currency.getPair(), OrderSide.BUY, PositionSide.BOTH, OrderType.MARKET, null,
                                 positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
