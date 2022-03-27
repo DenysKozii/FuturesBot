@@ -41,10 +41,10 @@ public class BuySell {
     }
 
     public static void close(Currency currency) {
-        Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
-        if (position.isPresent() && position.get().getPositionAmt().doubleValue() != 0) {
-            placeOrder(currency, position.get().getPositionAmt().doubleValue(), false);
-        }
+//        Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
+//        if (position.isPresent() && position.get().getPositionAmt().doubleValue() != 0) {
+            placeOrder(currency, 0, false);
+//        }
     }
 
     private static double nextAmount() {
@@ -83,11 +83,18 @@ public class BuySell {
             if (!open && currency.isInLong()) {
                 currency.log("positionAmount = " + positionAmount);
                 Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
-                if (position.isPresent() && position.get().getPositionAmt().doubleValue() != 0) {
+                while (position.isPresent() && position.get().getPositionAmt().doubleValue() != 0) {
+                    positionAmount = position.get().getPositionAmt().toString();
                     Order order = clientFutures.postOrder(
                             currency.getPair(), OrderSide.SELL, PositionSide.BOTH, OrderType.MARKET, null,
                             positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
                     currency.log(order.getStatus() + " close long = " + positionAmount);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
                 }
             }
             if (open && currency.isInShort()) {
@@ -108,18 +115,32 @@ public class BuySell {
                     }
                 }
                 if (!open && currency.isInShort()) {
-                    positionAmount = String.valueOf(-1 * Double.parseDouble(positionAmount));
-                    currency.log("positionAmount = " + positionAmount);
                     Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
-                    if (position.isPresent() && position.get().getPositionAmt().doubleValue() != 0) {
+                    while (position.isPresent() && position.get().getPositionAmt().doubleValue() != 0) {
+                        positionAmount = position.get().getPositionAmt().toString();
+                        positionAmount = String.valueOf(-1 * Double.parseDouble(positionAmount));
                         Order order = clientFutures.postOrder(
                                 currency.getPair(), OrderSide.BUY, PositionSide.BOTH, OrderType.MARKET, null,
                                 positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
                         currency.log(order.getStatus() + "close short = " + positionAmount);
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
                     }
                 }
             } catch (BinanceApiException e) {
                 System.out.println(e.getMessage());
             }
     }
+//
+//    private boolean placeLongCloseOrder() {
+//
+//    }
+//
+//    private boolean placeShortCloseOrder() {
+//
+//    }
 }

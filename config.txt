@@ -1,12 +1,12 @@
-RSI long open:15
-RSI long close:35
+RSI long open:12
+RSI long close:30
 RSI long half close:60
-RSI short open:85
-RSI short close:65
+RSI short open:89
+RSI short close:70
 RSI short half close:37
-Money per trade:250
+Money per trade:300
 Money percentage limit:0.0
-Trailing SL:0.03
+Trailing SL:0.02
 Take profit:0.15
 Confluence long open:1
 Confluence long close:2
