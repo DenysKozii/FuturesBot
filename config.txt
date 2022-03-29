@@ -4,7 +4,7 @@ RSI long half close:60
 RSI short open:89
 RSI short close:70
 RSI short half close:37
-Money per trade:550
+Money per trade:800
 Money percentage limit:0.0
 Trailing SL:0.02
 Take profit:0.15
@@ -15,5 +15,5 @@ Confluence short open:-1
 Confluence short close:-2
 Confluence short half close:-3
 Leverage:5
-Currencies to track:XRP, DOGE, SAND, MANA, TRX, VET, ZIL, XLM, ZRX, ONE, ONT, WAVES, NEAR, REEF, LUNA, LINK, ALGO, ADA, LRC, DENT, KNC, FTM, MATIC, KSM, GTC, RVN, DGB, NKN, AXS, ZEN, BAKE, LIT, IMX
+Currencies to track:XRP, DOGE, SAND, MANA, TRX, VET, ZIL, XLM, ZRX, ONE, ONT, WAVES, NEAR, REEF, LUNA, LINK, ALGO, ADA, LRC, DENT, KNC, FTM, MATIC, KSM, GTC, RVN, DGB, NKN, AXS, ZEN, BAKE, LIT, IMX, BAT, TOMO, SXP, SFP, OMG, HBAR,
 FIAT:USDT
