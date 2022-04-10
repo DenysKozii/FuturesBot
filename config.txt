@@ -1,10 +1,10 @@
-RSI long open:80
-RSI long close:70
+RSI long open:20
+RSI long close:30
 RSI long half close:60
 RSI short open:80
 RSI short close:70
 RSI short half close:37
-Money per trade:800
+Money per trade:650
 Money percentage limit:0.0
 Trailing SL:0.03
 Take profit:0.15
