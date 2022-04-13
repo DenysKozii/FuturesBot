@@ -80,12 +80,12 @@ public class RSI implements Indicator {
     @Override
     public int check(double newPrice, Currency currency) {
         double temp = getTemp(newPrice);
-//        if (!currency.isInShort() && !currency.isInLong() && temp > LONG_OPEN) {
-//            return 1;
-//        }
-//        if (currency.isInLong() && temp < LONG_CLOSE) {
-//            return 2;
-//        }
+        if (!currency.isInShort() && !currency.isInLong() && temp < LONG_OPEN) {
+            return 1;
+        }
+        if (currency.isInLong() && temp > LONG_CLOSE) {
+            return 2;
+        }
         if (!currency.isInShort() && !currency.isInLong() && temp > SHORT_OPEN) {
             return -1;
         }
