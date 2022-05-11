@@ -99,11 +99,13 @@ public class Currency {
             update(currentPrice, confluence);
         } else if (confluence == CONFLUENCE_LONG_OPEN) {
             inLong = true;
+            waitingLong = false;
             entryPrice = currentPrice;
             log("LONG for: " + confluence + " | " + this);
             BuySell.open(Currency.this);
         } else if (confluence == CONFLUENCE_SHORT_OPEN) {
             inShort = true;
+            waitingShort = false;
             entryPrice = currentPrice;
             log("SHORT for: " + confluence + " | " + this);
             BuySell.open(Currency.this);
