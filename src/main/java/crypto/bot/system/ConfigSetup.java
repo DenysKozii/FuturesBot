@@ -50,11 +50,17 @@ public class ConfigSetup {
                 String[] arr = line.strip().split(":");
                 if (arr.length != 2) continue;
                 switch (arr[0]) {
+                    case "RSI long waiting":
+                        RSI.LONG_WAITING = Integer.parseInt(arr[1]);
+                        break;
                     case "RSI long open":
                         RSI.LONG_OPEN = Integer.parseInt(arr[1]);
                         break;
                     case "RSI long close":
                         RSI.LONG_CLOSE = Integer.parseInt(arr[1]);
+                        break;
+                    case "RSI short waiting":
+                        RSI.SHORT_WAITING = Integer.parseInt(arr[1]);
                         break;
                     case "RSI short open":
                         RSI.SHORT_OPEN = Integer.parseInt(arr[1]);

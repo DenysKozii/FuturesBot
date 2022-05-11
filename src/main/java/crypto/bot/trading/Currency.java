@@ -42,6 +42,8 @@ public class Currency {
     private long    currentTime;
     private boolean inLong;
     private boolean inShort;
+    private boolean waitingShort;
+    private boolean waitingLong;
 
     static {
         File myFoo = new File(LOG_PATH);
@@ -87,6 +89,12 @@ public class Currency {
             indicators.forEach(indicator -> indicator.update(bean.getPrice()));
         }
         int confluence = check();
+        if (confluence == 1){
+            waitingLong = true;
+        }
+        if (confluence == -1){
+            waitingShort = true;
+        }
         if (inLong || inShort) {
             update(currentPrice, confluence);
         } else if (confluence == CONFLUENCE_LONG_OPEN) {
@@ -150,6 +158,22 @@ public class Currency {
         String[] strings = data.split("\nBALANCE:");
         lines.close();
         return strings[0];
+    }
+
+    public boolean isWaitingShort() {
+        return waitingShort;
+    }
+
+    public void setWaitingShort(boolean waitingShort) {
+        this.waitingShort = waitingShort;
+    }
+
+    public boolean isWaitingLong() {
+        return waitingLong;
+    }
+
+    public void setWaitingLong(boolean waitingLong) {
+        this.waitingLong = waitingLong;
     }
 
     public int check() {
