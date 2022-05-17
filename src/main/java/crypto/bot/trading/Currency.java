@@ -217,7 +217,10 @@ public class Currency {
             indicators.forEach(indicator -> s.append(", ").append(indicator.getClass().getSimpleName()).append(": ").append(Formatter.formatDecimal(indicator.get())));
         else
             indicators.forEach(indicator -> s.append(", ").append(indicator.getClass().getSimpleName()).append(": ").append(Formatter.formatDecimal(indicator.getTemp(currentPrice))));
-        s.append(", in long: ").append(inLong).append(", in short: ").append(inShort).append(")");
+        s.append(", waiting long: ").append(waitingLong)
+         .append(", waiting short: ").append(waitingShort)
+         .append(", in long: ").append(inLong)
+         .append(", in short: ").append(inShort).append(")");
         return s.toString();
     }
 
