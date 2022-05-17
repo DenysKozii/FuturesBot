@@ -90,7 +90,7 @@ public class BuySell {
                             positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
                     currency.log(order.getStatus() + " close long = " + positionAmount);
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(3000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -124,7 +124,7 @@ public class BuySell {
                                 positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
                         currency.log(order.getStatus() + "close short = " + positionAmount);
                         try {
-                            Thread.sleep(5000);
+                            Thread.sleep(3000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
