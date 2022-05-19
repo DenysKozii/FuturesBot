@@ -74,7 +74,7 @@ public class Currency {
             currentPrice = newPrice;
             if (newTime > candleTime) {
                 accept(new PriceBean(candleTime, newPrice, true));
-                candleTime += 300000L;
+                candleTime += 900000L;
                 log(this.toString());
             }
             accept(new PriceBean(newTime, newPrice));
@@ -119,9 +119,8 @@ public class Currency {
                 log(this + " close by confluence = " + confluence);
                 BuySell.close(this);
                 inLong = false;
-            }
-            if (ROE > 0.005){
-                log(this + " close by stop loss = " + ROE);
+            } else if (ROE > 0.01){
+                log(this + " close by loss = " + ROE);
                 BuySell.close(this);
             }
         }
@@ -130,9 +129,8 @@ public class Currency {
                 log(this + " close by confluence = " + confluence);
                 BuySell.close(this);
                 inShort = false;
-            }
-            if (-ROE > 0.005){
-                log(this + " close by stop loss = " + ROE);
+            } else if (-ROE > 0.01){
+                log(this + " close by stop = " + ROE);
                 BuySell.close(this);
             }
         }
