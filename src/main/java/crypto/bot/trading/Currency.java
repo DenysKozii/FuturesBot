@@ -122,6 +122,7 @@ public class Currency {
             } else if (ROE < -0.005) {
                 log(this + " close by stop loss = " + ROE);
                 BuySell.close(this);
+                inLong = false;
             }
         } else if (inShort) {
             if (confluence == CONFLUENCE_SHORT_CLOSE) {
@@ -131,6 +132,7 @@ public class Currency {
             } else if (-ROE < -0.005) {
                 log(this + " close by stop loss = " + ROE);
                 BuySell.close(this);
+                inShort = false;
             }
         }
     }
