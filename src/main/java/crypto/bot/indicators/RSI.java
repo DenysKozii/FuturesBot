@@ -82,22 +82,22 @@ public class RSI implements Indicator {
     @Override
     public int check(double newPrice, Currency currency) {
         double temp = getTemp(newPrice);
-        if (!currency.isInShort() && !currency.isInLong() && !currency.isWaitingShort() && !currency.isWaitingLong() && temp > LONG_WAITING) {
+        if (!currency.isInShort() && !currency.isInLong() && !currency.isWaitingShort() && !currency.isWaitingLong() && temp < LONG_WAITING) {
             return 1;
         }
-        if (currency.isWaitingLong() && temp < LONG_OPEN) {
+        if (currency.isWaitingLong() && temp > LONG_OPEN) {
             return 2;
         }
-        if (currency.isInLong() && temp < LONG_CLOSE) {
+        if (currency.isInLong() && temp > LONG_CLOSE) {
             return 3;
         }
-        if (!currency.isInShort() && !currency.isInLong() && !currency.isWaitingShort() && !currency.isWaitingLong() && temp < SHORT_WAITING) {
+        if (!currency.isInShort() && !currency.isInLong() && !currency.isWaitingShort() && !currency.isWaitingLong() && temp > SHORT_WAITING) {
             return -1;
         }
-        if (currency.isWaitingShort() && temp > SHORT_OPEN) {
+        if (currency.isWaitingShort() && temp < SHORT_OPEN) {
             return -2;
         }
-        if (currency.isInShort() && temp > SHORT_CLOSE) {
+        if (currency.isInShort() && temp < SHORT_CLOSE) {
             return -3;
         }
         return 0;

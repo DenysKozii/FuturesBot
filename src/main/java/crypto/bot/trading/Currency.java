@@ -119,18 +119,17 @@ public class Currency {
                 log(this + " close by confluence = " + confluence);
                 BuySell.close(this);
                 inLong = false;
-            } else if (ROE > 0.01){
-                log(this + " close by loss = " + ROE);
+            } else if (ROE < -0.005) {
+                log(this + " close by stop loss = " + ROE);
                 BuySell.close(this);
             }
-        }
-        if (inShort) {
+        } else if (inShort) {
             if (confluence == CONFLUENCE_SHORT_CLOSE) {
                 log(this + " close by confluence = " + confluence);
                 BuySell.close(this);
                 inShort = false;
-            } else if (-ROE > 0.01){
-                log(this + " close by stop = " + ROE);
+            } else if (-ROE < -0.005) {
+                log(this + " close by stop loss = " + ROE);
                 BuySell.close(this);
             }
         }
