@@ -72,6 +72,7 @@ public class Currency {
             double newPrice = response.getLastPrice().doubleValue();
             long newTime = response.getEventTime();
             currentPrice = newPrice;
+
             if (newTime > candleTime) {
                 accept(new PriceBean(candleTime, newPrice, true));
                 candleTime += 900000L;
