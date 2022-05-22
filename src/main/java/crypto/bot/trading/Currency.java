@@ -120,7 +120,7 @@ public class Currency {
                 log(this + " close by confluence = " + confluence);
                 BuySell.close(this);
                 inLong = false;
-            } else if (ROE < -0.005) {
+            } else if (ROE < -0.003) {
                 log(this + " close by stop loss = " + ROE);
                 BuySell.close(this);
             }
@@ -129,7 +129,7 @@ public class Currency {
                 log(this + " close by confluence = " + confluence);
                 BuySell.close(this);
                 inShort = false;
-            } else if (-ROE < -0.005) {
+            } else if (-ROE < -0.003) {
                 log(this + " close by stop loss = " + ROE);
                 BuySell.close(this);
             }
@@ -240,4 +240,6 @@ public class Currency {
     public void setEntryPrice(double entryPrice) {
         this.entryPrice = entryPrice;
     }
+
+
 }
