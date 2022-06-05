@@ -11,6 +11,7 @@ import com.binance.client.model.trade.AccountInformation;
 import com.binance.client.model.trade.Order;
 import com.binance.client.model.trade.Position;
 
+import java.util.List;
 import java.util.Optional;
 
 public class BuySell {
@@ -85,10 +86,14 @@ public class BuySell {
                 Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
                 while (position.isPresent() && position.get().getPositionAmt().doubleValue() > 0) {
                     positionAmount = position.get().getPositionAmt().toString();
-                    Order order = clientFutures.postOrder(
-                            currency.getPair(), OrderSide.SELL, PositionSide.BOTH, OrderType.MARKET, null,
-                            positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
-                    currency.log(order.getStatus() + " close long = " + positionAmount);
+                    List<Order> openOrders = clientFutures.getOpenOrders(currency.getPair());
+                    if (openOrders.isEmpty()) {
+                        Order order = clientFutures.postOrder(
+                                currency.getPair(), OrderSide.SELL, PositionSide.BOTH, OrderType.MARKET, null,
+                                positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
+                        currency.log(order.getStatus() + " close long = " + positionAmount);
+
+                    }
                     try {
                         Thread.sleep(3000);
                     } catch (InterruptedException e) {
@@ -119,10 +124,13 @@ public class BuySell {
                     while (position.isPresent() && position.get().getPositionAmt().doubleValue() < 0) {
                         positionAmount = position.get().getPositionAmt().toString();
                         positionAmount = String.valueOf(-1 * Double.parseDouble(positionAmount));
-                        Order order = clientFutures.postOrder(
-                                currency.getPair(), OrderSide.BUY, PositionSide.BOTH, OrderType.MARKET, null,
-                                positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
-                        currency.log(order.getStatus() + "close short = " + positionAmount);
+                        List<Order> openOrders = clientFutures.getOpenOrders(currency.getPair());
+                        if (openOrders.isEmpty()) {
+                            Order order = clientFutures.postOrder(
+                                    currency.getPair(), OrderSide.BUY, PositionSide.BOTH, OrderType.MARKET, null,
+                                    positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
+                            currency.log(order.getStatus() + "close short = " + positionAmount);
+                        }
                         try {
                             Thread.sleep(3000);
                         } catch (InterruptedException e) {
