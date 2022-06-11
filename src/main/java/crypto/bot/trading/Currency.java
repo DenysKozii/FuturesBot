@@ -31,10 +31,12 @@ public class Currency {
     public static String  LOG_PATH = "log.txt";
     public static double  TRAILING_SL;
     public static double  TAKE_PROFIT;
+    public static double  ROE;
 
     private final String          pair;
     private       double          entryPrice;
-    private       double          high;
+    private       double          sellPrice;
+    private       double          goalPrice;
     private       long            candleTime;
     private final List<Indicator> indicators = new ArrayList<>();
 
@@ -57,9 +59,9 @@ public class Currency {
     public Currency(String coin) {
         this.pair = coin + ConfigSetup.getFiat();
         //Every currency needs to contain and update our crypto.bot.indicators
-        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIVE_MINUTES, null, null, 1000);
+        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.ONE_MINUTE, null, null, 1000);
         List<Double> closingPrices = history.stream().map(candle -> candle.getClose().doubleValue()).collect(Collectors.toList());
-        indicators.add(new RSI(closingPrices, 14));
+        indicators.add(new RSI(closingPrices, 25));
 
         //We set the initial values to check against in onMessage based on the latest candle in history
         currentTime = System.currentTimeMillis();
@@ -75,7 +77,7 @@ public class Currency {
 
             if (newTime > candleTime) {
                 accept(new PriceBean(candleTime, newPrice, true));
-                candleTime += 300000L;
+                candleTime += 60000L;
                 log(this.toString());
             }
             accept(new PriceBean(newTime, newPrice));
@@ -101,38 +103,60 @@ public class Currency {
         } else if (confluence == CONFLUENCE_LONG_OPEN) {
             inLong = true;
             waitingLong = false;
-            entryPrice = currentPrice;
+            updatePrices();
             log("LONG for: " + confluence + " | " + this);
             BuySell.open(Currency.this);
         } else if (confluence == CONFLUENCE_SHORT_OPEN) {
             inShort = true;
             waitingShort = false;
-            entryPrice = currentPrice;
+            updatePrices();
             log("SHORT for: " + confluence + " | " + this);
             BuySell.open(Currency.this);
         }
     }
 
+    private void updatePrices(){
+        entryPrice = currentPrice;
+        sellPrice = inShort ? entryPrice * (1 + ROE) : entryPrice * (1 - ROE);
+        goalPrice = inShort ? entryPrice * (1 - ROE) : entryPrice * (1 + ROE);
+    }
+
     private void update(double newPrice, int confluence){
-        double ROE = ((newPrice / entryPrice) - 1);
+//        double ROE = ((newPrice / entryPrice) - 1);
         if (inLong) {
-            if (confluence == CONFLUENCE_LONG_CLOSE) {
-                log(this + " close by confluence = " + confluence);
+            if (newPrice >= goalPrice){
+                updatePrices();
+                log(this + " change prices: entryPrice = " + entryPrice + ", sellPrice = " + sellPrice + ", goalPrice = " + goalPrice);
+            } else if (newPrice <= sellPrice){
+                log(this + " close");
                 BuySell.close(this);
                 inLong = false;
-            } else if (ROE < -0.01) {
-                log(this + " close by take profit = " + ROE);
-                BuySell.close(this);
             }
+//            if (confluence == CONFLUENCE_LONG_CLOSE) {
+//                log(this + " close by confluence = " + confluence);
+//                BuySell.close(this);
+//                inLong = false;
+//            } else if (ROE < -0.01) {
+//                log(this + " close by take profit = " + ROE);
+//                BuySell.close(this);
+//            }
         } else if (inShort) {
-            if (confluence == CONFLUENCE_SHORT_CLOSE) {
-                log(this + " close by confluence = " + confluence);
+            if (newPrice <= goalPrice){
+                updatePrices();
+                log(this + " change prices: entryPrice = " + entryPrice + ", sellPrice = " + sellPrice + ", goalPrice = " + goalPrice);
+            } else if (newPrice >= sellPrice){
+                log(this + " close");
                 BuySell.close(this);
                 inShort = false;
-            } else if (-ROE < -0.01) {
-                log(this + " close by take profit = " + ROE);
-                BuySell.close(this);
             }
+//            if (confluence == CONFLUENCE_SHORT_CLOSE) {
+//                log(this + " close by confluence = " + confluence);
+//                BuySell.close(this);
+//                inShort = false;
+//            } else if (-ROE < -0.01) {
+//                log(this + " close by take profit = " + ROE);
+//                BuySell.close(this);
+//            }
         }
     }
 
@@ -241,4 +265,11 @@ public class Currency {
         this.entryPrice = entryPrice;
     }
 
+    public double getSellPrice() {
+        return sellPrice;
+    }
+
+    public void setSellPrice(double sellPrice) {
+        this.sellPrice = sellPrice;
+    }
 }

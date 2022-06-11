@@ -1,7 +1,7 @@
-RSI long waiting:25
+RSI long waiting:20
 RSI long open:30
 RSI long close:40
-RSI short waiting:75
+RSI short waiting:80
 RSI short open:70
 RSI short close:60
 RSI short half close:37
@@ -17,4 +17,5 @@ Confluence short close:-3
 Confluence short half close:-3
 Leverage:5
 Currencies to track:XRP, CRV, DOGE, SAND, MANA, TRX, VET, ZIL, XLM, ZRX, ONE, ONT, NEAR, REEF, LINK, ALGO, ADA, LRC, DENT, KNC, FTM, MATIC, KSM, GTC, RVN, DGB, NKN, AXS, ZEN, IMX, BAT, TOMO, SXP, SFP, OMG, HBAR, QTUM, BAL, CELO, ANT
+ROE:0.005
 FIAT:USDT

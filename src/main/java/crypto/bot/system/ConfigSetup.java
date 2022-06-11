@@ -104,6 +104,9 @@ public class ConfigSetup {
                     case "Confluence short half close":
                         Currency.CONFLUENCE_SHORT_HALF_CLOSE = Integer.parseInt(arr[1]);
                         break;
+                    case "ROE":
+                        Currency.ROE = Integer.parseInt(arr[1]);
+                        break;
                     case "FIAT":
                         fiat = arr[1].toUpperCase();
                         break;
