@@ -22,16 +22,17 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Currency {
-    public static int     CONFLUENCE_LONG_OPEN;
-    public static int     CONFLUENCE_LONG_CLOSE;
-    public static int     CONFLUENCE_LONG_HALF_CLOSE;
-    public static int     CONFLUENCE_SHORT_OPEN;
-    public static int     CONFLUENCE_SHORT_CLOSE;
-    public static int     CONFLUENCE_SHORT_HALF_CLOSE;
-    public static String  LOG_PATH = "log.txt";
-    public static double  TRAILING_SL;
-    public static double  TAKE_PROFIT;
-    public static double  ROE;
+    public static int    CONFLUENCE_LONG_OPEN;
+    public static int    CONFLUENCE_LONG_CLOSE;
+    public static int    CONFLUENCE_LONG_HALF_CLOSE;
+    public static int    CONFLUENCE_SHORT_OPEN;
+    public static int    CONFLUENCE_SHORT_CLOSE;
+    public static int    CONFLUENCE_SHORT_HALF_CLOSE;
+    public static String LOG_PATH = "log.txt";
+    public static double TRAILING_SL;
+    public static double TAKE_PROFIT;
+    public static double SELL_ROE;
+    public static double GOAL_ROE;
 
     private final String          pair;
     private       double          entryPrice;
@@ -115,10 +116,10 @@ public class Currency {
         }
     }
 
-    private void updatePrices(){
+    private void updatePrices() {
         entryPrice = currentPrice;
-        sellPrice = inShort ? entryPrice * (1 + ROE) : entryPrice * (1 - ROE);
-        goalPrice = inShort ? entryPrice * (1 - ROE) : entryPrice * (1 + ROE);
+        sellPrice = inShort ? entryPrice * (1 + SELL_ROE) : entryPrice * (1 - SELL_ROE);
+        goalPrice = inShort ? entryPrice * (1 - GOAL_ROE) : entryPrice * (1 + GOAL_ROE);
     }
 
     private void update(double newPrice, int confluence){
