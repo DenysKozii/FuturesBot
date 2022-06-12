@@ -84,7 +84,7 @@ public class BuySell {
             if (!open && currency.isInLong()) {
                 currency.log("positionAmount = " + positionAmount);
                 Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
-                while (position.isPresent() && position.get().getPositionAmt().doubleValue() > 0) {
+                while (position.isPresent() && position.get().getPositionAmt().doubleValue() != 0) {
                     positionAmount = position.get().getPositionAmt().toString();
                     List<Order> openOrders = clientFutures.getOpenOrders(currency.getPair());
                     if (openOrders.isEmpty()) {
@@ -121,7 +121,7 @@ public class BuySell {
                 }
                 if (!open && currency.isInShort()) {
                     Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
-                    while (position.isPresent() && position.get().getPositionAmt().doubleValue() < 0) {
+                    while (position.isPresent() && position.get().getPositionAmt().doubleValue() != 0) {
                         positionAmount = position.get().getPositionAmt().toString();
                         positionAmount = String.valueOf(-1 * Double.parseDouble(positionAmount));
                         List<Order> openOrders = clientFutures.getOpenOrders(currency.getPair());
