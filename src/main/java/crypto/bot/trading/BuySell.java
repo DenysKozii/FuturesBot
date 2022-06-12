@@ -92,7 +92,6 @@ public class BuySell {
                                 currency.getPair(), OrderSide.SELL, PositionSide.BOTH, OrderType.MARKET, null,
                                 positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
                         currency.log(order.getStatus() + " close long = " + positionAmount);
-
                     }
                     try {
                         Thread.sleep(3000);

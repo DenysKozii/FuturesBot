@@ -43,6 +43,7 @@ public class Currency {
 
     private double  currentPrice;
     private long    currentTime;
+    private int     counter;
     private boolean inLong;
     private boolean inShort;
     private boolean waitingShort;
@@ -104,12 +105,14 @@ public class Currency {
         } else if (confluence == CONFLUENCE_LONG_OPEN) {
             inLong = true;
             waitingLong = false;
+            counter = 0;
             updatePrices();
             log("LONG for: " + confluence + " | " + this);
             BuySell.open(Currency.this);
         } else if (confluence == CONFLUENCE_SHORT_OPEN) {
             inShort = true;
             waitingShort = false;
+            counter = 0;
             updatePrices();
             log("SHORT for: " + confluence + " | " + this);
             BuySell.open(Currency.this);
@@ -118,8 +121,11 @@ public class Currency {
 
     private void updatePrices() {
         entryPrice = currentPrice;
-        sellPrice = inShort ? entryPrice * (1 + SELL_ROE) : entryPrice * (1 - SELL_ROE);
-        goalPrice = inShort ? entryPrice * (1 - GOAL_ROE) : entryPrice * (1 + GOAL_ROE);
+        counter++;
+        double sellRoe = SELL_ROE + counter * 0.0003;
+        double goalRoe = GOAL_ROE + counter * 0.0001;
+        sellPrice = inShort ? entryPrice * (1 + sellRoe) : entryPrice * (1 - sellRoe);
+        goalPrice = inShort ? entryPrice * (1 - goalRoe) : entryPrice * (1 + goalRoe);
     }
 
     private void update(double newPrice, int confluence){
