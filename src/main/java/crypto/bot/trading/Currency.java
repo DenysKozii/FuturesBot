@@ -129,7 +129,6 @@ public class Currency {
     }
 
     private void update(double newPrice, int confluence){
-//        double ROE = ((newPrice / entryPrice) - 1);
         if (inLong) {
             if (newPrice >= goalPrice){
                 updatePrices();
@@ -139,14 +138,6 @@ public class Currency {
                 BuySell.close(this);
                 inLong = false;
             }
-//            if (confluence == CONFLUENCE_LONG_CLOSE) {
-//                log(this + " close by confluence = " + confluence);
-//                BuySell.close(this);
-//                inLong = false;
-//            } else if (ROE < -0.01) {
-//                log(this + " close by take profit = " + ROE);
-//                BuySell.close(this);
-//            }
         } else if (inShort) {
             if (newPrice <= goalPrice){
                 updatePrices();
@@ -156,14 +147,6 @@ public class Currency {
                 BuySell.close(this);
                 inShort = false;
             }
-//            if (confluence == CONFLUENCE_SHORT_CLOSE) {
-//                log(this + " close by confluence = " + confluence);
-//                BuySell.close(this);
-//                inShort = false;
-//            } else if (-ROE < -0.01) {
-//                log(this + " close by take profit = " + ROE);
-//                BuySell.close(this);
-//            }
         }
     }
 
