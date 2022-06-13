@@ -85,18 +85,18 @@ public class RSI implements Indicator {
         if (!currency.isInShort() && !currency.isInLong() && !currency.isWaitingShort() && !currency.isWaitingLong() && temp < LONG_WAITING) {
             return -2;
         }
-//        if (currency.isWaitingLong() && temp > LONG_OPEN) {
-//            return -2;
-//        }
+        if (currency.isWaitingLong() && temp > LONG_OPEN) {
+            return -1;
+        }
 //        if (currency.isInLong() && temp > LONG_CLOSE) {
 //            return -3;
 //        }
         if (!currency.isInShort() && !currency.isInLong() && !currency.isWaitingShort() && !currency.isWaitingLong() && temp > SHORT_WAITING) {
             return 2;
         }
-//        if (currency.isWaitingShort() && temp < SHORT_OPEN) {
-//            return 2;
-//        }
+        if (currency.isWaitingShort() && temp < SHORT_OPEN) {
+            return 1;
+        }
 //        if (currency.isInShort() && temp < SHORT_CLOSE) {
 //            return 3;
 //        }

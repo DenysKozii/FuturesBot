@@ -95,10 +95,10 @@ public class Currency {
         }
         int confluence = check();
         if (confluence == 1){
-            waitingLong = true;
+            waitingLong = false;
         }
         if (confluence == -1){
-            waitingShort = true;
+            waitingShort = false;
         }
         if (inLong || inShort) {
             update(currentPrice, confluence);
@@ -137,6 +137,7 @@ public class Currency {
                 log(this + " close");
                 BuySell.close(this);
                 inLong = false;
+                waitingLong = true;
             }
         } else if (inShort) {
             if (newPrice <= goalPrice){
@@ -146,6 +147,7 @@ public class Currency {
                 log(this + " close");
                 BuySell.close(this);
                 inShort = false;
+                waitingShort = true;
             }
         }
     }
