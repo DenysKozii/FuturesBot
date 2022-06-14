@@ -24,10 +24,10 @@ import java.util.stream.Stream;
 public class Currency {
     public static int    CONFLUENCE_LONG_OPEN;
     public static int    CONFLUENCE_LONG_CLOSE;
-    public static int    CONFLUENCE_LONG_HALF_CLOSE;
+    public static int    CONFLUENCE_LONG_WAITING;
     public static int    CONFLUENCE_SHORT_OPEN;
     public static int    CONFLUENCE_SHORT_CLOSE;
-    public static int    CONFLUENCE_SHORT_HALF_CLOSE;
+    public static int    CONFLUENCE_SHORT_WAITING;
     public static String LOG_PATH = "log.txt";
     public static double TRAILING_SL;
     public static double TAKE_PROFIT;
@@ -94,11 +94,11 @@ public class Currency {
             indicators.forEach(indicator -> indicator.update(bean.getPrice()));
         }
         int confluence = check();
-        if (confluence == 1){
-            waitingLong = false;
+        if (confluence == CONFLUENCE_LONG_WAITING){
+            waitingLong = true;
         }
-        if (confluence == -1){
-            waitingShort = false;
+        if (confluence == CONFLUENCE_SHORT_WAITING){
+            waitingShort = true;
         }
         if (inLong || inShort) {
             update(currentPrice, confluence);
@@ -137,7 +137,7 @@ public class Currency {
                 log(this + " close");
                 BuySell.close(this);
                 inLong = false;
-                waitingLong = true;
+                waitingLong = false;
             }
         } else if (inShort) {
             if (newPrice <= goalPrice){
@@ -147,7 +147,7 @@ public class Currency {
                 log(this + " close");
                 BuySell.close(this);
                 inShort = false;
-                waitingShort = true;
+                waitingShort = false;
             }
         }
     }

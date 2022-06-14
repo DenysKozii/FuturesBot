@@ -9,12 +9,12 @@ Money per trade:50
 Money percentage limit:0.0
 Trailing SL:0.03
 Take profit:0.15
+Confluence long waiting:1
 Confluence long open:2
 Confluence long close:3
-Confluence long half close:3
+Confluence short waiting:-1
 Confluence short open:-2
 Confluence short close:-3
-Confluence short half close:-3
 Leverage:5
 Currencies to track:XRP, CRV, DOGE, SAND, MANA, TRX, VET, ZIL, XLM, ZRX, ONE, ONT, NEAR, REEF, LINK, ALGO, ADA, LRC, DENT, KNC, MATIC, KSM, GTC, RVN, DGB, NKN, AXS, ZEN, IMX, BAT, TOMO, SXP, SFP, OMG, QTUM, BAL, CELO, ANT
 SELL ROE:0.006

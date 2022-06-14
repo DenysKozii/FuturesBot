@@ -92,8 +92,8 @@ public class ConfigSetup {
                     case "Confluence long close":
                         Currency.CONFLUENCE_LONG_CLOSE = Integer.parseInt(arr[1]);
                         break;
-                    case "Confluence long half close":
-                        Currency.CONFLUENCE_LONG_HALF_CLOSE = Integer.parseInt(arr[1]);
+                    case "Confluence long waiting":
+                        Currency.CONFLUENCE_LONG_WAITING = Integer.parseInt(arr[1]);
                         break;
                     case "Confluence short open":
                         Currency.CONFLUENCE_SHORT_OPEN = Integer.parseInt(arr[1]);
@@ -101,8 +101,8 @@ public class ConfigSetup {
                     case "Confluence short close":
                         Currency.CONFLUENCE_SHORT_CLOSE = Integer.parseInt(arr[1]);
                         break;
-                    case "Confluence short half close":
-                        Currency.CONFLUENCE_SHORT_HALF_CLOSE = Integer.parseInt(arr[1]);
+                    case "Confluence short waiting":
+                        Currency.CONFLUENCE_SHORT_WAITING = Integer.parseInt(arr[1]);
                         break;
                     case "SELL ROE":
                         Currency.SELL_ROE = Double.parseDouble(arr[1]);

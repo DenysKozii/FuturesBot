@@ -83,19 +83,19 @@ public class RSI implements Indicator {
     public int check(double newPrice, Currency currency) {
         double temp = getTemp(newPrice);
         if (!currency.isInShort() && !currency.isInLong() && !currency.isWaitingShort() && !currency.isWaitingLong() && temp < LONG_WAITING) {
-            return -2;
+            return Currency.CONFLUENCE_LONG_WAITING;
         }
         if (currency.isWaitingLong() && temp > LONG_OPEN) {
-            return -1;
+            return Currency.CONFLUENCE_LONG_OPEN;
         }
 //        if (currency.isInLong() && temp > LONG_CLOSE) {
 //            return -3;
 //        }
         if (!currency.isInShort() && !currency.isInLong() && !currency.isWaitingShort() && !currency.isWaitingLong() && temp > SHORT_WAITING) {
-            return 2;
+            return Currency.CONFLUENCE_SHORT_WAITING;
         }
         if (currency.isWaitingShort() && temp < SHORT_OPEN) {
-            return 1;
+            return Currency.CONFLUENCE_SHORT_OPEN;
         }
 //        if (currency.isInShort() && temp < SHORT_CLOSE) {
 //            return 3;
