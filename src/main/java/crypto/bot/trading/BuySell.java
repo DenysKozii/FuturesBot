@@ -111,8 +111,7 @@ public class BuySell {
             SyncRequestClient clientFutures = CurrentAPI.getClient();
             try {
                 clientFutures.changeMarginType(currency.getPair(), MarginType.ISOLATED);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
+            } catch (Exception ignored) {
             }
             clientFutures.changeInitialLeverage(currency.getPair(), LEVERAGE);
 
