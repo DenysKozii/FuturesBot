@@ -101,21 +101,21 @@ public class Currency {
             waitingShort = true;
         }
         if (inLong || inShort) {
-            update(currentPrice, confluence);
+            update();
         } else if (confluence == CONFLUENCE_LONG_OPEN) {
             inLong = true;
             waitingLong = false;
             counter = 0;
             updatePrices();
             log("LONG for: " + confluence + " | " + this);
-            BuySell.open(Currency.this);
+            BuySell.open(Currency.this, true);
         } else if (confluence == CONFLUENCE_SHORT_OPEN) {
             inShort = true;
             waitingShort = false;
             counter = 0;
             updatePrices();
             log("SHORT for: " + confluence + " | " + this);
-            BuySell.open(Currency.this);
+            BuySell.open(Currency.this, false);
         }
     }
 
@@ -128,26 +128,26 @@ public class Currency {
         goalPrice = inShort ? entryPrice * (1 - goalRoe) : entryPrice * (1 + goalRoe);
     }
 
-    private void update(double newPrice, int confluence){
+    private void update(){
         if (inLong) {
-            if (newPrice >= goalPrice){
+            if (currentPrice >= goalPrice){
                 updatePrices();
                 log(this + " change prices: entryPrice = " + entryPrice + ", sellPrice = " + sellPrice + ", goalPrice = " + goalPrice);
-            } else if (newPrice <= sellPrice){
-                log(this + " close");
-                BuySell.close(this);
+            } else if (currentPrice <= sellPrice){
                 inLong = false;
                 waitingLong = false;
+                log(this + " close");
+                BuySell.close(this, true);
             }
         } else if (inShort) {
-            if (newPrice <= goalPrice){
+            if (currentPrice <= goalPrice){
                 updatePrices();
                 log(this + " change prices: entryPrice = " + entryPrice + ", sellPrice = " + sellPrice + ", goalPrice = " + goalPrice);
-            } else if (newPrice >= sellPrice){
-                log(this + " close");
-                BuySell.close(this);
+            } else if (currentPrice >= sellPrice){
                 inShort = false;
                 waitingShort = false;
+                log(this + " close");
+                BuySell.close(this, false);
             }
         }
     }

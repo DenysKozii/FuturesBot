@@ -34,18 +34,15 @@ public class BuySell {
         throw new IllegalStateException("Utility class");
     }
 
-    public static void open(Currency currency) {
+    public static void open(Currency currency,  boolean inLong) {
         double amount = nextAmount();
         if (amount != 0) {
-            placeOrder(currency, nextAmount(), true);
+            placeOrder(currency, nextAmount(), true, inLong);
         }
     }
 
-    public static void close(Currency currency) {
-//        Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
-//        if (position.isPresent() && position.get().getPositionAmt().doubleValue() != 0) {
-            placeOrder(currency, 0, false);
-//        }
+    public static void close(Currency currency, boolean inLong) {
+        placeOrder(currency, 0, false, inLong);
     }
 
     private static double nextAmount() {
@@ -53,101 +50,79 @@ public class BuySell {
         return accountInformation.getAvailableBalance().doubleValue() - MONEY_LIMIT - MONEY_PER_TRADE > 0 ? MONEY_PER_TRADE : 0;
     }
 
-    public static void placeOrder(Currency currency, double amount, boolean open) {
+    public static void placeOpenOrder(SyncRequestClient clientFutures, Currency currency, double amount, boolean inLong) {
+        amount /= currency.getPrice();
+        amount *= LEVERAGE;
+        String positionAmount = String.valueOf((int) amount);
+        if ((int) amount != 0) {
+            currency.setInLong(false);
+            currency.setInShort(false);
+            return;
+        }
+        Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
+
+        if (position.isEmpty() || position.get().getPositionAmt().doubleValue() != 0) {
+            return;
+        }
+
+        if (inLong) {
+            Order order = clientFutures.postOrder(
+                    currency.getPair(), OrderSide.BUY, PositionSide.BOTH, OrderType.MARKET, null,
+                    positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
+            currency.log(order.getStatus() + " open long = " + positionAmount);
+        } else {
+            Order order = clientFutures.postOrder(
+                    currency.getPair(), OrderSide.SELL, PositionSide.BOTH, OrderType.MARKET, null,
+                    positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
+            currency.log(order.getStatus() + " open short = " + positionAmount);
+        }
+    }
+
+    public static void placeCloseOrder(SyncRequestClient clientFutures, Currency currency, boolean inLong) {
+        Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
+
+        if (position.isEmpty() || position.get().getPositionAmt().doubleValue() == 0) {
+            return;
+        }
+
+        String positionAmount = position.get().getPositionAmt().toString();
+        List<Order> openOrders = clientFutures.getOpenOrders(currency.getPair());
+        if (inLong) {
+            if (openOrders.isEmpty()) {
+                Order order = clientFutures.postOrder(
+                        currency.getPair(), OrderSide.SELL, PositionSide.BOTH, OrderType.MARKET, null,
+                        positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
+                currency.log(order.getStatus() + " close long = " + positionAmount);
+            }
+        } else {
+            if (openOrders.isEmpty()) {
+                positionAmount = String.valueOf(-1 * Double.parseDouble(positionAmount));
+                Order order = clientFutures.postOrder(
+                        currency.getPair(), OrderSide.BUY, PositionSide.BOTH, OrderType.MARKET, null,
+                        positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
+                currency.log(order.getStatus() + "close short = " + positionAmount);
+            }
+        }
+    }
+
+    public static void placeOrder(Currency currency, double amount, boolean open, boolean inLong) {
         currency.log("\n---Placing a " + (open ? "open" : "close") + " market order for " + currency.getPair());
         try {
             SyncRequestClient clientFutures = CurrentAPI.getClient();
             try {
                 clientFutures.changeMarginType(currency.getPair(), MarginType.ISOLATED);
-            } catch (Exception ignored) {
-            }
-            clientFutures.changeInitialLeverage(currency.getPair(), LEVERAGE);
-            String positionAmount = String.valueOf(amount);
-
-            if (open && currency.isInLong()) {
-                amount /= currency.getPrice();
-                amount *= LEVERAGE;
-                positionAmount = String.valueOf((int) amount);
-                currency.log("positionAmount = " + positionAmount);
-                if ((int) amount != 0) {
-                    Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
-                    if (position.isPresent() && position.get().getPositionAmt().doubleValue() == 0) {
-                        Order order = clientFutures.postOrder(
-                                currency.getPair(), OrderSide.BUY, PositionSide.BOTH, OrderType.MARKET, null,
-                                positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
-                        currency.log(order.getStatus() + " open long = " + positionAmount);
-                    }
-                } else {
-                    currency.setInLong(false);
-                }
-            }
-            if (!open && currency.isInLong()) {
-                currency.log("positionAmount = " + positionAmount);
-                Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
-                while (position.isPresent() && position.get().getPositionAmt().doubleValue() != 0) {
-                    positionAmount = position.get().getPositionAmt().toString();
-                    List<Order> openOrders = clientFutures.getOpenOrders(currency.getPair());
-                    if (openOrders.isEmpty()) {
-                        Order order = clientFutures.postOrder(
-                                currency.getPair(), OrderSide.SELL, PositionSide.BOTH, OrderType.MARKET, null,
-                                positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
-                        currency.log(order.getStatus() + " close long = " + positionAmount);
-                    }
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
-                }
-            }
-            if (open && currency.isInShort()) {
-                    amount /= currency.getPrice();
-                    amount *= LEVERAGE;
-                    positionAmount = String.valueOf((int) amount);
-                    currency.log("positionAmount = " + positionAmount);
-                    if ((int) amount != 0) {
-                        Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
-                        if (position.isPresent() && position.get().getPositionAmt().doubleValue() == 0) {
-                            Order order = clientFutures.postOrder(
-                                    currency.getPair(), OrderSide.SELL, PositionSide.BOTH, OrderType.MARKET, null,
-                                    positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
-                            currency.log(order.getStatus() + " open short = " + positionAmount);
-                        }
-                    } else {
-                        currency.setInShort(false);
-                    }
-                }
-                if (!open && currency.isInShort()) {
-                    Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
-                    while (position.isPresent() && position.get().getPositionAmt().doubleValue() != 0) {
-                        positionAmount = position.get().getPositionAmt().toString();
-                        positionAmount = String.valueOf(-1 * Double.parseDouble(positionAmount));
-                        List<Order> openOrders = clientFutures.getOpenOrders(currency.getPair());
-                        if (openOrders.isEmpty()) {
-                            Order order = clientFutures.postOrder(
-                                    currency.getPair(), OrderSide.BUY, PositionSide.BOTH, OrderType.MARKET, null,
-                                    positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
-                            currency.log(order.getStatus() + "close short = " + positionAmount);
-                        }
-                        try {
-                            Thread.sleep(3000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
-                    }
-                }
-            } catch (BinanceApiException e) {
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+            clientFutures.changeInitialLeverage(currency.getPair(), LEVERAGE);
+
+            if (open) {
+                placeOpenOrder(clientFutures, currency, amount, inLong);
+            } else {
+                placeCloseOrder(clientFutures, currency, inLong);
+            }
+        } catch (BinanceApiException e) {
+            System.out.println(e.getMessage());
+        }
     }
-//
-//    private boolean placeLongCloseOrder() {
-//
-//    }
-//
-//    private boolean placeShortCloseOrder() {
-//
-//    }
 }
