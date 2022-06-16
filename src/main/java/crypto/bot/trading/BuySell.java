@@ -57,22 +57,24 @@ public class BuySell {
         if ((int) amount != 0) {
             currency.setInLong(false);
             currency.setInShort(false);
-            System.out.println(amount);
+            System.out.println("amount open = " + amount);
             return;
         }
         Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
 
         if (position.isEmpty() || position.get().getPositionAmt().doubleValue() != 0) {
-            System.out.println(position);
+            System.out.println("position open = " + position);
             return;
         }
-
+        System.out.println("before if " + inLong);
         if (inLong) {
+            System.out.println("in if " + inLong);
             Order order = clientFutures.postOrder(
                     currency.getPair(), OrderSide.BUY, PositionSide.BOTH, OrderType.MARKET, null,
                     positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
             currency.log(order.getStatus() + " open long = " + positionAmount);
         } else {
+            System.out.println("in if " + inLong);
             Order order = clientFutures.postOrder(
                     currency.getPair(), OrderSide.SELL, PositionSide.BOTH, OrderType.MARKET, null,
                     positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
