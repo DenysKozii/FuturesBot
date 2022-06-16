@@ -57,11 +57,13 @@ public class BuySell {
         if ((int) amount != 0) {
             currency.setInLong(false);
             currency.setInShort(false);
+            System.out.println(amount);
             return;
         }
         Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(currency.getPair())).findFirst();
 
         if (position.isEmpty() || position.get().getPositionAmt().doubleValue() != 0) {
+            System.out.println(position);
             return;
         }
 
@@ -116,8 +118,10 @@ public class BuySell {
             clientFutures.changeInitialLeverage(currency.getPair(), LEVERAGE);
 
             if (open) {
+                System.out.println("open");
                 placeOpenOrder(clientFutures, currency, amount, inLong);
             } else {
+                System.out.println("close");
                 placeCloseOrder(clientFutures, currency, inLong);
             }
         } catch (BinanceApiException e) {
