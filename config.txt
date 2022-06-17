@@ -15,8 +15,8 @@ Confluence long close:3
 Confluence short waiting:-1
 Confluence short open:-2
 Confluence short close:-3
-Leverage:5
+Leverage:3
 Currencies to track:XRP, CRV, DOGE, SAND, MANA, TRX, VET, ZIL, XLM, ZRX, ONE, ONT, NEAR, REEF, LINK, ALGO, ADA, LRC, DENT, KNC, MATIC, KSM, GTC, RVN, DGB, NKN, AXS, ZEN, IMX, BAT, TOMO, SXP, SFP, OMG, QTUM, BAL, CELO, ANT
-SELL ROE:0.009
+SELL ROE:0.013
 GOAL ROE:0.001
 FIAT:USDT
