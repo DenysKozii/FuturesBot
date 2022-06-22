@@ -102,20 +102,20 @@ public class Currency {
         }
         if (inLong || inShort) {
             update();
-        } else if (confluence == CONFLUENCE_LONG_OPEN) {
+        } else if (confluence == CONFLUENCE_LONG_WAITING) {
             inLong = true;
             waitingLong = false;
             counter = 0;
             updatePrices();
             log("LONG for: " + confluence + " | " + this);
-            BuySell.open(Currency.this, false);
-        } else if (confluence == CONFLUENCE_SHORT_OPEN) {
+            BuySell.open(Currency.this, true);
+        } else if (confluence == CONFLUENCE_SHORT_WAITING) {
             inShort = true;
             waitingShort = false;
             counter = 0;
             updatePrices();
             log("SHORT for: " + confluence + " | " + this);
-            BuySell.open(Currency.this, true);
+            BuySell.open(Currency.this, false);
         }
     }
 
@@ -137,7 +137,7 @@ public class Currency {
                 inLong = false;
                 waitingLong = false;
                 log(this + " close");
-                BuySell.close(this, false);
+                BuySell.close(this, true);
             }
         } else if (inShort) {
             if (currentPrice <= goalPrice){
@@ -147,7 +147,7 @@ public class Currency {
                 inShort = false;
                 waitingShort = false;
                 log(this + " close");
-                BuySell.close(this, true);
+                BuySell.close(this, false);
             }
         }
     }
