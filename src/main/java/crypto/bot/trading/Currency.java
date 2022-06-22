@@ -61,9 +61,9 @@ public class Currency {
     public Currency(String coin) {
         this.pair = coin + ConfigSetup.getFiat();
         //Every currency needs to contain and update our crypto.bot.indicators
-        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIFTEEN_MINUTES, null, null, 1000);
+        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIVE_MINUTES, null, null, 1000);
         List<Double> closingPrices = history.stream().map(candle -> candle.getClose().doubleValue()).collect(Collectors.toList());
-        indicators.add(new RSI(closingPrices, 10));
+        indicators.add(new RSI(closingPrices, 14));
 
         //We set the initial values to check against in onMessage based on the latest candle in history
         currentTime = System.currentTimeMillis();
@@ -79,7 +79,7 @@ public class Currency {
 
             if (newTime > candleTime) {
                 accept(new PriceBean(candleTime, newPrice, true));
-                candleTime += 1000L * 60L * 15L;
+                candleTime += 1000L * 60L * 5L;
                 log(this.toString());
             }
             accept(new PriceBean(newTime, newPrice));
