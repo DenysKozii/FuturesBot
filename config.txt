@@ -1,7 +1,7 @@
-RSI long waiting:20
+RSI long waiting:12
 RSI long open:30
 RSI long close:40
-RSI short waiting:80
+RSI short waiting:88
 RSI short open:70
 RSI short close:60
 RSI short half close:37
@@ -15,8 +15,8 @@ Confluence long close:3
 Confluence short waiting:-1
 Confluence short open:-2
 Confluence short close:-3
-Leverage:3
-Currencies to track:KNC, NKN
+Leverage:5
+Currencies to track:KNC, NKN, MANA, ZRX, NEAR, REEF
 SELL ROE:0.007
 GOAL ROE:0.0005
 FIAT:USDT
