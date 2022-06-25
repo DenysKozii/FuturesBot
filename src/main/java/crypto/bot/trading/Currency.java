@@ -95,21 +95,21 @@ public class Currency {
         }
         int confluence = check();
         if (confluence == CONFLUENCE_LONG_WAITING){
-            waitingLong = true;
+            waitingLong = false;
         }
         if (confluence == CONFLUENCE_SHORT_WAITING){
-            waitingShort = true;
+            waitingShort = false;
         }
         if (inLong || inShort) {
             update();
-        } else if (confluence == CONFLUENCE_LONG_WAITING) {
+        } else if (confluence == CONFLUENCE_LONG_OPEN) {
             inLong = true;
             waitingLong = false;
             counter = 0;
             updatePrices();
             log("LONG for: " + confluence + " | " + this);
             BuySell.open(Currency.this, true);
-        } else if (confluence == CONFLUENCE_SHORT_WAITING) {
+        } else if (confluence == CONFLUENCE_SHORT_OPEN) {
             inShort = true;
             waitingShort = false;
             counter = 0;
@@ -135,7 +135,7 @@ public class Currency {
                 log(this + " change prices: entryPrice = " + entryPrice + ", sellPrice = " + sellPrice + ", goalPrice = " + goalPrice);
             } else if (currentPrice <= sellPrice){
                 inLong = false;
-                waitingLong = false;
+                waitingLong = true;
                 log(this + " close");
                 BuySell.close(this, true);
             }
@@ -145,7 +145,7 @@ public class Currency {
                 log(this + " change prices: entryPrice = " + entryPrice + ", sellPrice = " + sellPrice + ", goalPrice = " + goalPrice);
             } else if (currentPrice >= sellPrice){
                 inShort = false;
-                waitingShort = false;
+                waitingShort = true;
                 log(this + " close");
                 BuySell.close(this, false);
             }
