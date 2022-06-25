@@ -1,7 +1,7 @@
-RSI long waiting:12
+RSI long waiting:17
 RSI long open:30
 RSI long close:40
-RSI short waiting:88
+RSI short waiting:83
 RSI short open:70
 RSI short close:60
 RSI short half close:37
