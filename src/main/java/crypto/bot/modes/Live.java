@@ -27,7 +27,7 @@ public final class Live {
 //        }
 //        LocalAccount localAccount = new LocalAccount(apiKey, apiSecret);
 //        BuySell.setAccount(localAccount);
-
+//
         String current = "";
         try {
             List<String> addedCurrencies = new ArrayList<>();

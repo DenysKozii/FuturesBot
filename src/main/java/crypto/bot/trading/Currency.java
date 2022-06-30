@@ -44,10 +44,10 @@ public class Currency {
     private double  currentPrice;
     private long    currentTime;
     private int     counter;
-    private boolean inLong = true;
+    private boolean inLong;
     private boolean inShort;
     private boolean waitingShort;
-    private boolean waitingLong;
+    private boolean waitingLong = true;
 
     static {
         File myFoo = new File(LOG_PATH);
@@ -61,14 +61,14 @@ public class Currency {
     public Currency(String coin) {
         this.pair = coin + ConfigSetup.getFiat();
         //Every currency needs to contain and update our crypto.bot.indicators
-        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIVE_MINUTES, null, null, 1000);
-        List<Double> closingPrices = history.stream().map(candle -> candle.getClose().doubleValue()).collect(Collectors.toList());
-        indicators.add(new RSI(closingPrices, 14));
+//        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIVE_MINUTES, null, null, 1000);
+//        List<Double> closingPrices = history.stream().map(candle -> candle.getClose().doubleValue()).collect(Collectors.toList());
+//        indicators.add(new RSI(closingPrices, 14));
 
         //We set the initial values to check against in onMessage based on the latest candle in history
         currentTime = System.currentTimeMillis();
-        candleTime = history.get(history.size() - 1).getCloseTime();
-        currentPrice = history.get(history.size() - 1).getClose().doubleValue();
+        candleTime = System.currentTimeMillis();
+//        currentPrice = history.get(history.size() - 1).getClose().doubleValue();
 
         //We add a websocket listener that automatically updates our values and triggers our strategy or trade logic as needed
         SubscriptionClient.create().subscribeSymbolTickerEvent(pair.toLowerCase(), ((response) -> {
