@@ -44,7 +44,7 @@ public class Currency {
     private double  currentPrice;
     private long    currentTime;
     private int     counter;
-    private boolean inLong;
+    private boolean inLong = true;
     private boolean inShort;
     private boolean waitingShort;
     private boolean waitingLong;
@@ -90,31 +90,32 @@ public class Currency {
     private void accept(PriceBean bean) {
         currentPrice = bean.getPrice();
         currentTime = bean.getTimestamp();
-        if (bean.isClosing()) {
-            indicators.forEach(indicator -> indicator.update(bean.getPrice()));
-        }
-        int confluence = check();
-        if (confluence == CONFLUENCE_LONG_WAITING){
-            waitingLong = false;
-        }
-        if (confluence == CONFLUENCE_SHORT_WAITING){
-            waitingShort = false;
-        }
+//        if (bean.isClosing()) {
+//            indicators.forEach(indicator -> indicator.update(bean.getPrice()));
+//        }
+//        int confluence = check();
+//        if (confluence == CONFLUENCE_LONG_WAITING){
+//            waitingLong = false;
+//        }
+//        if (confluence == CONFLUENCE_SHORT_WAITING){
+//            waitingShort = false;
+//        }
         if (inLong || inShort) {
             update();
-        } else if (confluence == CONFLUENCE_LONG_OPEN) {
+        }
+        if (waitingLong) {
             inLong = true;
             waitingLong = false;
             counter = 0;
             updatePrices();
-            log("LONG for: " + confluence + " | " + this);
+            log("LONG for: " + this);
             BuySell.open(Currency.this, true);
-        } else if (confluence == CONFLUENCE_SHORT_OPEN) {
+        } else if (waitingShort) {
             inShort = true;
             waitingShort = false;
             counter = 0;
             updatePrices();
-            log("SHORT for: " + confluence + " | " + this);
+            log("SHORT for: " + this);
             BuySell.open(Currency.this, false);
         }
     }
@@ -135,7 +136,7 @@ public class Currency {
                 log(this + " change prices: entryPrice = " + entryPrice + ", sellPrice = " + sellPrice + ", goalPrice = " + goalPrice);
             } else if (currentPrice <= sellPrice){
                 inLong = false;
-                waitingLong = true;
+                waitingShort = true;
                 log(this + " close");
                 BuySell.close(this, true);
             }
@@ -145,7 +146,7 @@ public class Currency {
                 log(this + " change prices: entryPrice = " + entryPrice + ", sellPrice = " + sellPrice + ", goalPrice = " + goalPrice);
             } else if (currentPrice >= sellPrice){
                 inShort = false;
-                waitingShort = true;
+                waitingLong = true;
                 log(this + " close");
                 BuySell.close(this, false);
             }
