@@ -21,7 +21,6 @@ public class BuySell {
     public static  double       MONEY_PERCENTAGE_LIMIT;
     public static  double       MONEY_LIMIT;
     public static  Integer      LEVERAGE;
-    public static double price;
 
     public static void setAccount(LocalAccount localAccount) {
         BuySell.localAccount = localAccount;
@@ -54,7 +53,7 @@ public class BuySell {
     public static void placeOpenOrder(SyncRequestClient clientFutures, Currency currency, double amount, boolean inLong) {
 //        amount *= LEVERAGE;
         currency.MONEY -= currency.MONEY * 0.0007;
-        price = currency.getPrice();
+        currency.price = currency.getPrice();
 //        amount /= currency.getPrice();
 //        String positionAmount = String.valueOf((int) amount);
 //        if ((int) amount == 0) {
@@ -90,7 +89,7 @@ public class BuySell {
 //        String positionAmount = position.get().getPositionAmt().toString();
 //        List<Order> openOrders = clientFutures.getOpenOrders(currency.getPair());
         if (inLong) {
-            currency.MONEY = currency.MONEY * currency.getPrice() / price;
+            currency.MONEY = currency.MONEY * currency.getPrice() / currency.price;
             currency.MONEY -= currency.MONEY * 0.0009;
 //            if (openOrders.isEmpty()) {
 //                Order order = clientFutures.postOrder(
@@ -100,7 +99,7 @@ public class BuySell {
 //            }
         } else {
 //            if (openOrders.isEmpty()) {
-            currency.MONEY = currency.MONEY * price / currency.getPrice();
+            currency.MONEY = currency.MONEY * currency.price / currency.getPrice();
             currency.MONEY -= currency.MONEY * 0.0009;
 //                positionAmount = String.valueOf(-1 * Double.parseDouble(positionAmount));
 //                Order order = clientFutures.postOrder(

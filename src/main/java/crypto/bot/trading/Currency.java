@@ -34,6 +34,7 @@ public class Currency {
     public static double SELL_ROE;
     public static double GOAL_ROE;
     public double       MONEY = 1000;
+    public double price;
 
     private final String          pair;
     private       double          entryPrice;
