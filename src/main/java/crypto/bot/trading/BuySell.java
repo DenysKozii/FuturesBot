@@ -20,7 +20,6 @@ public class BuySell {
     public static  double       MONEY_PER_TRADE;
     public static  double       MONEY_PERCENTAGE_LIMIT;
     public static  double       MONEY_LIMIT;
-    public static  double       MONEY = 1000;
     public static  Integer      LEVERAGE;
     public static double price;
 
@@ -37,9 +36,9 @@ public class BuySell {
     }
 
     public static void open(Currency currency,  boolean inLong) {
-        double amount = nextAmount();
+        double amount = nextAmount(currency);
         if (amount != 0) {
-            placeOrder(currency, nextAmount(), true, inLong);
+            placeOrder(currency, nextAmount(currency), true, inLong);
         }
     }
 
@@ -47,14 +46,14 @@ public class BuySell {
         placeOrder(currency, 0, false, inLong);
     }
 
-    private static double nextAmount() {
+    private static double nextAmount(Currency currency) {
 //        AccountInformation accountInformation = CurrentAPI.getClient().getAccountInformation();
-        return MONEY;
+        return currency.MONEY;
     }
 
     public static void placeOpenOrder(SyncRequestClient clientFutures, Currency currency, double amount, boolean inLong) {
 //        amount *= LEVERAGE;
-        MONEY -= MONEY * 0.0007;
+        currency.MONEY -= currency.MONEY * 0.0007;
         price = currency.getPrice();
 //        amount /= currency.getPrice();
 //        String positionAmount = String.valueOf((int) amount);
@@ -91,8 +90,8 @@ public class BuySell {
 //        String positionAmount = position.get().getPositionAmt().toString();
 //        List<Order> openOrders = clientFutures.getOpenOrders(currency.getPair());
         if (inLong) {
-            MONEY = MONEY * currency.getPrice() / price;
-            MONEY -= MONEY * 0.0007;
+            currency.MONEY = currency.MONEY * currency.getPrice() / price;
+            currency.MONEY -= currency.MONEY * 0.0009;
 //            if (openOrders.isEmpty()) {
 //                Order order = clientFutures.postOrder(
 //                        currency.getPair(), OrderSide.SELL, PositionSide.BOTH, OrderType.MARKET, null,
@@ -101,8 +100,8 @@ public class BuySell {
 //            }
         } else {
 //            if (openOrders.isEmpty()) {
-            MONEY = MONEY * price / currency.getPrice();
-            MONEY -= MONEY * 0.0007;
+            currency.MONEY = currency.MONEY * price / currency.getPrice();
+            currency.MONEY -= currency.MONEY * 0.0009;
 //                positionAmount = String.valueOf(-1 * Double.parseDouble(positionAmount));
 //                Order order = clientFutures.postOrder(
 //                        currency.getPair(), OrderSide.BUY, PositionSide.BOTH, OrderType.MARKET, null,

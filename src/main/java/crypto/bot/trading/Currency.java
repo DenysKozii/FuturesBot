@@ -33,6 +33,7 @@ public class Currency {
     public static double TAKE_PROFIT;
     public static double SELL_ROE;
     public static double GOAL_ROE;
+    public double       MONEY = 1000;
 
     private final String          pair;
     private       double          entryPrice;
@@ -226,7 +227,7 @@ public class Currency {
 
     @Override
     public String toString() {
-        StringBuilder s = new StringBuilder(BuySell.MONEY +": " +pair + " price: " + currentPrice);
+        StringBuilder s = new StringBuilder(MONEY +": " +pair + " price: " + currentPrice);
         if (currentTime == candleTime)
             indicators.forEach(indicator -> s.append(", ").append(indicator.getClass().getSimpleName()).append(": ").append(Formatter.formatDecimal(indicator.get())));
         else
