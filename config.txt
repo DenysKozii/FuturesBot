@@ -16,7 +16,7 @@ Confluence short waiting:-1
 Confluence short open:-2
 Confluence short close:-3
 Leverage:5
-Currencies to track:MANA, DOGE, KNC, XRP, NKN, SAND, REEF
-SELL ROE:0.008
-GOAL ROE:0.001
+Currencies to track:MANA, DOGE, KNC, XRP, NKN, AXS, DENT, FTM, MATIC, CRV, TRX, FTM, GTC,  SAND, REEF
+SELL ROE:0.006
+GOAL ROE:0.0001
 FIAT:USDT
