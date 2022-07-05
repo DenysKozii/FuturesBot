@@ -17,17 +17,17 @@ public final class Live {
 
     public static void init() {
 
-//        while (apiKey == null && apiSecret == null) {
-//            try {
-//                System.out.println("waiting credentials");
-//                Thread.sleep(10 * 1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        LocalAccount localAccount = new LocalAccount(apiKey, apiSecret);
-//        BuySell.setAccount(localAccount);
-//
+        while (apiKey == null && apiSecret == null) {
+            try {
+                System.out.println("waiting credentials");
+                Thread.sleep(10 * 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        LocalAccount localAccount = new LocalAccount(apiKey, apiSecret);
+        BuySell.setAccount(localAccount);
+
         String current = "";
         try {
             List<String> addedCurrencies = new ArrayList<>();

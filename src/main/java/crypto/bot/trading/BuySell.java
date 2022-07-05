@@ -111,7 +111,7 @@ public class BuySell {
     }
 
     public static void placeOrder(Currency currency, double amount, boolean open, boolean inLong) {
-        currency.log("\n---Placing a " + (open ? "open" : "close") + (inLong ? " long" : " short") + " market order for " + currency.getPair());
+//        currency.log("\n---Placing a " + (open ? "open" : "close") + (inLong ? " long" : " short") + " market order for " + currency.getPair());
         try {
 //            SyncRequestClient clientFutures = CurrentAPI.getClient();
 //            try {
@@ -121,10 +121,8 @@ public class BuySell {
 //            clientFutures.changeInitialLeverage(currency.getPair(), LEVERAGE);
 
             if (open) {
-                System.out.println("open");
                 placeOpenOrder(null, currency, amount, inLong);
             } else {
-                System.out.println("close");
                 placeCloseOrder(null, currency, inLong);
             }
         } catch (BinanceApiException e) {
