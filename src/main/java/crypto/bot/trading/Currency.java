@@ -109,7 +109,7 @@ public class Currency {
             waitingLong = false;
             waitingShort = false;
         }
-        if (confluence == CONFLUENCE_LONG_OPEN || waitingLong) {
+        if (!waitingShort && confluence == CONFLUENCE_LONG_OPEN || waitingLong) {
             inLong = true;
             waitingLong = false;
             counter = 0;

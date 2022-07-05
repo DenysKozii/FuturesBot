@@ -90,8 +90,7 @@ public class BuySell {
 //        List<Order> openOrders = clientFutures.getOpenOrders(currency.getPair());
         if (inLong) {
             currency.MONEY = currency.MONEY * currency.getPrice() / currency.price;
-            currency.MONEY -= currency.MONEY * 0.0009;
-//            if (openOrders.isEmpty()) {
+            //            if (openOrders.isEmpty()) {
 //                Order order = clientFutures.postOrder(
 //                        currency.getPair(), OrderSide.SELL, PositionSide.BOTH, OrderType.MARKET, null,
 //                        positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
@@ -100,14 +99,14 @@ public class BuySell {
         } else {
 //            if (openOrders.isEmpty()) {
             currency.MONEY = currency.MONEY * currency.price / currency.getPrice();
-            currency.MONEY -= currency.MONEY * 0.0009;
-//                positionAmount = String.valueOf(-1 * Double.parseDouble(positionAmount));
+            //                positionAmount = String.valueOf(-1 * Double.parseDouble(positionAmount));
 //                Order order = clientFutures.postOrder(
 //                        currency.getPair(), OrderSide.BUY, PositionSide.BOTH, OrderType.MARKET, null,
 //                        positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
 //                currency.log(order.getStatus() + "close short = " + positionAmount);
 //            }
         }
+        currency.MONEY -= currency.MONEY * 0.0009;
     }
 
     public static void placeOrder(Currency currency, double amount, boolean open, boolean inLong) {
