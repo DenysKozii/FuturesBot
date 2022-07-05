@@ -111,7 +111,7 @@ public class BuySell {
     }
 
     public static void placeOrder(Currency currency, double amount, boolean open, boolean inLong) {
-//        currency.log("\n---Placing a " + (open ? "open" : "close") + (inLong ? " long" : " short") + " market order for " + currency.getPair());
+        currency.log("\n---Placing a " + (open ? "open" : "close") + (inLong ? " long" : " short") + " market order for " + currency.getPair());
         try {
 //            SyncRequestClient clientFutures = CurrentAPI.getClient();
 //            try {
