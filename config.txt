@@ -1,5 +1,5 @@
 RSI long waiting:30
-RSI long open:70
+RSI long open:50
 RSI long close:40
 RSI short waiting:70
 RSI short open:30

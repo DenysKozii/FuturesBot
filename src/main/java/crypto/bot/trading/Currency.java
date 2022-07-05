@@ -143,7 +143,7 @@ public class Currency {
             } else if (currentPrice <= sellPrice){
                 inLong = false;
                 waitingShort = true;
-//                log(this + " close");
+                log(this + " close");
                 BuySell.close(this, true);
             }
         } else if (inShort) {
@@ -153,7 +153,7 @@ public class Currency {
             } else if (currentPrice >= sellPrice){
                 inShort = false;
                 waitingLong = true;
-//                log(this + " close");
+                log(this + " close");
                 BuySell.close(this, false);
             }
         }
