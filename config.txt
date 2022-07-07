@@ -1,8 +1,8 @@
 RSI long waiting:30
-RSI long open:30
+RSI long open:40
 RSI long close:40
 RSI short waiting:70
-RSI short open:70
+RSI short open:60
 RSI short close:60
 RSI short half close:37
 Money per trade:50
@@ -17,6 +17,6 @@ Confluence short open:-2
 Confluence short close:-3
 Leverage:5
 Currencies to track:MANA, DOGE, KNC, XRP, NKN, AXS, DENT, FTM, MATIC, CRV, TRX, FTM, GTC, SAND, REEF, RVN, DGB
-SELL ROE:0.006
+SELL ROE:0.01
 GOAL ROE:0.0001
 FIAT:USDT
