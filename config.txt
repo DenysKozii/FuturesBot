@@ -17,6 +17,6 @@ Confluence short open:-2
 Confluence short close:-3
 Leverage:5
 Currencies to track:DGB
-SELL ROE:0.04
+SELL ROE:0.01
 GOAL ROE:0.0001
 FIAT:USDT
