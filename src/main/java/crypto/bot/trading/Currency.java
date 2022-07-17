@@ -33,7 +33,7 @@ public class Currency {
     public static double TAKE_PROFIT;
     public static double SELL_ROE;
     public static double GOAL_ROE;
-    public static double MONEY;
+    public static double MONEY = 1000;
 
     private final String          pair;
     private       double          entryPrice;
