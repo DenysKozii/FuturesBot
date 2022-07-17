@@ -33,6 +33,7 @@ public class Currency {
     public static double TAKE_PROFIT;
     public static double SELL_ROE;
     public static double GOAL_ROE;
+    public static double MONEY;
 
     private final String          pair;
     private       double          entryPrice;
@@ -61,7 +62,7 @@ public class Currency {
     public Currency(String coin) {
         this.pair = coin + ConfigSetup.getFiat();
         //Every currency needs to contain and update our crypto.bot.indicators
-        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIVE_MINUTES, null, null, 1000);
+        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIFTEEN_MINUTES, null, null, 1000);
         List<Double> closingPrices = history.stream().map(candle -> candle.getClose().doubleValue()).collect(Collectors.toList());
         indicators.add(new RSI(closingPrices, 14));
 
@@ -79,7 +80,7 @@ public class Currency {
 
             if (newTime > candleTime) {
                 accept(new PriceBean(candleTime, newPrice, true));
-                candleTime += 1000L * 60L * 5L;
+                candleTime += 1000L * 60L * 15L;
                 log(this.toString());
             }
             accept(new PriceBean(newTime, newPrice));
@@ -94,10 +95,10 @@ public class Currency {
             indicators.forEach(indicator -> indicator.update(bean.getPrice()));
         }
         int confluence = check();
-        if (confluence == CONFLUENCE_LONG_WAITING){
+        if (confluence == CONFLUENCE_LONG_WAITING) {
             waitingLong = false;
         }
-        if (confluence == CONFLUENCE_SHORT_WAITING){
+        if (confluence == CONFLUENCE_SHORT_WAITING) {
             waitingShort = false;
         }
         if (inLong || inShort) {
@@ -106,6 +107,7 @@ public class Currency {
             inLong = true;
             waitingLong = false;
             counter = 0;
+            entryPrice = currentPrice;
             updatePrices();
             log("LONG for: " + confluence + " | " + this);
             BuySell.open(Currency.this, true);
@@ -113,6 +115,7 @@ public class Currency {
             inShort = true;
             waitingShort = false;
             counter = 0;
+            entryPrice = currentPrice;
             updatePrices();
             log("SHORT for: " + confluence + " | " + this);
             BuySell.open(Currency.this, false);
@@ -120,30 +123,29 @@ public class Currency {
     }
 
     private void updatePrices() {
-        entryPrice = currentPrice;
         counter++;
         double sellRoe = SELL_ROE + counter * 0;
         double goalRoe = GOAL_ROE + counter * 0;
-        sellPrice = inShort ? entryPrice * (1 + sellRoe) : entryPrice * (1 - sellRoe);
-        goalPrice = inShort ? entryPrice * (1 - goalRoe) : entryPrice * (1 + goalRoe);
+        sellPrice = inShort ? currentPrice * (1 + sellRoe) : currentPrice * (1 - sellRoe);
+        goalPrice = inShort ? currentPrice * (1 - goalRoe) : currentPrice * (1 + goalRoe);
     }
 
-    private void update(){
+    private void update() {
         if (inLong) {
-            if (currentPrice >= goalPrice){
+            if (currentPrice >= goalPrice) {
                 updatePrices();
                 log(this + " change prices: entryPrice = " + entryPrice + ", sellPrice = " + sellPrice + ", goalPrice = " + goalPrice);
-            } else if (currentPrice <= sellPrice){
+            } else if (currentPrice <= sellPrice) {
                 inLong = false;
                 waitingLong = true;
                 log(this + " close");
                 BuySell.close(this, true);
             }
         } else if (inShort) {
-            if (currentPrice <= goalPrice){
+            if (currentPrice <= goalPrice) {
                 updatePrices();
                 log(this + " change prices: entryPrice = " + entryPrice + ", sellPrice = " + sellPrice + ", goalPrice = " + goalPrice);
-            } else if (currentPrice >= sellPrice){
+            } else if (currentPrice >= sellPrice) {
                 inShort = false;
                 waitingShort = true;
                 log(this + " close");
@@ -225,7 +227,7 @@ public class Currency {
 
     @Override
     public String toString() {
-        StringBuilder s = new StringBuilder(pair + " price: " + currentPrice);
+        StringBuilder s = new StringBuilder(MONEY + ", " + pair + " price: " + currentPrice);
         if (currentTime == candleTime)
             indicators.forEach(indicator -> s.append(", ").append(indicator.getClass().getSimpleName()).append(": ").append(Formatter.formatDecimal(indicator.get())));
         else
