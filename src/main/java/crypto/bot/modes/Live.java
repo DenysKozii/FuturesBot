@@ -41,7 +41,7 @@ public final class Live {
             for (String currency : ConfigSetup.getCurrencies()) {
                 if (!addedCurrencies.contains(currency)) {
                     for (int deltaRSI = -20; deltaRSI <= 5; deltaRSI += 5) {
-                        for (double deltaStop = 0.002; deltaStop <= 0.01; deltaStop += 0.002) {
+                        for (double deltaStop = 0.004; deltaStop <= 0.012; deltaStop += 0.002) {
                             new Currency(currency)
                                     .setLongOpenRSI(30 + deltaRSI)
                                     .setShortOpenRSI(70 + deltaRSI)
