@@ -59,7 +59,7 @@ public class BuySell {
 //                    currency.getPair(), OrderSide.BUY, PositionSide.BOTH, OrderType.MARKET, null,
 //                    positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
 //            currency.log(order.getStatus() + " open long = " + positionAmount);
-        Currency.MONEY *= 0.9985;
+        currency.setMoney(currency.getMoney() * 0.9985);
 //        } else {
 //            Order order = clientFutures.postOrder(
 //                    currency.getPair(), OrderSide.SELL, PositionSide.BOTH, OrderType.MARKET, null,
@@ -84,7 +84,8 @@ public class BuySell {
 //                        positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
 //                currency.log(order.getStatus() + " close long = " + positionAmount);
 //            }
-            Currency.MONEY *= currency.getPrice() / currency.getEntryPrice() * 0.9985;
+            double profit = currency.getPrice() / currency.getEntryPrice();
+            currency.setMoney(currency.getMoney() * profit * 0.9985);
         } else {
 //            if (openOrders.isEmpty()) {
 //                positionAmount = String.valueOf(-1 * Double.parseDouble(positionAmount));
@@ -93,7 +94,8 @@ public class BuySell {
 //                        positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
 //                currency.log(order.getStatus() + "close short = " + positionAmount);
 //            }
-            Currency.MONEY *= currency.getEntryPrice() / currency.getPrice() * 0.9985;
+            double profit = currency.getEntryPrice() / currency.getPrice();
+            currency.setMoney(currency.getMoney() * profit * 0.9985);
         }
     }
 

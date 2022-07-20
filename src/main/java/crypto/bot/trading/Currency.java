@@ -26,9 +26,9 @@ public class Currency {
     public int CONFLUENCE_SHORT_OPEN = 2;
     public double SELL_ROE;
     public double GOAL_ROE = 0.0001;
-    public static double MONEY = 1000;
 
     private final String pair;
+    private double money = 1000;
     private double entryPrice;
     private double sellPrice;
     private double goalPrice;
@@ -135,6 +135,15 @@ public class Currency {
         System.out.println(log);
     }
 
+
+    public double getMoney() {
+        return money;
+    }
+
+    public void setMoney(double money) {
+        this.money = money;
+    }
+
     public double getSELL_ROE() {
         return SELL_ROE;
     }
@@ -205,7 +214,7 @@ public class Currency {
 
     @Override
     public String toString() {
-        StringBuilder s = new StringBuilder(MONEY + ", " + pair + " price: " + currentPrice);
+        StringBuilder s = new StringBuilder(money + ", " + pair + " price: " + currentPrice);
         if (currentTime == candleTime)
             indicators.forEach(indicator -> s.append(", ").append(indicator.getClass().getSimpleName()).append(": ").append(Formatter.formatDecimal(indicator.get())));
         else
