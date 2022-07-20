@@ -26,6 +26,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>com.github.yonathan95</groupId>
             <artifactId>binance-java-sdk</artifactId>
             <version>1.2.3</version>
