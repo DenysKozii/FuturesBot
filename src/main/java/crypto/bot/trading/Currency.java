@@ -25,7 +25,7 @@ public class Currency {
     public int CONFLUENCE_LONG_OPEN = 1;
     public int CONFLUENCE_SHORT_OPEN = 2;
     public double SELL_ROE;
-    public double GOAL_ROE;
+    public double GOAL_ROE = 0.0001;
     public static double MONEY = 1000;
 
     private final String pair;
@@ -43,8 +43,11 @@ public class Currency {
     private int longOpenRSI;
     private int shortOpenRSI;
 
-    public Currency(String coin) {
+    public Currency(String coin, int longOpenRSI, int shortOpenRSI, double SELL_ROE) {
         this.pair = coin + ConfigSetup.getFiat();
+        this.longOpenRSI = longOpenRSI;
+        this.shortOpenRSI = shortOpenRSI;
+        this.SELL_ROE = SELL_ROE;
         //Every currency needs to contain and update our crypto.bot.indicators
         List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIFTEEN_MINUTES, null, null, 1000);
         List<Double> closingPrices = history.stream().map(candle -> candle.getClose().doubleValue()).collect(Collectors.toList());

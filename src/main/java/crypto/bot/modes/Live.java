@@ -1,14 +1,9 @@
 package crypto.bot.modes;
 
-import com.binance.client.model.trade.Position;
-
 import crypto.bot.system.ConfigSetup;
 import crypto.bot.trading.BuySell;
 import crypto.bot.trading.Currency;
 import crypto.bot.trading.LocalAccount;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public final class Live {
@@ -30,24 +25,10 @@ public final class Live {
 
         String current = "";
         try {
-            List<String> addedCurrencies = new ArrayList<>();
-            for (Position position : localAccount.getRealAccount().getPositions()) {
-                current = position.getSymbol().replace(ConfigSetup.getFiat(), "");
-                if (ConfigSetup.getCurrencies().contains(current)) {
-                    new Currency(current);
-                    addedCurrencies.add(current);
-                }
-            }
             for (String currency : ConfigSetup.getCurrencies()) {
-                if (!addedCurrencies.contains(currency)) {
-                    for (int deltaRSI = -20; deltaRSI <= 5; deltaRSI += 5) {
-                        for (double deltaStop = 0.004; deltaStop <= 0.012; deltaStop += 0.002) {
-                            new Currency(currency)
-                                    .setLongOpenRSI(30 + deltaRSI)
-                                    .setShortOpenRSI(70 + deltaRSI)
-                                    .setGOAL_ROE(0.0001)
-                                    .setSELL_ROE(deltaStop);
-                        }
+                for (int deltaRSI = -20; deltaRSI <= 5; deltaRSI += 5) {
+                    for (double deltaStop = 0.004; deltaStop <= 0.012; deltaStop += 0.002) {
+                        new Currency(currency, 30 + deltaRSI, 70 - deltaRSI, deltaStop);
                     }
                 }
             }
