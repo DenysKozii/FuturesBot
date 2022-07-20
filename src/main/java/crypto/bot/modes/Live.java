@@ -40,7 +40,15 @@ public final class Live {
             }
             for (String currency : ConfigSetup.getCurrencies()) {
                 if (!addedCurrencies.contains(currency)) {
-                    new Currency(currency);
+                    for (int deltaRSI = -20; deltaRSI <= 5; deltaRSI += 5) {
+                        for (double deltaStop = 0.002; deltaStop <= 0.01; deltaStop += 0.002) {
+                            new Currency(currency)
+                                    .setLongOpenRSI(30 + deltaRSI)
+                                    .setShortOpenRSI(70 + deltaRSI)
+                                    .setGOAL_ROE(0.0001)
+                                    .setSELL_ROE(deltaStop);
+                        }
+                    }
                 }
             }
         } catch (Exception e) {

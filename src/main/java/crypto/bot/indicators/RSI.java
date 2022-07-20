@@ -10,12 +10,6 @@ public class RSI implements Indicator {
     private double avgDwn;
     private double prevClose;
     private final int period;
-    public static int LONG_WAITING;
-    public static int LONG_OPEN;
-    public static int LONG_CLOSE;
-    public static int SHORT_WAITING;
-    public static int SHORT_OPEN;
-    public static int SHORT_CLOSE;
 
     public RSI(List<Double> closingPrice, int period) {
         avgUp = 0;
@@ -82,24 +76,12 @@ public class RSI implements Indicator {
     @Override
     public int check(double newPrice, Currency currency) {
         double temp = getTemp(newPrice);
-        if (!currency.isInShort() && !currency.isInLong() && !currency.isWaitingShort() && !currency.isWaitingLong() && temp < LONG_OPEN) {
-            return Currency.CONFLUENCE_LONG_OPEN;
+        if (!currency.isInShort() && !currency.isInLong() && temp < currency.getLongOpenRSI()) {
+            return currency.CONFLUENCE_LONG_OPEN;
         }
-        if (currency.isWaitingLong() && temp > LONG_WAITING) {
-            return Currency.CONFLUENCE_LONG_WAITING;
+        if (!currency.isInShort() && !currency.isInLong() && temp > currency.getShortOpenRSI()) {
+            return currency.CONFLUENCE_SHORT_OPEN;
         }
-//        if (currency.isInLong() && temp > LONG_CLOSE) {
-//            return -3;
-//        }
-        if (!currency.isInShort() && !currency.isInLong() && !currency.isWaitingShort() && !currency.isWaitingLong() && temp > SHORT_OPEN) {
-            return Currency.CONFLUENCE_SHORT_OPEN;
-        }
-        if (currency.isWaitingShort() && temp < SHORT_WAITING) {
-            return Currency.CONFLUENCE_SHORT_WAITING;
-        }
-//        if (currency.isInShort() && temp < SHORT_CLOSE) {
-//            return 3;
-//        }
         return 0;
     }
 

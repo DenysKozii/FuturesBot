@@ -22,42 +22,26 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Currency {
-    public static int    CONFLUENCE_LONG_OPEN;
-    public static int    CONFLUENCE_LONG_CLOSE;
-    public static int    CONFLUENCE_LONG_WAITING;
-    public static int    CONFLUENCE_SHORT_OPEN;
-    public static int    CONFLUENCE_SHORT_CLOSE;
-    public static int    CONFLUENCE_SHORT_WAITING;
-    public static String LOG_PATH = "log.txt";
-    public static double TRAILING_SL;
-    public static double TAKE_PROFIT;
-    public static double SELL_ROE;
-    public static double GOAL_ROE;
+    public int CONFLUENCE_LONG_OPEN = 1;
+    public int CONFLUENCE_SHORT_OPEN = 2;
+    public double SELL_ROE;
+    public double GOAL_ROE;
     public static double MONEY = 1000;
 
-    private final String          pair;
-    private       double          entryPrice;
-    private       double          sellPrice;
-    private       double          goalPrice;
-    private       long            candleTime;
+    private final String pair;
+    private double entryPrice;
+    private double sellPrice;
+    private double goalPrice;
+    private long candleTime;
     private final List<Indicator> indicators = new ArrayList<>();
 
-    private double  currentPrice;
-    private long    currentTime;
-    private int     counter;
+    private double currentPrice;
+    private long currentTime;
+    private int counter;
     private boolean inLong;
     private boolean inShort;
-    private boolean waitingShort;
-    private boolean waitingLong;
-
-    static {
-        File myFoo = new File(LOG_PATH);
-        try {
-            new FileWriter(myFoo);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private int longOpenRSI;
+    private int shortOpenRSI;
 
     public Currency(String coin) {
         this.pair = coin + ConfigSetup.getFiat();
@@ -95,17 +79,10 @@ public class Currency {
             indicators.forEach(indicator -> indicator.update(bean.getPrice()));
         }
         int confluence = check();
-        if (confluence == CONFLUENCE_LONG_WAITING) {
-            waitingLong = false;
-        }
-        if (confluence == CONFLUENCE_SHORT_WAITING) {
-            waitingShort = false;
-        }
         if (inLong || inShort) {
             update();
         } else if (confluence == CONFLUENCE_LONG_OPEN) {
             inLong = true;
-            waitingLong = false;
             counter = 0;
             entryPrice = currentPrice;
             updatePrices();
@@ -113,7 +90,6 @@ public class Currency {
             BuySell.open(Currency.this, true);
         } else if (confluence == CONFLUENCE_SHORT_OPEN) {
             inShort = true;
-            waitingShort = false;
             counter = 0;
             entryPrice = currentPrice;
             updatePrices();
@@ -137,7 +113,6 @@ public class Currency {
                 log(this + " change prices: entryPrice = " + entryPrice + ", sellPrice = " + sellPrice + ", goalPrice = " + goalPrice);
             } else if (currentPrice <= sellPrice) {
                 inLong = false;
-                waitingLong = true;
                 log(this + " close");
                 BuySell.close(this, true);
             }
@@ -147,7 +122,6 @@ public class Currency {
                 log(this + " change prices: entryPrice = " + entryPrice + ", sellPrice = " + sellPrice + ", goalPrice = " + goalPrice);
             } else if (currentPrice >= sellPrice) {
                 inShort = false;
-                waitingShort = true;
                 log(this + " close");
                 BuySell.close(this, false);
             }
@@ -156,41 +130,42 @@ public class Currency {
 
     public void log(String log) {
         System.out.println(log);
-//        try {
-//            String content = read();
-//            File myFoo = new File(LOG_PATH);
-//            FileWriter fooStream = new FileWriter(myFoo);
-//            fooStream.write(content);
-//            fooStream.write("\n" + log);
-//            fooStream.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
-    public static String read() throws IOException {
-        Path path = Paths.get(LOG_PATH);
-        Stream<String> lines = Files.lines(path);
-        String data = lines.collect(Collectors.joining("\n"));
-        String[] strings = data.split("\nBALANCE:");
-        lines.close();
-        return strings[0];
+    public double getSELL_ROE() {
+        return SELL_ROE;
     }
 
-    public boolean isWaitingShort() {
-        return waitingShort;
+    public Currency setSELL_ROE(double SELL_ROE) {
+        this.SELL_ROE = SELL_ROE;
+        return this;
     }
 
-    public void setWaitingShort(boolean waitingShort) {
-        this.waitingShort = waitingShort;
+    public double getGOAL_ROE() {
+        return GOAL_ROE;
     }
 
-    public boolean isWaitingLong() {
-        return waitingLong;
+    public Currency setGOAL_ROE(double GOAL_ROE) {
+        this.GOAL_ROE = GOAL_ROE;
+        return this;
     }
 
-    public void setWaitingLong(boolean waitingLong) {
-        this.waitingLong = waitingLong;
+    public int getLongOpenRSI() {
+        return longOpenRSI;
+    }
+
+    public Currency setLongOpenRSI(int longOpenRSI) {
+        this.longOpenRSI = longOpenRSI;
+        return this;
+    }
+
+    public int getShortOpenRSI() {
+        return shortOpenRSI;
+    }
+
+    public Currency setShortOpenRSI(int shortOpenRSI) {
+        this.shortOpenRSI = shortOpenRSI;
+        return this;
     }
 
     public int check() {
@@ -232,10 +207,7 @@ public class Currency {
             indicators.forEach(indicator -> s.append(", ").append(indicator.getClass().getSimpleName()).append(": ").append(Formatter.formatDecimal(indicator.get())));
         else
             indicators.forEach(indicator -> s.append(", ").append(indicator.getClass().getSimpleName()).append(": ").append(Formatter.formatDecimal(indicator.getTemp(currentPrice))));
-        s.append(", waiting long: ").append(waitingLong)
-         .append(", waiting short: ").append(waitingShort)
-         .append(", in long: ").append(inLong)
-         .append(", in short: ").append(inShort).append(")");
+        s.append(", in long: ").append(inLong).append(", in short: ").append(inShort).append(")");
         return s.toString();
     }
 
