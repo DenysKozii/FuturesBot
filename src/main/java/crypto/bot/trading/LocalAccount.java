@@ -16,7 +16,7 @@ public class LocalAccount {
             System.out.println(runtimeException.getMessage());
             System.out.println("waiting change ip");
             try {
-                Thread.sleep(2 * 60 * 1000);
+                Thread.sleep(1 * 30 * 1000);
                 realAccount = CurrentAPI.getClient().getAccountInformation();
             } catch (InterruptedException e) {
                 e.printStackTrace();
