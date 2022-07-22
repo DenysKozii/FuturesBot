@@ -37,7 +37,7 @@ public class BuySell {
 
     private static double nextAmount() {
         AccountInformation accountInformation = CurrentAPI.getClient().getAccountInformation();
-        return accountInformation.getAvailableBalance().doubleValue() - MONEY_LIMIT - MONEY_PER_TRADE > 0 ? MONEY_PER_TRADE : 0;
+        return accountInformation.getAvailableBalance().doubleValue() - MONEY_PER_TRADE > 0 ? MONEY_PER_TRADE : 0;
     }
 
     public static void placeOpenOrder(SyncRequestClient clientFutures, Currency currency, double amount, boolean inLong) {

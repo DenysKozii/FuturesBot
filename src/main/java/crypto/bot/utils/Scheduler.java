@@ -17,9 +17,9 @@ import java.io.IOException;
 @EnableScheduling
 public class Scheduler {
 
-    private final static String URL = "https://futures-crypto-bot.herokuapp.com/api";
+    private final static String URL = "https://bot-simulation.herokuapp.com/api";
 
-    @Scheduled(fixedRate = 1000 * 60 * 5)
+    @Scheduled(fixedRate = 1000 * 60 * 10)
     public void timer() throws IOException {
         try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
             HttpUriRequest request = new HttpGet(URL);

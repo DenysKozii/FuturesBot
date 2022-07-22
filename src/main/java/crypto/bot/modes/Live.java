@@ -26,8 +26,8 @@ public final class Live {
         String current = "";
         try {
             for (String currency : ConfigSetup.getCurrencies()) {
-                for (int deltaRSI = -20; deltaRSI <= 5; deltaRSI += 5) {
-                    for (double deltaStop = 0.004; deltaStop <= 0.012; deltaStop += 0.002) {
+                for (int deltaRSI = -20; deltaRSI <= 10; deltaRSI += 10) {
+                    for (double deltaStop = 0.004; deltaStop <= 0.013; deltaStop += 0.003) {
                         new Currency(currency, 30 + deltaRSI, 70 - deltaRSI, deltaStop);
                     }
                 }
