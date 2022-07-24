@@ -3,23 +3,15 @@ package crypto.bot.trading;
 import com.binance.client.SubscriptionClient;
 import com.binance.client.model.enums.CandlestickInterval;
 import com.binance.client.model.market.Candlestick;
-
 import crypto.bot.data.PriceBean;
 import crypto.bot.indicators.Indicator;
 import crypto.bot.indicators.RSI;
 import crypto.bot.system.ConfigSetup;
 import crypto.bot.system.Formatter;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Currency {
     public int CONFLUENCE_LONG_OPEN = 1;
@@ -28,7 +20,7 @@ public class Currency {
     public double GOAL_ROE = 0.0001;
 
     private final String pair;
-    private double money = 1000;
+    private double money;
     private double entryPrice;
     private double sellPrice;
     private double goalPrice;
@@ -43,11 +35,12 @@ public class Currency {
     private int longOpenRSI;
     private int shortOpenRSI;
 
-    public Currency(String coin, int longOpenRSI, int shortOpenRSI, double SELL_ROE) {
+    public Currency(String coin, double money, int longOpenRSI, int shortOpenRSI, double SELL_ROE) {
         this.pair = coin + ConfigSetup.getFiat();
         this.longOpenRSI = longOpenRSI;
         this.shortOpenRSI = shortOpenRSI;
         this.SELL_ROE = SELL_ROE;
+        this.money = money;
         //Every currency needs to contain and update our crypto.bot.indicators
         List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIFTEEN_MINUTES, null, null, 1000);
         List<Double> closingPrices = history.stream().map(candle -> candle.getClose().doubleValue()).collect(Collectors.toList());
@@ -113,7 +106,7 @@ public class Currency {
         if (inLong) {
             if (currentPrice >= goalPrice) {
                 updatePrices();
-                log(this + " change prices: entryPrice = " + entryPrice + ", sellPrice = " + sellPrice + ", goalPrice = " + goalPrice);
+//                log(this + " change prices: entryPrice = " + entryPrice + ", sellPrice = " + sellPrice + ", goalPrice = " + goalPrice);
             } else if (currentPrice <= sellPrice) {
                 inLong = false;
                 log(this + " close");
@@ -122,13 +115,26 @@ public class Currency {
         } else if (inShort) {
             if (currentPrice <= goalPrice) {
                 updatePrices();
-                log(this + " change prices: entryPrice = " + entryPrice + ", sellPrice = " + sellPrice + ", goalPrice = " + goalPrice);
+//                log(this + " change prices: entryPrice = " + entryPrice + ", sellPrice = " + sellPrice + ", goalPrice = " + goalPrice);
             } else if (currentPrice >= sellPrice) {
                 inShort = false;
                 log(this + " close");
                 BuySell.close(this, false);
             }
         }
+    }
+
+    public double getProfit(){
+        double profit = money;
+        if (inLong) {
+            profit = currentPrice / entryPrice;
+            profit = money * profit * 0.9985;
+        }
+        if (inShort) {
+            profit = entryPrice / currentPrice;
+            profit = money * profit * 0.9985;
+        }
+        return profit;
     }
 
     public void log(String log) {
@@ -214,7 +220,7 @@ public class Currency {
 
     @Override
     public String toString() {
-        StringBuilder s = new StringBuilder(money + ", " + pair + " price: " + currentPrice);
+        StringBuilder s = new StringBuilder(getProfit() + ", " + pair + " price: " + currentPrice);
         if (currentTime == candleTime)
             indicators.forEach(indicator -> s.append(", ").append(indicator.getClass().getSimpleName()).append(": ").append(Formatter.formatDecimal(indicator.get())));
         else
