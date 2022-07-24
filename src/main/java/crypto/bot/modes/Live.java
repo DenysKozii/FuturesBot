@@ -43,7 +43,7 @@ public final class Live {
         try {
             List<Currency> currencies = new ArrayList<>();
             for (String symbol : ConfigSetup.getCurrencies()) {
-                for (int deltaRSI = -20; deltaRSI <= 30; deltaRSI += 5) {
+                for (int deltaRSI = -20; deltaRSI <= 5; deltaRSI += 5) {
                     for (double deltaStop = 0.004; deltaStop <= 0.014; deltaStop += 0.003) {
                         Optional<Trade> tradeOptional = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(symbol, 30 + deltaRSI, 70 - deltaRSI, deltaStop);
                         Currency currency;
