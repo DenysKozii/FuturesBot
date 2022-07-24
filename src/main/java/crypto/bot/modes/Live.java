@@ -1,6 +1,5 @@
 package crypto.bot.modes;
 
-import crypto.bot.dto.TradeDto;
 import crypto.bot.entity.Trade;
 import crypto.bot.repository.TradeRepository;
 import crypto.bot.system.ConfigSetup;
@@ -13,8 +12,10 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -84,12 +85,15 @@ public final class Live {
         }
     }
 
-    public List<Trade> getTrades(){
-        return tradeRepository.findAll();
+    public List<Trade> getTrades() {
+        return tradeRepository.findAll().stream()
+                .sorted(Comparator.comparing(Trade::getProfit).reversed())
+                .collect(Collectors.toList());
     }
 
-    public void clean(){
-        tradeRepository.deleteAll();;
+    public void clean() {
+        tradeRepository.deleteAll();
+        ;
     }
 
 }
