@@ -1,8 +1,8 @@
 package crypto.bot.entity;
 
+import crypto.bot.enums.Strategy;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
@@ -26,5 +26,7 @@ public class Trade {
     private Integer shortRSI;
 
     private Double stop;
+
+    private Strategy strategy;
 
 }

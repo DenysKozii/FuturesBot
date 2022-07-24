@@ -4,6 +4,7 @@ import com.binance.client.SubscriptionClient;
 import com.binance.client.model.enums.CandlestickInterval;
 import com.binance.client.model.market.Candlestick;
 import crypto.bot.data.PriceBean;
+import crypto.bot.enums.Strategy;
 import crypto.bot.indicators.Indicator;
 import crypto.bot.indicators.RSI;
 import crypto.bot.system.ConfigSetup;
@@ -34,13 +35,15 @@ public class Currency {
     private boolean inShort;
     private int longOpenRSI;
     private int shortOpenRSI;
+    private Strategy strategy;
 
-    public Currency(String coin, double money, int longOpenRSI, int shortOpenRSI, double SELL_ROE) {
+    public Currency(String coin, double money, int longOpenRSI, int shortOpenRSI, double SELL_ROE, Strategy strategy) {
         this.pair = coin + ConfigSetup.getFiat();
         this.longOpenRSI = longOpenRSI;
         this.shortOpenRSI = shortOpenRSI;
         this.SELL_ROE = SELL_ROE;
         this.money = money;
+        this.strategy = strategy;
         //Every currency needs to contain and update our crypto.bot.indicators
         List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIFTEEN_MINUTES, null, null, 1000);
         List<Double> closingPrices = history.stream().map(candle -> candle.getClose().doubleValue()).collect(Collectors.toList());
@@ -103,23 +106,37 @@ public class Currency {
     }
 
     private void update() {
-        if (inLong) {
-            if (currentPrice >= goalPrice) {
-                updatePrices();
-//                log(this + " change prices: entryPrice = " + entryPrice + ", sellPrice = " + sellPrice + ", goalPrice = " + goalPrice);
-            } else if (currentPrice <= sellPrice) {
-                inLong = false;
-                log(this + " close");
-                BuySell.close(this, true);
+        if (Strategy.ROE.equals(strategy)) {
+            if (inLong) {
+                if (currentPrice >= goalPrice) {
+                    updatePrices();
+                } else if (currentPrice <= sellPrice) {
+                    inLong = false;
+                    log(this + " close");
+                    BuySell.close(this, true);
+                }
+            } else if (inShort) {
+                if (currentPrice <= goalPrice) {
+                    updatePrices();
+                } else if (currentPrice >= sellPrice) {
+                    inShort = false;
+                    log(this + " close");
+                    BuySell.close(this, false);
+                }
             }
-        } else if (inShort) {
-            if (currentPrice <= goalPrice) {
-                updatePrices();
-//                log(this + " change prices: entryPrice = " + entryPrice + ", sellPrice = " + sellPrice + ", goalPrice = " + goalPrice);
-            } else if (currentPrice >= sellPrice) {
-                inShort = false;
-                log(this + " close");
-                BuySell.close(this, false);
+        } else {
+            if (inLong) {
+                if (indicators.get(0).getTemp(currentPrice) > 40) {
+                    inLong = false;
+                    log(this + " close");
+                    BuySell.close(this, true);
+                }
+            } else if (inShort) {
+                if (indicators.get(0).getTemp(currentPrice) < 60) {
+                    inShort = false;
+                    log(this + " close");
+                    BuySell.close(this, false);
+                }
             }
         }
     }
