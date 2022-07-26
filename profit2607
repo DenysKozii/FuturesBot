@@ -1,0 +1,758 @@
+[
+    {
+        "id": 59,
+        "symbol": "KNC",
+        "profit": 1053.0173572854028,
+        "longRSI": 35,
+        "shortRSI": 65,
+        "stop": 0.013000000000000001,
+        "strategy": "ROE"
+    },
+    {
+        "id": 40,
+        "symbol": "KNC",
+        "profit": 1013.9208494208495,
+        "longRSI": 15,
+        "shortRSI": 85,
+        "stop": 0.0,
+        "strategy": "RSI"
+    },
+    {
+        "id": 29,
+        "symbol": "BTC",
+        "profit": 1013.1891549888751,
+        "longRSI": 35,
+        "shortRSI": 65,
+        "stop": 0.013000000000000001,
+        "strategy": "ROE"
+    },
+    {
+        "id": 45,
+        "symbol": "KNC",
+        "profit": 1011.2191491007769,
+        "longRSI": 20,
+        "shortRSI": 80,
+        "stop": 0.0,
+        "strategy": "RSI"
+    },
+    {
+        "id": 15,
+        "symbol": "BTC",
+        "profit": 1007.1056279456354,
+        "longRSI": 20,
+        "shortRSI": 80,
+        "stop": 0.0,
+        "strategy": "RSI"
+    },
+    {
+        "id": 39,
+        "symbol": "KNC",
+        "profit": 1003.1613372586872,
+        "longRSI": 15,
+        "shortRSI": 85,
+        "stop": 0.013000000000000001,
+        "strategy": "ROE"
+    },
+    {
+        "id": 69,
+        "symbol": "BTC",
+        "profit": 1000.1356234341878,
+        "longRSI": 30,
+        "shortRSI": 70,
+        "stop": 0.015,
+        "strategy": "ROE"
+    },
+    {
+        "id": 70,
+        "symbol": "BTC",
+        "profit": 1000.1356234341878,
+        "longRSI": 30,
+        "shortRSI": 70,
+        "stop": 0.02,
+        "strategy": "ROE"
+    },
+    {
+        "id": 71,
+        "symbol": "BTC",
+        "profit": 1000.087440381558,
+        "longRSI": 35,
+        "shortRSI": 65,
+        "stop": 0.015,
+        "strategy": "ROE"
+    },
+    {
+        "id": 72,
+        "symbol": "BTC",
+        "profit": 1000.087440381558,
+        "longRSI": 35,
+        "shortRSI": 65,
+        "stop": 0.02,
+        "strategy": "ROE"
+    },
+    {
+        "id": 1,
+        "symbol": "BTC",
+        "profit": 1000.0,
+        "longRSI": 10,
+        "shortRSI": 90,
+        "stop": 0.004,
+        "strategy": "ROE"
+    },
+    {
+        "id": 2,
+        "symbol": "BTC",
+        "profit": 1000.0,
+        "longRSI": 10,
+        "shortRSI": 90,
+        "stop": 0.007,
+        "strategy": "ROE"
+    },
+    {
+        "id": 3,
+        "symbol": "BTC",
+        "profit": 1000.0,
+        "longRSI": 10,
+        "shortRSI": 90,
+        "stop": 0.01,
+        "strategy": "ROE"
+    },
+    {
+        "id": 4,
+        "symbol": "BTC",
+        "profit": 1000.0,
+        "longRSI": 10,
+        "shortRSI": 90,
+        "stop": 0.013000000000000001,
+        "strategy": "ROE"
+    },
+    {
+        "id": 5,
+        "symbol": "BTC",
+        "profit": 1000.0,
+        "longRSI": 10,
+        "shortRSI": 90,
+        "stop": 0.0,
+        "strategy": "RSI"
+    },
+    {
+        "id": 6,
+        "symbol": "BTC",
+        "profit": 1000.0,
+        "longRSI": 15,
+        "shortRSI": 85,
+        "stop": 0.004,
+        "strategy": "ROE"
+    },
+    {
+        "id": 7,
+        "symbol": "BTC",
+        "profit": 1000.0,
+        "longRSI": 15,
+        "shortRSI": 85,
+        "stop": 0.007,
+        "strategy": "ROE"
+    },
+    {
+        "id": 8,
+        "symbol": "BTC",
+        "profit": 1000.0,
+        "longRSI": 15,
+        "shortRSI": 85,
+        "stop": 0.01,
+        "strategy": "ROE"
+    },
+    {
+        "id": 9,
+        "symbol": "BTC",
+        "profit": 1000.0,
+        "longRSI": 15,
+        "shortRSI": 85,
+        "stop": 0.013000000000000001,
+        "strategy": "ROE"
+    },
+    {
+        "id": 10,
+        "symbol": "BTC",
+        "profit": 1000.0,
+        "longRSI": 15,
+        "shortRSI": 85,
+        "stop": 0.0,
+        "strategy": "RSI"
+    },
+    {
+        "id": 61,
+        "symbol": "BTC",
+        "profit": 1000.0,
+        "longRSI": 10,
+        "shortRSI": 90,
+        "stop": 0.015,
+        "strategy": "ROE"
+    },
+    {
+        "id": 62,
+        "symbol": "BTC",
+        "profit": 1000.0,
+        "longRSI": 10,
+        "shortRSI": 90,
+        "stop": 0.02,
+        "strategy": "ROE"
+    },
+    {
+        "id": 63,
+        "symbol": "BTC",
+        "profit": 1000.0,
+        "longRSI": 15,
+        "shortRSI": 85,
+        "stop": 0.015,
+        "strategy": "ROE"
+    },
+    {
+        "id": 64,
+        "symbol": "BTC",
+        "profit": 1000.0,
+        "longRSI": 15,
+        "shortRSI": 85,
+        "stop": 0.02,
+        "strategy": "ROE"
+    },
+    {
+        "id": 65,
+        "symbol": "BTC",
+        "profit": 1000.0,
+        "longRSI": 20,
+        "shortRSI": 80,
+        "stop": 0.015,
+        "strategy": "ROE"
+    },
+    {
+        "id": 66,
+        "symbol": "BTC",
+        "profit": 1000.0,
+        "longRSI": 20,
+        "shortRSI": 80,
+        "stop": 0.02,
+        "strategy": "ROE"
+    },
+    {
+        "id": 67,
+        "symbol": "BTC",
+        "profit": 1000.0,
+        "longRSI": 25,
+        "shortRSI": 75,
+        "stop": 0.015,
+        "strategy": "ROE"
+    },
+    {
+        "id": 68,
+        "symbol": "BTC",
+        "profit": 1000.0,
+        "longRSI": 25,
+        "shortRSI": 75,
+        "stop": 0.02,
+        "strategy": "ROE"
+    },
+    {
+        "id": 73,
+        "symbol": "KNC",
+        "profit": 1000.0,
+        "longRSI": 10,
+        "shortRSI": 90,
+        "stop": 0.015,
+        "strategy": "ROE"
+    },
+    {
+        "id": 74,
+        "symbol": "KNC",
+        "profit": 1000.0,
+        "longRSI": 10,
+        "shortRSI": 90,
+        "stop": 0.02,
+        "strategy": "ROE"
+    },
+    {
+        "id": 75,
+        "symbol": "KNC",
+        "profit": 1000.0,
+        "longRSI": 15,
+        "shortRSI": 85,
+        "stop": 0.015,
+        "strategy": "ROE"
+    },
+    {
+        "id": 76,
+        "symbol": "KNC",
+        "profit": 1000.0,
+        "longRSI": 15,
+        "shortRSI": 85,
+        "stop": 0.02,
+        "strategy": "ROE"
+    },
+    {
+        "id": 31,
+        "symbol": "KNC",
+        "profit": 1000.0,
+        "longRSI": 10,
+        "shortRSI": 90,
+        "stop": 0.004,
+        "strategy": "ROE"
+    },
+    {
+        "id": 32,
+        "symbol": "KNC",
+        "profit": 1000.0,
+        "longRSI": 10,
+        "shortRSI": 90,
+        "stop": 0.007,
+        "strategy": "ROE"
+    },
+    {
+        "id": 33,
+        "symbol": "KNC",
+        "profit": 1000.0,
+        "longRSI": 10,
+        "shortRSI": 90,
+        "stop": 0.01,
+        "strategy": "ROE"
+    },
+    {
+        "id": 34,
+        "symbol": "KNC",
+        "profit": 1000.0,
+        "longRSI": 10,
+        "shortRSI": 90,
+        "stop": 0.013000000000000001,
+        "strategy": "ROE"
+    },
+    {
+        "id": 35,
+        "symbol": "KNC",
+        "profit": 1000.0,
+        "longRSI": 10,
+        "shortRSI": 90,
+        "stop": 0.0,
+        "strategy": "RSI"
+    },
+    {
+        "id": 77,
+        "symbol": "KNC",
+        "profit": 1000.0,
+        "longRSI": 20,
+        "shortRSI": 80,
+        "stop": 0.015,
+        "strategy": "ROE"
+    },
+    {
+        "id": 78,
+        "symbol": "KNC",
+        "profit": 1000.0,
+        "longRSI": 20,
+        "shortRSI": 80,
+        "stop": 0.02,
+        "strategy": "ROE"
+    },
+    {
+        "id": 79,
+        "symbol": "KNC",
+        "profit": 1000.0,
+        "longRSI": 25,
+        "shortRSI": 75,
+        "stop": 0.015,
+        "strategy": "ROE"
+    },
+    {
+        "id": 80,
+        "symbol": "KNC",
+        "profit": 1000.0,
+        "longRSI": 25,
+        "shortRSI": 75,
+        "stop": 0.02,
+        "strategy": "ROE"
+    },
+    {
+        "id": 81,
+        "symbol": "KNC",
+        "profit": 1000.0,
+        "longRSI": 30,
+        "shortRSI": 70,
+        "stop": 0.015,
+        "strategy": "ROE"
+    },
+    {
+        "id": 82,
+        "symbol": "KNC",
+        "profit": 1000.0,
+        "longRSI": 30,
+        "shortRSI": 70,
+        "stop": 0.02,
+        "strategy": "ROE"
+    },
+    {
+        "id": 58,
+        "symbol": "KNC",
+        "profit": 998.738890679151,
+        "longRSI": 35,
+        "shortRSI": 65,
+        "stop": 0.01,
+        "strategy": "ROE"
+    },
+    {
+        "id": 83,
+        "symbol": "KNC",
+        "profit": 998.5,
+        "longRSI": 35,
+        "shortRSI": 65,
+        "stop": 0.015,
+        "strategy": "ROE"
+    },
+    {
+        "id": 84,
+        "symbol": "KNC",
+        "profit": 998.5,
+        "longRSI": 35,
+        "shortRSI": 65,
+        "stop": 0.02,
+        "strategy": "ROE"
+    },
+    {
+        "id": 38,
+        "symbol": "KNC",
+        "profit": 993.9591228333909,
+        "longRSI": 15,
+        "shortRSI": 85,
+        "stop": 0.01,
+        "strategy": "ROE"
+    },
+    {
+        "id": 13,
+        "symbol": "BTC",
+        "profit": 992.5737680721915,
+        "longRSI": 20,
+        "shortRSI": 80,
+        "stop": 0.01,
+        "strategy": "ROE"
+    },
+    {
+        "id": 12,
+        "symbol": "BTC",
+        "profit": 992.379219606441,
+        "longRSI": 20,
+        "shortRSI": 80,
+        "stop": 0.007,
+        "strategy": "ROE"
+    },
+    {
+        "id": 14,
+        "symbol": "BTC",
+        "profit": 990.7914018039301,
+        "longRSI": 20,
+        "shortRSI": 80,
+        "stop": 0.013000000000000001,
+        "strategy": "ROE"
+    },
+    {
+        "id": 11,
+        "symbol": "BTC",
+        "profit": 987.9035978777849,
+        "longRSI": 20,
+        "shortRSI": 80,
+        "stop": 0.004,
+        "strategy": "ROE"
+    },
+    {
+        "id": 20,
+        "symbol": "BTC",
+        "profit": 986.6219975447497,
+        "longRSI": 25,
+        "shortRSI": 75,
+        "stop": 0.0,
+        "strategy": "RSI"
+    },
+    {
+        "id": 37,
+        "symbol": "KNC",
+        "profit": 986.3424613349334,
+        "longRSI": 15,
+        "shortRSI": 85,
+        "stop": 0.007,
+        "strategy": "ROE"
+    },
+    {
+        "id": 36,
+        "symbol": "KNC",
+        "profit": 980.5408143272795,
+        "longRSI": 15,
+        "shortRSI": 85,
+        "stop": 0.004,
+        "strategy": "ROE"
+    },
+    {
+        "id": 19,
+        "symbol": "BTC",
+        "profit": 976.7636556438642,
+        "longRSI": 25,
+        "shortRSI": 75,
+        "stop": 0.013000000000000001,
+        "strategy": "ROE"
+    },
+    {
+        "id": 44,
+        "symbol": "KNC",
+        "profit": 974.5599038626003,
+        "longRSI": 20,
+        "shortRSI": 80,
+        "stop": 0.013000000000000001,
+        "strategy": "ROE"
+    },
+    {
+        "id": 18,
+        "symbol": "BTC",
+        "profit": 973.7600977705475,
+        "longRSI": 25,
+        "shortRSI": 75,
+        "stop": 0.01,
+        "strategy": "ROE"
+    },
+    {
+        "id": 25,
+        "symbol": "BTC",
+        "profit": 973.7086254187274,
+        "longRSI": 30,
+        "shortRSI": 70,
+        "stop": 0.0,
+        "strategy": "RSI"
+    },
+    {
+        "id": 30,
+        "symbol": "BTC",
+        "profit": 973.4196208847429,
+        "longRSI": 35,
+        "shortRSI": 65,
+        "stop": 0.0,
+        "strategy": "RSI"
+    },
+    {
+        "id": 24,
+        "symbol": "BTC",
+        "profit": 971.024844602994,
+        "longRSI": 30,
+        "shortRSI": 70,
+        "stop": 0.013000000000000001,
+        "strategy": "ROE"
+    },
+    {
+        "id": 23,
+        "symbol": "BTC",
+        "profit": 970.6184185143449,
+        "longRSI": 30,
+        "shortRSI": 70,
+        "stop": 0.01,
+        "strategy": "ROE"
+    },
+    {
+        "id": 50,
+        "symbol": "KNC",
+        "profit": 970.5063173191705,
+        "longRSI": 25,
+        "shortRSI": 75,
+        "stop": 0.0,
+        "strategy": "RSI"
+    },
+    {
+        "id": 17,
+        "symbol": "BTC",
+        "profit": 969.0632152175252,
+        "longRSI": 25,
+        "shortRSI": 75,
+        "stop": 0.007,
+        "strategy": "ROE"
+    },
+    {
+        "id": 22,
+        "symbol": "BTC",
+        "profit": 968.0025719743646,
+        "longRSI": 30,
+        "shortRSI": 70,
+        "stop": 0.007,
+        "strategy": "ROE"
+    },
+    {
+        "id": 43,
+        "symbol": "KNC",
+        "profit": 964.8136209846415,
+        "longRSI": 20,
+        "shortRSI": 80,
+        "stop": 0.01,
+        "strategy": "ROE"
+    },
+    {
+        "id": 42,
+        "symbol": "KNC",
+        "profit": 960.4563553811098,
+        "longRSI": 20,
+        "shortRSI": 80,
+        "stop": 0.007,
+        "strategy": "ROE"
+    },
+    {
+        "id": 16,
+        "symbol": "BTC",
+        "profit": 956.9826224497501,
+        "longRSI": 25,
+        "shortRSI": 75,
+        "stop": 0.004,
+        "strategy": "ROE"
+    },
+    {
+        "id": 60,
+        "symbol": "KNC",
+        "profit": 956.9286258684974,
+        "longRSI": 35,
+        "shortRSI": 65,
+        "stop": 0.0,
+        "strategy": "RSI"
+    },
+    {
+        "id": 28,
+        "symbol": "BTC",
+        "profit": 953.8825242245997,
+        "longRSI": 35,
+        "shortRSI": 65,
+        "stop": 0.01,
+        "strategy": "ROE"
+    },
+    {
+        "id": 27,
+        "symbol": "BTC",
+        "profit": 946.5515692740923,
+        "longRSI": 35,
+        "shortRSI": 65,
+        "stop": 0.007,
+        "strategy": "ROE"
+    },
+    {
+        "id": 55,
+        "symbol": "KNC",
+        "profit": 944.225625783361,
+        "longRSI": 30,
+        "shortRSI": 70,
+        "stop": 0.0,
+        "strategy": "RSI"
+    },
+    {
+        "id": 49,
+        "symbol": "KNC",
+        "profit": 936.4532180267686,
+        "longRSI": 25,
+        "shortRSI": 75,
+        "stop": 0.013000000000000001,
+        "strategy": "ROE"
+    },
+    {
+        "id": 48,
+        "symbol": "KNC",
+        "profit": 931.1460121077201,
+        "longRSI": 25,
+        "shortRSI": 75,
+        "stop": 0.01,
+        "strategy": "ROE"
+    },
+    {
+        "id": 41,
+        "symbol": "KNC",
+        "profit": 927.8863447051834,
+        "longRSI": 20,
+        "shortRSI": 80,
+        "stop": 0.004,
+        "strategy": "ROE"
+    },
+    {
+        "id": 21,
+        "symbol": "BTC",
+        "profit": 925.887687423217,
+        "longRSI": 30,
+        "shortRSI": 70,
+        "stop": 0.004,
+        "strategy": "ROE"
+    },
+    {
+        "id": 54,
+        "symbol": "KNC",
+        "profit": 908.9682323535731,
+        "longRSI": 30,
+        "shortRSI": 70,
+        "stop": 0.013000000000000001,
+        "strategy": "ROE"
+    },
+    {
+        "id": 47,
+        "symbol": "KNC",
+        "profit": 907.763628385243,
+        "longRSI": 25,
+        "shortRSI": 75,
+        "stop": 0.007,
+        "strategy": "ROE"
+    },
+    {
+        "id": 26,
+        "symbol": "BTC",
+        "profit": 907.4381887985566,
+        "longRSI": 35,
+        "shortRSI": 65,
+        "stop": 0.004,
+        "strategy": "ROE"
+    },
+    {
+        "id": 53,
+        "symbol": "KNC",
+        "profit": 899.5366569248614,
+        "longRSI": 30,
+        "shortRSI": 70,
+        "stop": 0.01,
+        "strategy": "ROE"
+    },
+    {
+        "id": 57,
+        "symbol": "KNC",
+        "profit": 898.9114127165299,
+        "longRSI": 35,
+        "shortRSI": 65,
+        "stop": 0.007,
+        "strategy": "ROE"
+    },
+    {
+        "id": 52,
+        "symbol": "KNC",
+        "profit": 872.3226427456484,
+        "longRSI": 30,
+        "shortRSI": 70,
+        "stop": 0.007,
+        "strategy": "ROE"
+    },
+    {
+        "id": 46,
+        "symbol": "KNC",
+        "profit": 853.539538289035,
+        "longRSI": 25,
+        "shortRSI": 75,
+        "stop": 0.004,
+        "strategy": "ROE"
+    },
+    {
+        "id": 56,
+        "symbol": "KNC",
+        "profit": 796.673141791834,
+        "longRSI": 35,
+        "shortRSI": 65,
+        "stop": 0.004,
+        "strategy": "ROE"
+    },
+    {
+        "id": 51,
+        "symbol": "KNC",
+        "profit": 789.4056960173618,
+        "longRSI": 30,
+        "shortRSI": 70,
+        "stop": 0.004,
+        "strategy": "ROE"
+    }
+]
