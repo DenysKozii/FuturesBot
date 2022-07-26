@@ -44,8 +44,8 @@ public final class Live {
         try {
             List<Currency> currencies = new ArrayList<>();
             for (String symbol : ConfigSetup.getCurrencies()) {
-                for (int deltaRSI = -20; deltaRSI <= 5; deltaRSI += 5) {
-                    for (double deltaStop = 0.01; deltaStop <= 0.021; deltaStop += 0.005) {
+                for (int deltaRSI = 5; deltaRSI <= 5; deltaRSI += 5) {
+                    for (double deltaStop = 0.01; deltaStop <= 0.01; deltaStop += 0.005) {
                         Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStopAndStrategy(symbol, 30 + deltaRSI, 70 - deltaRSI, deltaStop, Strategy.ROE);
                         upsert(currencies, symbol, deltaRSI, deltaStop, tradeOptionalROE, Strategy.ROE);
                     }
@@ -92,6 +92,8 @@ public final class Live {
             trade.setShortRSI(currency.getShortOpenRSI());
             trade.setStop(currency.getSELL_ROE());
             trade.setStrategy(strategy);
+            trade.setInLong(currency.isInLong());
+            trade.setInShort(currency.isInShort());
             tradeRepository.save(trade);
         } else {
             currency = new Currency(symbol, tradeOptional.get().getProfit(), 30 + deltaRSI, 70 - deltaRSI, deltaStop, strategy);
@@ -107,7 +109,6 @@ public final class Live {
 
     public void clean() {
         tradeRepository.deleteAll();
-        ;
     }
 
 }

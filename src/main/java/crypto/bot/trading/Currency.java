@@ -145,13 +145,11 @@ public class Currency {
         double profit = money;
         if (inLong) {
             profit = currentPrice / entryPrice;
-            profit = money * profit * 0.9985;
         }
         if (inShort) {
             profit = entryPrice / currentPrice;
-            profit = money * profit * 0.9985;
         }
-        return profit;
+        return money * profit * 0.9985;
     }
 
     public void log(String log) {

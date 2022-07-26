@@ -29,4 +29,8 @@ public class Trade {
 
     private Strategy strategy;
 
+    private Boolean inLong;
+
+    private Boolean inShort;
+
 }
