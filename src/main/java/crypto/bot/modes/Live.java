@@ -62,11 +62,15 @@ public final class Live {
                         if (tradeOptionalROE.isPresent()) {
                             Trade trade = tradeOptionalROE.get();
                             trade.setProfit(currency.getProfit());
+                            trade.setInLong(currency.isInLong());
+                            trade.setInShort(currency.isInShort());
                             tradeRepository.save(trade);
                         }
                         if (tradeOptionalRSI.isPresent()) {
                             Trade trade = tradeOptionalRSI.get();
                             trade.setProfit(currency.getProfit());
+                            trade.setInLong(currency.isInLong());
+                            trade.setInShort(currency.isInShort());
                             tradeRepository.save(trade);
                         }
                     }
