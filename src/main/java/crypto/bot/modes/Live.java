@@ -74,7 +74,7 @@ public final class Live {
                             tradeRepository.save(trade);
                         }
                     }
-                    Thread.sleep(10 * 1000);
+                    Thread.sleep(60 * 1000);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
