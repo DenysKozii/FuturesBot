@@ -49,8 +49,8 @@ public final class Live {
                         Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStopAndStrategy(symbol, 30 + deltaRSI, 70 - deltaRSI, deltaStop, Strategy.ROE);
                         upsert(currencies, symbol, deltaRSI, deltaStop, tradeOptionalROE, Strategy.ROE);
                     }
-                    Optional<Trade> tradeOptionalRSI = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStopAndStrategy(symbol, 30 + deltaRSI, 70 - deltaRSI, 0.0, Strategy.RSI);
-                    upsert(currencies, symbol, deltaRSI, 0.0, tradeOptionalRSI, Strategy.RSI);
+//                    Optional<Trade> tradeOptionalRSI = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStopAndStrategy(symbol, 30 + deltaRSI, 70 - deltaRSI, 0.0, Strategy.RSI);
+//                    upsert(currencies, symbol, deltaRSI, 0.0, tradeOptionalRSI, Strategy.RSI);
                 }
             }
             try {
@@ -58,7 +58,7 @@ public final class Live {
                     System.out.println("Update profit in database");
                     for (Currency currency : currencies) {
                         Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStopAndStrategy(currency.getPair().split(ConfigSetup.getFiat())[0], currency.getLongOpenRSI(), currency.getShortOpenRSI(), currency.getSELL_ROE(), Strategy.ROE);
-                        Optional<Trade> tradeOptionalRSI = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStopAndStrategy(currency.getPair().split(ConfigSetup.getFiat())[0], currency.getLongOpenRSI(), currency.getShortOpenRSI(), 0.0, Strategy.RSI);
+//                        Optional<Trade> tradeOptionalRSI = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStopAndStrategy(currency.getPair().split(ConfigSetup.getFiat())[0], currency.getLongOpenRSI(), currency.getShortOpenRSI(), 0.0, Strategy.RSI);
                         if (tradeOptionalROE.isPresent()) {
                             Trade trade = tradeOptionalROE.get();
                             trade.setProfit(currency.getProfit());
@@ -66,13 +66,13 @@ public final class Live {
                             trade.setInShort(currency.isInShort());
                             tradeRepository.save(trade);
                         }
-                        if (tradeOptionalRSI.isPresent()) {
-                            Trade trade = tradeOptionalRSI.get();
-                            trade.setProfit(currency.getProfit());
-                            trade.setInLong(currency.isInLong());
-                            trade.setInShort(currency.isInShort());
-                            tradeRepository.save(trade);
-                        }
+//                        if (tradeOptionalRSI.isPresent()) {
+//                            Trade trade = tradeOptionalRSI.get();
+//                            trade.setProfit(currency.getProfit());
+//                            trade.setInLong(currency.isInLong());
+//                            trade.setInShort(currency.isInShort());
+//                            tradeRepository.save(trade);
+//                        }
                     }
                     Thread.sleep(60 * 1000);
                 }
