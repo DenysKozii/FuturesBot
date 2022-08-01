@@ -42,10 +42,12 @@ public final class Live {
         BuySell.setAccount(localAccount);
         String current = "";
         try {
+            List<Currency> currencies = new ArrayList<>();
             for (String symbol : ConfigSetup.getCurrencies()) {
                 for (int deltaRSI = 5; deltaRSI <= 5; deltaRSI += 5) {
                     for (double deltaStop = 0.011; deltaStop <= 0.011; deltaStop += 0.005) {
-                        tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStopAndStrategy(symbol, 30 + deltaRSI, 70 - deltaRSI, deltaStop, Strategy.ROE);
+                        Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStopAndStrategy(symbol, 30 + deltaRSI, 70 - deltaRSI, deltaStop, Strategy.ROE);
+                        upsert(currencies, symbol, deltaRSI, deltaStop, tradeOptionalROE, Strategy.ROE);
                     }
                 }
             }
@@ -53,6 +55,26 @@ public final class Live {
             System.out.println("---Could not add " + current + ConfigSetup.getFiat());
             System.out.println(e.getMessage());
         }
+    }
+
+    private void upsert(List<Currency> currencies, String symbol, int deltaRSI, double deltaStop, Optional<Trade> tradeOptional, Strategy strategy) {
+        Currency currency;
+        if (tradeOptional.isEmpty()) {
+            currency = new Currency(symbol, 1000.0, 30 + deltaRSI, 70 - deltaRSI, deltaStop, strategy);
+            Trade trade = new Trade();
+            trade.setSymbol(symbol);
+            trade.setProfit(currency.getMoney());
+            trade.setLongRSI(currency.getLongOpenRSI());
+            trade.setShortRSI(currency.getShortOpenRSI());
+            trade.setStop(currency.getSELL_ROE());
+            trade.setStrategy(strategy);
+            trade.setInLong(currency.isInLong());
+            trade.setInShort(currency.isInShort());
+//            tradeRepository.save(trade);
+        } else {
+            currency = new Currency(symbol, tradeOptional.get().getProfit(), 30 + deltaRSI, 70 - deltaRSI, deltaStop, strategy);
+        }
+        currencies.add(currency);
     }
 
     public List<Trade> getTrades() {
