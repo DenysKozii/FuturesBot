@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class Currency {
     public int CONFLUENCE_LONG_OPEN = 1;
     public int CONFLUENCE_SHORT_OPEN = 2;
+    public int CONFLUENCE_UNLOCK = 3;
     public double SELL_ROE;
     public double GOAL_ROE = 0.0001;
 
@@ -33,6 +34,8 @@ public class Currency {
     private int counter;
     private boolean inLong;
     private boolean inShort;
+    private boolean inLongWaiting;
+    private boolean inShortWaiting;
     private int longOpenRSI;
     private int shortOpenRSI;
     private Strategy strategy;
@@ -78,6 +81,30 @@ public class Currency {
             indicators.forEach(indicator -> indicator.update(bean.getPrice()));
         }
         int confluence = check();
+        if (confluence == CONFLUENCE_UNLOCK) {
+            if (inLongWaiting) {
+                inLong = true;
+                counter = 0;
+                entryPrice = currentPrice;
+                updatePrices();
+                log("LONG for: " + confluence + " | " + this);
+                BuySell.open(Currency.this, true);
+            }
+            if (inShortWaiting) {
+                inShort = true;
+                counter = 0;
+                entryPrice = currentPrice;
+                updatePrices();
+                log("SHORT for: " + confluence + " | " + this);
+                BuySell.open(Currency.this, false);
+            }
+            inLongWaiting = false;
+            inShortWaiting = false;
+            return;
+        }
+        if (inShortWaiting || inLongWaiting) {
+            return;
+        }
         if (inLong || inShort) {
             update();
         } else if (confluence == CONFLUENCE_LONG_OPEN) {
@@ -106,42 +133,28 @@ public class Currency {
     }
 
     private void update() {
-        if (Strategy.ROE.equals(strategy)) {
-            if (inLong) {
-                if (currentPrice >= goalPrice) {
-                    updatePrices();
-                } else if (currentPrice <= sellPrice) {
-                    inLong = false;
-                    log(this + " close");
-                    BuySell.close(this, true);
-                }
-            } else if (inShort) {
-                if (currentPrice <= goalPrice) {
-                    updatePrices();
-                } else if (currentPrice >= sellPrice) {
-                    inShort = false;
-                    log(this + " close");
-                    BuySell.close(this, false);
-                }
+        if (inLong) {
+            if (currentPrice >= goalPrice) {
+                updatePrices();
+            } else if (currentPrice <= sellPrice) {
+                inLong = false;
+                log(this + " close");
+                BuySell.close(this, true);
+                inLongWaiting = indicators.get(0).getTemp(currentPrice) < longOpenRSI;
             }
-        } else {
-            if (inLong) {
-                if (indicators.get(0).getTemp(currentPrice) > 40) {
-                    inLong = false;
-                    log(this + " close");
-                    BuySell.close(this, true);
-                }
-            } else if (inShort) {
-                if (indicators.get(0).getTemp(currentPrice) < 60) {
-                    inShort = false;
-                    log(this + " close");
-                    BuySell.close(this, false);
-                }
+        } else if (inShort) {
+            if (currentPrice <= goalPrice) {
+                updatePrices();
+            } else if (currentPrice >= sellPrice) {
+                inShort = false;
+                log(this + " close");
+                BuySell.close(this, false);
+                inShortWaiting = indicators.get(0).getTemp(currentPrice) > shortOpenRSI;
             }
         }
     }
 
-    public double getProfit(){
+    public double getProfit() {
         double profit = money;
         if (inLong) {
             profit = currentPrice / entryPrice;
@@ -152,6 +165,22 @@ public class Currency {
             profit = money * profit * 0.9985;
         }
         return profit;
+    }
+
+    public boolean isInLongWaiting() {
+        return inLongWaiting;
+    }
+
+    public void setInLongWaiting(boolean inLongWaiting) {
+        this.inLongWaiting = inLongWaiting;
+    }
+
+    public boolean isInShortWaiting() {
+        return inShortWaiting;
+    }
+
+    public void setInShortWaiting(boolean inShortWaiting) {
+        this.inShortWaiting = inShortWaiting;
     }
 
     public void log(String log) {

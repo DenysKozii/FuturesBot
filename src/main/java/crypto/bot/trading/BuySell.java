@@ -13,10 +13,10 @@ import java.util.Optional;
 public class BuySell {
 
     private static LocalAccount localAccount;
-    public static  double       TRADE_VALUE = 100;
-    public static  double       MONEY_PERCENTAGE_LIMIT;
-    public static  double       MONEY_LIMIT;
-    public static  Integer      LEVERAGE;
+    public static double TRADE_DELTA = 10;
+    public static double MONEY_PERCENTAGE_LIMIT;
+    public static double MONEY_LIMIT;
+    public static Integer LEVERAGE;
 
     public static void setAccount(LocalAccount localAccount) {
         BuySell.localAccount = localAccount;
@@ -30,10 +30,10 @@ public class BuySell {
         throw new IllegalStateException("Utility class");
     }
 
-    public static void open(Currency currency,  boolean inLong) {
-        double amount = nextAmount();
-        if (amount != 0) {
-            placeOrder(currency, nextAmount(), true, inLong);
+    public static void open(Currency currency, boolean inLong) {
+        double quantity = nextQuantity();
+        if (quantity != 0) {
+            placeOrder(currency, nextQuantity(), true, inLong);
         }
     }
 
@@ -41,9 +41,10 @@ public class BuySell {
         placeOrder(currency, 0, false, inLong);
     }
 
-    private static double nextAmount() {
+    private static double nextQuantity() {
         AccountInformation accountInformation = CurrentAPI.getClient().getAccountInformation();
-        return accountInformation.getAvailableBalance().doubleValue() - TRADE_VALUE > 0 ? TRADE_VALUE : 0;
+        double quantity = accountInformation.getAvailableBalance().doubleValue() - TRADE_DELTA;
+        return Math.max(quantity, 0);
     }
 
     public static void placeOpenOrder(SyncRequestClient clientFutures, Currency currency, double amount, boolean inLong) {
