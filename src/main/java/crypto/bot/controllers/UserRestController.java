@@ -1,8 +1,10 @@
 package crypto.bot.controllers;
 
-import crypto.bot.data.Credentials;
+import crypto.bot.dto.CredentialsDto;
+import crypto.bot.entity.Credentials;
 import crypto.bot.entity.Trade;
 import crypto.bot.modes.Live;
+import crypto.bot.repository.CredentialsRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +16,7 @@ import java.util.List;
 public class UserRestController {
 
     private final Live live;
+    private final CredentialsRepository credentialsRepository;
 
     @GetMapping
     public String ping() {
@@ -21,9 +24,13 @@ public class UserRestController {
     }
 
     @PostMapping("credentials")
-    public String credentials(@RequestBody Credentials credentials) {
-        Live.apiKey = credentials.getKey();
-        Live.apiSecret = credentials.getSecret();
+    public String credentials(@RequestBody CredentialsDto credentialsDto) {
+        Live.apiKey = credentialsDto.getKey();
+        Live.apiSecret = credentialsDto.getSecret();
+        Credentials credentials = new Credentials();
+        credentials.setKey(credentialsDto.getKey());
+        credentials.setSecret(credentialsDto.getSecret());
+        credentialsRepository.save(credentials);
         return "credentials injected";
     }
 

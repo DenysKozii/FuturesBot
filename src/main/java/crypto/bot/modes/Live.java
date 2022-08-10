@@ -1,7 +1,9 @@
 package crypto.bot.modes;
 
+import crypto.bot.entity.Credentials;
 import crypto.bot.entity.Trade;
 import crypto.bot.enums.Strategy;
+import crypto.bot.repository.CredentialsRepository;
 import crypto.bot.repository.TradeRepository;
 import crypto.bot.system.ConfigSetup;
 import crypto.bot.trading.BuySell;
@@ -24,12 +26,18 @@ public final class Live {
     public static String apiKey;
     public static String apiSecret;
     private final TradeRepository tradeRepository;
+    private final CredentialsRepository credentialsRepository;
 
 
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
         System.out.println(tradeRepository.count());
         try {
+            Optional<Credentials> credentials = credentialsRepository.findById(1L);
+            if (credentials.isPresent()) {
+                apiKey = credentials.get().getKey();
+                apiSecret = credentials.get().getSecret();
+            }
             while (apiKey == null && apiSecret == null) {
                 System.out.println("waiting credentials");
                 Thread.sleep(10 * 1000);
