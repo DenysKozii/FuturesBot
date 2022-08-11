@@ -20,6 +20,7 @@ public class Currency {
     public int CONFLUENCE_UNLOCK = 3;
     public double SELL_ROE;
     public double GOAL_ROE = 0.0001;
+    public double MONEY = 1000;
 
     private final String pair;
     private double money;

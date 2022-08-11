@@ -17,6 +17,7 @@ public class BuySell {
     public static double MONEY_PERCENTAGE_LIMIT;
     public static double MONEY_LIMIT;
     public static Integer LEVERAGE;
+    public static Boolean TEST;
 
     public static void setAccount(LocalAccount localAccount) {
         BuySell.localAccount = localAccount;
@@ -48,6 +49,10 @@ public class BuySell {
     }
 
     public static void placeOpenOrder(SyncRequestClient clientFutures, Currency currency, double amount, boolean inLong) {
+        if (TEST) {
+            currency.MONEY *= 0.9985;
+            return;
+        }
         amount /= currency.getPrice();
         amount *= LEVERAGE;
         String positionAmount = String.valueOf((int) amount);
@@ -84,15 +89,23 @@ public class BuySell {
         String positionAmount = position.get().getPositionAmt().toString();
         List<Order> openOrders = clientFutures.getOpenOrders(currency.getPair());
         if (inLong) {
+            if (TEST) {
+                double profit = currency.getPrice() / currency.getEntryPrice();
+                currency.setMoney(currency.getMoney() * profit * 0.999);
+                return;
+            }
             if (openOrders.isEmpty()) {
                 Order order = clientFutures.postOrder(
                         currency.getPair(), OrderSide.SELL, PositionSide.BOTH, OrderType.MARKET, null,
                         positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
                 currency.log(order.getStatus() + " close long = " + positionAmount);
             }
-//            double profit = currency.getPrice() / currency.getEntryPrice();
-//            currency.setMoney(currency.getMoney() * profit * 0.9985);
         } else {
+            if (TEST) {
+                double profit = currency.getEntryPrice() / currency.getPrice();
+                currency.setMoney(currency.getMoney() * profit * 0.999);
+                return;
+            }
             if (openOrders.isEmpty()) {
                 positionAmount = String.valueOf(-1 * Double.parseDouble(positionAmount));
                 Order order = clientFutures.postOrder(
@@ -100,8 +113,6 @@ public class BuySell {
                         positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
                 currency.log(order.getStatus() + "close short = " + positionAmount);
             }
-//            double profit = currency.getEntryPrice() / currency.getPrice();
-//            currency.setMoney(currency.getMoney() * profit * 0.9985);
         }
     }
 

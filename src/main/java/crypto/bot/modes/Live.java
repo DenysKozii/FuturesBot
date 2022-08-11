@@ -27,6 +27,7 @@ public final class Live {
     public static String apiSecret;
     private final TradeRepository tradeRepository;
     private final CredentialsRepository credentialsRepository;
+    public static String CURRENCY;
 
 
     @EventListener(ApplicationReadyEvent.class)
@@ -51,13 +52,18 @@ public final class Live {
         String current = "";
         try {
             List<Currency> currencies = new ArrayList<>();
-            for (String symbol : ConfigSetup.getCurrencies()) {
-                for (int deltaRSI = 0; deltaRSI <= 0; deltaRSI += 5) {
-                    for (double deltaStop = 0.011; deltaStop <= 0.011; deltaStop += 0.005) {
-                        Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStopAndStrategy(symbol, 30 + deltaRSI, 70 - deltaRSI, deltaStop, Strategy.ROE);
-                        upsert(currencies, symbol, deltaRSI, deltaStop, tradeOptionalROE, Strategy.ROE);
+            if (BuySell.TEST) {
+                for (String symbol : ConfigSetup.getCurrencies()) {
+                    for (int deltaRSI = 0; deltaRSI <= 0; deltaRSI += 5) {
+                        for (double deltaStop = 0.011; deltaStop <= 0.011; deltaStop += 0.005) {
+                            Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStopAndStrategy(symbol, 30 + deltaRSI, 70 - deltaRSI, deltaStop, Strategy.ROE);
+                            upsert(currencies, symbol, deltaRSI, deltaStop, tradeOptionalROE, Strategy.ROE);
+                        }
                     }
                 }
+            } else {
+                Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStopAndStrategy(CURRENCY, 30, 70, 0.011, Strategy.ROE);
+                upsert(currencies, CURRENCY, 0, 0.011, tradeOptionalROE, Strategy.ROE);
             }
         } catch (Exception e) {
             System.out.println("---Could not add " + current + ConfigSetup.getFiat());
@@ -69,16 +75,18 @@ public final class Live {
         Currency currency;
         if (tradeOptional.isEmpty()) {
             currency = new Currency(symbol, 1000.0, 30 + deltaRSI, 70 - deltaRSI, deltaStop, strategy);
-            Trade trade = new Trade();
-            trade.setSymbol(symbol);
-            trade.setProfit(currency.getMoney());
-            trade.setLongRSI(currency.getLongOpenRSI());
-            trade.setShortRSI(currency.getShortOpenRSI());
-            trade.setStop(currency.getSELL_ROE());
-            trade.setStrategy(strategy);
-            trade.setInLong(currency.isInLong());
-            trade.setInShort(currency.isInShort());
-//            tradeRepository.save(trade);
+            if (BuySell.TEST) {
+                Trade trade = new Trade();
+                trade.setSymbol(symbol);
+                trade.setProfit(currency.getMoney());
+                trade.setLongRSI(currency.getLongOpenRSI());
+                trade.setShortRSI(currency.getShortOpenRSI());
+                trade.setStop(currency.getSELL_ROE());
+                trade.setStrategy(strategy);
+                trade.setInLong(currency.isInLong());
+                trade.setInShort(currency.isInShort());
+                tradeRepository.save(trade);
+            }
         } else {
             currency = new Currency(symbol, tradeOptional.get().getProfit(), 30 + deltaRSI, 70 - deltaRSI, deltaStop, strategy);
         }

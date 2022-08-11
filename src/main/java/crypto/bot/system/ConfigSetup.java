@@ -1,5 +1,6 @@
 package crypto.bot.system;
 
+import crypto.bot.modes.Live;
 import crypto.bot.trading.BuySell;
 import crypto.bot.trading.Currency;
 
@@ -55,6 +56,12 @@ public class ConfigSetup {
                         break;
                     case "FIAT":
                         fiat = arr[1].toUpperCase();
+                        break;
+                    case "test":
+                        BuySell.TEST = Boolean.valueOf(arr[1]);
+                        break;
+                    case "Main currency":
+                        Live.CURRENCY = arr[1].toUpperCase();
                         break;
                     default:
                         break;
