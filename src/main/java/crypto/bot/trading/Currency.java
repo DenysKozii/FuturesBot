@@ -4,7 +4,6 @@ import com.binance.client.SubscriptionClient;
 import com.binance.client.model.enums.CandlestickInterval;
 import com.binance.client.model.market.Candlestick;
 import crypto.bot.data.PriceBean;
-import crypto.bot.enums.Strategy;
 import crypto.bot.indicators.Indicator;
 import crypto.bot.indicators.RSI;
 import crypto.bot.system.ConfigSetup;
@@ -39,15 +38,14 @@ public class Currency {
     private boolean inShortWaiting;
     private int longOpenRSI;
     private int shortOpenRSI;
-    private Strategy strategy;
 
-    public Currency(String coin, double money, int longOpenRSI, int shortOpenRSI, double SELL_ROE, Strategy strategy) {
+    public Currency(String coin, double money, int longOpenRSI, int shortOpenRSI, double SELL_ROE, double sellPrice) {
         this.pair = coin + ConfigSetup.getFiat();
         this.longOpenRSI = longOpenRSI;
         this.shortOpenRSI = shortOpenRSI;
         this.SELL_ROE = SELL_ROE;
         this.money = money;
-        this.strategy = strategy;
+        this.sellPrice = sellPrice;
         //Every currency needs to contain and update our crypto.bot.indicators
         List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIFTEEN_MINUTES, null, null, 1000);
         List<Double> closingPrices = history.stream().map(candle -> candle.getClose().doubleValue()).collect(Collectors.toList());

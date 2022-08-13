@@ -1,6 +1,5 @@
 package crypto.bot.entity;
 
-import crypto.bot.enums.Strategy;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,10 +26,10 @@ public class Trade {
 
     private Double stop;
 
-    private Strategy strategy;
-
     private Boolean inLong;
 
     private Boolean inShort;
+
+    private Double sellPrice;
 
 }
