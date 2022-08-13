@@ -89,6 +89,8 @@ public final class Live {
             }
         } else {
             currency = new Currency(symbol, tradeOptional.get().getProfit(), 30 + deltaRSI, 70 - deltaRSI, deltaStop, strategy);
+            currency.setInLong(tradeOptional.get().getInLong());
+            currency.setInShort(tradeOptional.get().getInShort());
         }
         currencies.add(currency);
     }
