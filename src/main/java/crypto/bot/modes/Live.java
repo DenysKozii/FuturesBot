@@ -65,6 +65,25 @@ public final class Live {
                 Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(CURRENCY, 30, 70, 0.011);
                 upsert(currencies, CURRENCY, 0, 0.011, tradeOptionalROE);
             }
+            try {
+                while (true) {
+                    System.out.println("Update profit in database");
+                    for (Currency currency : currencies) {
+                        Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(currency.getPair().split(ConfigSetup.getFiat())[0], currency.getLongOpenRSI(), currency.getShortOpenRSI(), currency.getSELL_ROE());
+                        if (tradeOptionalROE.isPresent()) {
+                            Trade trade = tradeOptionalROE.get();
+                            trade.setProfit(currency.getProfit());
+                            trade.setInLong(currency.isInLong());
+                            trade.setInShort(currency.isInShort());
+                            trade.setSellPrice(currency.getSellPrice());
+                            tradeRepository.save(trade);
+                        }
+                    }
+                    Thread.sleep(60 * 1000);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             System.out.println("---Could not add " + current + ConfigSetup.getFiat());
             System.out.println(e.getMessage());
