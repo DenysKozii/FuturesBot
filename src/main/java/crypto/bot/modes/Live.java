@@ -94,17 +94,15 @@ public final class Live {
         Currency currency;
         if (tradeOptional.isEmpty()) {
             currency = new Currency(symbol, 1000.0, 30 + deltaRSI, 70 - deltaRSI, deltaStop, 0.0);
-            if (BuySell.TEST) {
-                Trade trade = new Trade();
-                trade.setSymbol(symbol);
-                trade.setProfit(currency.getMoney());
-                trade.setLongRSI(currency.getLongOpenRSI());
-                trade.setShortRSI(currency.getShortOpenRSI());
-                trade.setStop(currency.getSELL_ROE());
-                trade.setInLong(currency.isInLong());
-                trade.setInShort(currency.isInShort());
-                tradeRepository.save(trade);
-            }
+            Trade trade = new Trade();
+            trade.setSymbol(symbol);
+            trade.setProfit(currency.getMoney());
+            trade.setLongRSI(currency.getLongOpenRSI());
+            trade.setShortRSI(currency.getShortOpenRSI());
+            trade.setStop(currency.getSELL_ROE());
+            trade.setInLong(currency.isInLong());
+            trade.setInShort(currency.isInShort());
+            tradeRepository.save(trade);
         } else {
             Trade trade = tradeOptional.get();
             currency = new Currency(symbol, trade.getProfit(), 30 + deltaRSI, 70 - deltaRSI, deltaStop, trade.getSellPrice());
