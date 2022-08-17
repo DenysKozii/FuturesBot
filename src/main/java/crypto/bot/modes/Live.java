@@ -55,15 +55,15 @@ public final class Live {
             if (BuySell.TEST) {
                 for (String symbol : ConfigSetup.getCurrencies()) {
                     for (int deltaRSI = 0; deltaRSI <= 0; deltaRSI += 5) {
-                        for (double deltaStop = 0.011; deltaStop <= 0.011; deltaStop += 0.005) {
+                        for (double deltaStop = 0.012; deltaStop <= 0.012; deltaStop += 0.005) {
                             Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(symbol, 30 + deltaRSI, 70 - deltaRSI, deltaStop);
                             upsert(currencies, symbol, deltaRSI, deltaStop, tradeOptionalROE);
                         }
                     }
                 }
             } else {
-                Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(CURRENCY, 30, 70, 0.011);
-                upsert(currencies, CURRENCY, 0, 0.011, tradeOptionalROE);
+                Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(CURRENCY, 30, 70, 0.012);
+                upsert(currencies, CURRENCY, 0, 0.012, tradeOptionalROE);
             }
             try {
                 while (true) {
