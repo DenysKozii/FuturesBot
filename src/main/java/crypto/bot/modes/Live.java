@@ -54,9 +54,9 @@ public final class Live {
             List<Currency> currencies = new ArrayList<>();
             if (BuySell.TEST) {
                 for (String symbol : ConfigSetup.getCurrencies()) {
-                    for (int deltaRSI = 0; deltaRSI <= 0; deltaRSI += 5) {
-                        for (double deltaStop = 0.012; deltaStop <= 0.012; deltaStop += 0.005) {
-                            Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(symbol, 30 + deltaRSI, 70 - deltaRSI, deltaStop);
+                    for (int deltaRSI = -5; deltaRSI <= -5; deltaRSI += 5) {
+                        for (double deltaStop = 0.014; deltaStop <= 0.014; deltaStop += 0.001) {
+                            Optional<Trade> tradeOptionalROE = Optional.empty();
                             upsert(currencies, symbol, deltaRSI, deltaStop, tradeOptionalROE);
                         }
                     }
@@ -65,25 +65,7 @@ public final class Live {
                 Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(CURRENCY, 30, 70, 0.012);
                 upsert(currencies, CURRENCY, 0, 0.012, tradeOptionalROE);
             }
-            try {
-                while (true) {
-                    System.out.println("Update profit in database");
-                    for (Currency currency : currencies) {
-                        Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(currency.getPair().split(ConfigSetup.getFiat())[0], currency.getLongOpenRSI(), currency.getShortOpenRSI(), currency.getSELL_ROE());
-                        if (tradeOptionalROE.isPresent()) {
-                            Trade trade = tradeOptionalROE.get();
-                            trade.setProfit(currency.getProfit());
-                            trade.setInLong(currency.isInLong());
-                            trade.setInShort(currency.isInShort());
-                            trade.setSellPrice(currency.getSellPrice());
-                            tradeRepository.save(trade);
-                        }
-                    }
-                    Thread.sleep(60 * 1000);
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            currencies.forEach(System.out::println);
         } catch (Exception e) {
             System.out.println("---Could not add " + current + ConfigSetup.getFiat());
             System.out.println(e.getMessage());
@@ -93,19 +75,10 @@ public final class Live {
     private void upsert(List<Currency> currencies, String symbol, int deltaRSI, double deltaStop, Optional<Trade> tradeOptional) {
         Currency currency;
         if (tradeOptional.isEmpty()) {
-            currency = new Currency(symbol, 1000.0, 30 + deltaRSI, 70 - deltaRSI, deltaStop, 0.0);
-            Trade trade = new Trade();
-            trade.setSymbol(symbol);
-            trade.setProfit(currency.getMoney());
-            trade.setLongRSI(currency.getLongOpenRSI());
-            trade.setShortRSI(currency.getShortOpenRSI());
-            trade.setStop(currency.getSELL_ROE());
-            trade.setInLong(currency.isInLong());
-            trade.setInShort(currency.isInShort());
-            tradeRepository.save(trade);
+            currency = new Currency(symbol, 1000.0, 30 - deltaRSI, 70 + deltaRSI, deltaStop, 0.0);
         } else {
             Trade trade = tradeOptional.get();
-            currency = new Currency(symbol, trade.getProfit(), 30 + deltaRSI, 70 - deltaRSI, deltaStop, trade.getSellPrice());
+            currency = new Currency(symbol, trade.getProfit(), 30 - deltaRSI, 70 + deltaRSI, deltaStop, trade.getSellPrice());
             currency.setInLong(trade.getInLong());
             currency.setInShort(trade.getInShort());
         }

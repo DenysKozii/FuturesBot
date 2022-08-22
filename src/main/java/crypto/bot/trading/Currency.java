@@ -19,10 +19,9 @@ public class Currency {
     public int CONFLUENCE_UNLOCK = 3;
     public double SELL_ROE;
     public double GOAL_ROE = 0.0001;
-    public double MONEY = 1000;
 
     private final String pair;
-    private double money;
+    private double money = 1000;
     private double entryPrice;
     private double sellPrice;
     private double goalPrice;
@@ -47,29 +46,33 @@ public class Currency {
         this.money = money;
         this.sellPrice = sellPrice;
         //Every currency needs to contain and update our crypto.bot.indicators
-        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIFTEEN_MINUTES, null, null, 1000);
+        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIFTEEN_MINUTES, null, null, 1500);
         List<Double> closingPrices = history.stream().map(candle -> candle.getClose().doubleValue()).collect(Collectors.toList());
-        indicators.add(new RSI(closingPrices, 14));
-
+        indicators.add(new RSI(closingPrices.subList(0, 100), 11));
+        for (int i = 100; i < history.size(); i++) {
+            double newPrice = history.get(i).getClose().doubleValue();
+            accept(new PriceBean(history.get(i).getCloseTime(), newPrice, true));
+            System.out.println(i + " " + getProfit());
+        }
         //We set the initial values to check against in onMessage based on the latest candle in history
-        currentTime = System.currentTimeMillis();
-        candleTime = history.get(history.size() - 1).getCloseTime();
-        currentPrice = history.get(history.size() - 1).getClose().doubleValue();
+//        currentTime = System.currentTimeMillis();
+//        candleTime = history.get(history.size() - 1).getCloseTime();
+//        currentPrice = history.get(history.size() - 1).getClose().doubleValue();
 
         //We add a websocket listener that automatically updates our values and triggers our strategy or trade logic as needed
-        SubscriptionClient.create().subscribeSymbolTickerEvent(pair.toLowerCase(), ((response) -> {
-            //Every message and the resulting indicator and strategy calculations is handled concurrently
-            double newPrice = response.getLastPrice().doubleValue();
-            long newTime = response.getEventTime();
-            currentPrice = newPrice;
-
-            if (newTime > candleTime) {
-                accept(new PriceBean(candleTime, newPrice, true));
-                candleTime += 1000L * 60L * 15L;
-                log(this.toString());
-            }
-            accept(new PriceBean(newTime, newPrice));
-        }), null);
+//        SubscriptionClient.create().subscribeSymbolTickerEvent(pair.toLowerCase(), ((response) -> {
+//            //Every message and the resulting indicator and strategy calculations is handled concurrently
+//            double newPrice = response.getLastPrice().doubleValue();
+//            long newTime = response.getEventTime();
+//            currentPrice = newPrice;
+//
+//            if (newTime > candleTime) {
+//                accept(new PriceBean(candleTime, newPrice, true));
+//                candleTime += 1000L * 60L * 15L;
+//                log(this.toString());
+//            }
+//            accept(new PriceBean(newTime, newPrice));
+//        }), null);
         log("---SETUP DONE FOR " + this);
     }
 
