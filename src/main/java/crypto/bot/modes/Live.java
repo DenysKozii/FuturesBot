@@ -54,16 +54,16 @@ public final class Live {
             List<Currency> currencies = new ArrayList<>();
             if (BuySell.TEST) {
                 for (String symbol : ConfigSetup.getCurrencies()) {
-                    for (int deltaRSI = 0; deltaRSI <= 0; deltaRSI += 5) {
-                        for (double deltaStop = 0.012; deltaStop <= 0.012; deltaStop += 0.005) {
+                    for (int deltaRSI = 5; deltaRSI <= 5; deltaRSI += 5) {
+                        for (double deltaStop = 0.014; deltaStop <= 0.014; deltaStop += 0.005) {
                             Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(symbol, 30 + deltaRSI, 70 - deltaRSI, deltaStop);
                             upsert(currencies, symbol, deltaRSI, deltaStop, tradeOptionalROE);
                         }
                     }
                 }
             } else {
-                Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(CURRENCY, 30, 70, 0.012);
-                upsert(currencies, CURRENCY, 0, 0.012, tradeOptionalROE);
+                Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(CURRENCY, 35, 65, 0.014);
+                upsert(currencies, CURRENCY, 5, 0.014, tradeOptionalROE);
             }
             try {
                 while (true) {
