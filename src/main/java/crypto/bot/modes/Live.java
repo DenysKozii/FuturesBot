@@ -67,7 +67,7 @@ public final class Live {
             }
             try {
                 while (true) {
-                    System.out.println("Update profit in database");
+                    System.out.println("Update profit in database: " + currencies.get(0));
                     for (Currency currency : currencies) {
                         Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(currency.getPair().split(ConfigSetup.getFiat())[0], currency.getLongOpenRSI(), currency.getShortOpenRSI(), currency.getSELL_ROE());
                         if (tradeOptionalROE.isPresent()) {
