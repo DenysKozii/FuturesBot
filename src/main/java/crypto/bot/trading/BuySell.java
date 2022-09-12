@@ -94,10 +94,10 @@ public class BuySell {
             clientFutures.changeInitialLeverage(currency.getPair(), LEVERAGE);
 
             if (open) {
-                System.out.println("open");
+                System.out.println("open: " + currency.getCurrentDate());
                 placeOpenOrder(clientFutures, currency, amount, inLong);
             } else {
-                System.out.println("close");
+                System.out.println("close: " + currency.getCurrentDate());
                 placeCloseOrder(clientFutures, currency, inLong);
             }
         } catch (BinanceApiException e) {

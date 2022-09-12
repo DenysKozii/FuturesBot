@@ -9,25 +9,28 @@ import crypto.bot.indicators.RSI;
 import crypto.bot.system.ConfigSetup;
 import crypto.bot.system.Formatter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Currency {
     public int CONFLUENCE_LONG_OPEN = 1;
     public int CONFLUENCE_SHORT_OPEN = 2;
-    public int CONFLUENCE_UNLOCK = 3;
+    public int CONFLUENCE_SHORT_UNLOCK = 3;
+    public int CONFLUENCE_LONG_UNLOCK = 4;
     public double SELL_ROE;
+    public double PROFIT_ROE;
     public double GOAL_ROE = 0.0001;
 
     private final String pair;
     private double money = 1000;
     private double entryPrice;
     private double sellPrice;
+    private double takePrice;
     private double goalPrice;
     private long candleTime;
     private final List<Indicator> indicators = new ArrayList<>();
 
+    private Date currentDate;
     private double currentPrice;
     private long currentTime;
     private int counter;
@@ -37,22 +40,56 @@ public class Currency {
     private boolean inShortWaiting;
     private int longOpenRSI;
     private int shortOpenRSI;
+    private Map<Integer, Integer> rsiStatistics = new HashMap<>();
 
-    public Currency(String coin, double money, int longOpenRSI, int shortOpenRSI, double SELL_ROE, double sellPrice) {
+
+    public Currency(String coin, double money, int longOpenRSI, int shortOpenRSI, double SELL_ROE, double PROFIT_ROE, double sellPrice, List<Candlestick> history) {
         this.pair = coin + ConfigSetup.getFiat();
         this.longOpenRSI = longOpenRSI;
         this.shortOpenRSI = shortOpenRSI;
         this.SELL_ROE = SELL_ROE;
+        this.PROFIT_ROE = PROFIT_ROE;
         this.money = money;
         this.sellPrice = sellPrice;
         //Every currency needs to contain and update our crypto.bot.indicators
-        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIFTEEN_MINUTES, null, null, 1500);
+//        history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.ONE_MINUTE, 1654030800000L, null, 1500);
+        // 1000
+//        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.ONE_MINUTE, 1651352400000L, null, 1500);
+        // 1016
+//        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.ONE_MINUTE, 1656622800000L, null, 1500);
+        // 999
+//        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIFTEEN_MINUTES, 1648760400000L, null, 1500);
+        // 1000
+//        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.ONE_MINUTE, 1652060400000L, null, 1500);
+        // 1000
+//        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.ONE_MINUTE, 1632060400000L, null, 1500);
+        // 965
+//        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.ONE_MINUTE, 1644060400000L, null, 1500);
+        // 1000
+//        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.ONE_MINUTE, 1640060400000L, null, 1500);
+        // 1000
+
+
+        // backtest 15
+//        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIFTEEN_MINUTES, 1646085600000L, null, 960);
+//        history.addAll(CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIFTEEN_MINUTES, 1646863200000L, null, 960));
+//        history.addAll(CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIFTEEN_MINUTES, 1647727200000L, null, 960));
+//        history.addAll(CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIFTEEN_MINUTES, 1648587600000L, null, 960));
+//        history.addAll(CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIFTEEN_MINUTES, 1646776800000L, null, 960));
+//        history.addAll(CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIFTEEN_MINUTES, 1647640800000L, null, 960));
+//        history.addAll(CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIFTEEN_MINUTES, 1648501200000L, null, 960));
+
+
+        // backtest 1
         List<Double> closingPrices = history.stream().map(candle -> candle.getClose().doubleValue()).collect(Collectors.toList());
         indicators.add(new RSI(closingPrices.subList(0, 100), 11));
         for (int i = 100; i < history.size(); i++) {
             double newPrice = history.get(i).getClose().doubleValue();
             accept(new PriceBean(history.get(i).getCloseTime(), newPrice, true));
-            System.out.println(i + " " + getProfit());
+//            int rsi = (int) indicators.get(0).getTemp(currentPrice);
+//            rsiStatistics.put(rsi, rsiStatistics.getOrDefault(rsi, 0) + 1);
+            currentDate = new Date(history.get(i).getCloseTime());
+//            System.out.println(currentDate + " : " + getProfit() + " | " + rsi);
         }
         //We set the initial values to check against in onMessage based on the latest candle in history
 //        currentTime = System.currentTimeMillis();
@@ -83,43 +120,34 @@ public class Currency {
             indicators.forEach(indicator -> indicator.update(bean.getPrice()));
         }
         int confluence = check();
-        if (confluence == CONFLUENCE_UNLOCK) {
-            if (inLongWaiting) {
-                inLong = true;
-                counter = 0;
-                entryPrice = currentPrice;
-                updatePrices();
-                log("LONG for: " + confluence + " | " + this);
-                BuySell.open(Currency.this, true);
-            }
-            if (inShortWaiting) {
-                inShort = true;
-                counter = 0;
-                entryPrice = currentPrice;
-                updatePrices();
-                log("SHORT for: " + confluence + " | " + this);
-                BuySell.open(Currency.this, false);
-            }
-            inLongWaiting = false;
-            inShortWaiting = false;
-            return;
-        }
-        if (inShortWaiting || inLongWaiting) {
-            return;
-        }
+//        if (confluence == CONFLUENCE_SHORT_UNLOCK) {
+//            inShortWaiting = true;
+//            return;
+//        }
+//        if (confluence == CONFLUENCE_LONG_UNLOCK) {
+//            inLongWaiting = true;
+//            return;
+//        }
+//        if (inShortWaiting || inLongWaiting) {
+//            return;
+//        }
         if (inLong || inShort) {
             update();
         } else if (confluence == CONFLUENCE_LONG_OPEN) {
             inLong = true;
+            inLongWaiting = false;
             counter = 0;
             entryPrice = currentPrice;
+            takePrice = currentPrice * (1 + PROFIT_ROE);
             updatePrices();
             log("LONG for: " + confluence + " | " + this);
             BuySell.open(Currency.this, true);
         } else if (confluence == CONFLUENCE_SHORT_OPEN) {
             inShort = true;
+            inShortWaiting = false;
             counter = 0;
             entryPrice = currentPrice;
+            takePrice = currentPrice * (1 - PROFIT_ROE);
             updatePrices();
             log("SHORT for: " + confluence + " | " + this);
             BuySell.open(Currency.this, false);
@@ -138,20 +166,34 @@ public class Currency {
         if (inLong) {
             if (currentPrice >= goalPrice) {
                 updatePrices();
-            } else if (currentPrice <= sellPrice) {
+            }
+            else if (currentPrice <= sellPrice) {
                 inLong = false;
-                log(this + " close");
                 BuySell.close(this, true);
-                inLongWaiting = indicators.get(0).getTemp(currentPrice) < longOpenRSI;
+                log(this.toString());
+//                inLongWaiting = indicators.get(0).getTemp(currentPrice) < longOpenRSI;
+            }
+            if (currentPrice >= takePrice) {
+                inLong = false;
+                BuySell.close(this, true);
+                log(this.toString());
+//                inLongWaiting = indicators.get(0).getTemp(currentPrice) < longOpenRSI;
             }
         } else if (inShort) {
             if (currentPrice <= goalPrice) {
                 updatePrices();
-            } else if (currentPrice >= sellPrice) {
+            }
+            else if (currentPrice >= sellPrice) {
                 inShort = false;
-                log(this + " close");
                 BuySell.close(this, false);
-                inShortWaiting = indicators.get(0).getTemp(currentPrice) > shortOpenRSI;
+                log(this.toString());
+//                inShortWaiting = indicators.get(0).getTemp(currentPrice) > shortOpenRSI;
+            }
+            if (currentPrice <= takePrice) {
+                inShort = false;
+                BuySell.close(this, false);
+                log(this.toString());
+//                inShortWaiting = indicators.get(0).getTemp(currentPrice) > shortOpenRSI;
             }
         }
     }
@@ -160,13 +202,21 @@ public class Currency {
         double profit = money;
         if (inLong) {
             profit = currentPrice / entryPrice;
-            profit = money * profit * 0.9985;
+            profit = money * profit * 0.9993;
         }
         if (inShort) {
             profit = entryPrice / currentPrice;
-            profit = money * profit * 0.9985;
+            profit = money * profit * 0.9993;
         }
         return profit;
+    }
+
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(Date currentDate) {
+        this.currentDate = currentDate;
     }
 
     public boolean isInLongWaiting() {
@@ -268,7 +318,7 @@ public class Currency {
 
     @Override
     public String toString() {
-        StringBuilder s = new StringBuilder(getProfit() + ", " + pair + " price: " + currentPrice);
+        StringBuilder s = new StringBuilder(currentDate + ": " + getProfit() + ", " + pair + " price: " + currentPrice);
         if (currentTime == candleTime)
             indicators.forEach(indicator -> s.append(", ").append(indicator.getClass().getSimpleName()).append(": ").append(Formatter.formatDecimal(indicator.get())));
         else
@@ -277,7 +327,8 @@ public class Currency {
                 .append(", in short: ").append(inShort)
                 .append(", RSI long: ").append(longOpenRSI)
                 .append(", RSI short: ").append(shortOpenRSI)
-                .append(", delta stop: ").append(SELL_ROE);
+                .append(", delta stop: ").append(SELL_ROE)
+                .append(", delta profit: ").append(PROFIT_ROE);
         return s.toString();
     }
 
