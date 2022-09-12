@@ -25,6 +25,7 @@ public class Currency {
     private double money;
     private double entryPrice;
     private double sellPrice;
+    private double profitPrice;
     private double goalPrice;
     private long candleTime;
     private final List<Indicator> indicators = new ArrayList<>();
@@ -135,7 +136,14 @@ public class Currency {
         if (inLong) {
             if (currentPrice >= goalPrice) {
                 updatePrices();
-            } else if (currentPrice <= sellPrice) {
+            }
+            if (currentPrice <= sellPrice) {
+                inLong = false;
+                log(this + " close");
+                BuySell.close(this, true);
+                inLongWaiting = indicators.get(0).getTemp(currentPrice) < longOpenRSI;
+            }
+            if (currentPrice >= entryPrice * 1.01){
                 inLong = false;
                 log(this + " close");
                 BuySell.close(this, true);
@@ -144,7 +152,14 @@ public class Currency {
         } else if (inShort) {
             if (currentPrice <= goalPrice) {
                 updatePrices();
-            } else if (currentPrice >= sellPrice) {
+            }
+            if (currentPrice >= sellPrice) {
+                inShort = false;
+                log(this + " close");
+                BuySell.close(this, false);
+                inShortWaiting = indicators.get(0).getTemp(currentPrice) > shortOpenRSI;
+            }
+            if (currentPrice <= entryPrice * 0.99){
                 inShort = false;
                 log(this + " close");
                 BuySell.close(this, false);
