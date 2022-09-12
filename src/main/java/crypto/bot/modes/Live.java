@@ -54,7 +54,7 @@ public final class Live {
             List<Currency> currencies = new ArrayList<>();
             if (BuySell.TEST) {
                 for (String symbol : ConfigSetup.getCurrencies()) {
-                    for (int deltaRSI = 20; deltaRSI <= 20; deltaRSI += 5) {
+                    for (int deltaRSI = -20; deltaRSI <= -20; deltaRSI += 5) {
                         for (double deltaStop = 0.014; deltaStop <= 0.014; deltaStop += 0.005) {
                             Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(symbol, 30 + deltaRSI, 70 - deltaRSI, deltaStop);
                             upsert(currencies, symbol, deltaRSI, deltaStop, tradeOptionalROE);
@@ -63,7 +63,7 @@ public final class Live {
                 }
             } else {
                 Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(CURRENCY, 10, 90, 0.014);
-                upsert(currencies, CURRENCY, 20, 0.014, tradeOptionalROE);
+                upsert(currencies, CURRENCY, -20, 0.014, tradeOptionalROE);
             }
             try {
                 while (true) {
