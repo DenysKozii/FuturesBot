@@ -48,7 +48,7 @@ public class Currency {
         this.money = money;
         this.sellPrice = sellPrice;
         //Every currency needs to contain and update our crypto.bot.indicators
-        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.FIFTEEN_MINUTES, null, null, 1000);
+        List<Candlestick> history = CurrentAPI.getClient().getCandlestick(pair, CandlestickInterval.ONE_MINUTE, null, null, 1000);
         List<Double> closingPrices = history.stream().map(candle -> candle.getClose().doubleValue()).collect(Collectors.toList());
         indicators.add(new RSI(closingPrices, 11));
 
