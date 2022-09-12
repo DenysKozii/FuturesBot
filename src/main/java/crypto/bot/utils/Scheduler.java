@@ -17,7 +17,7 @@ import java.io.IOException;
 @EnableScheduling
 public class Scheduler {
 
-    private final static String URL = "https://bot-api-v1-prod.herokuapp.com/api";
+    private final static String URL = "https://bot-futures-prod.herokuapp.com/api";
 
     @Scheduled(fixedRate = 1000 * 60 * 10)
     public void timer() throws IOException {
