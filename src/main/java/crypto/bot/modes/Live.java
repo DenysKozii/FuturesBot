@@ -62,12 +62,13 @@ public final class Live {
                     }
                 }
             } else {
-                Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(CURRENCY, 10, 90, 0.014);
-                upsert(currencies, CURRENCY, -20, 0.014, tradeOptionalROE);
+                Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(CURRENCY, 50, 50, 0.014);
+                upsert(currencies, CURRENCY, 30, 0.014, tradeOptionalROE);
             }
             try {
+                System.out.println(currencies.get(0));
                 while (true) {
-                    System.out.println("Update profit in database: " + currencies.get(0));
+                    System.out.println("Update profit in database");
                     for (Currency currency : currencies) {
                         Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(currency.getPair().split(ConfigSetup.getFiat())[0], currency.getLongOpenRSI(), currency.getShortOpenRSI(), currency.getSELL_ROE());
                         if (tradeOptionalROE.isPresent()) {
