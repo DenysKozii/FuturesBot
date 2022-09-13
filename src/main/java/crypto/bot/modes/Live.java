@@ -62,8 +62,8 @@ public final class Live {
                     }
                 }
             } else {
-                Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(CURRENCY, 50, 50, 0.014);
-                upsert(currencies, CURRENCY, 30, 0.014, tradeOptionalROE);
+                Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(CURRENCY, 10, 90, 0.014);
+                upsert(currencies, CURRENCY, -20, 0.014, tradeOptionalROE);
             }
             try {
                 System.out.println(currencies.get(0));
