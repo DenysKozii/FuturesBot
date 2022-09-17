@@ -52,21 +52,15 @@ public final class Live {
         String current = "";
         try {
             List<Currency> currencies = new ArrayList<>();
-            if (BuySell.TEST) {
-                for (String symbol : ConfigSetup.getCurrencies()) {
-                    for (int deltaRSI = -20; deltaRSI <= -20; deltaRSI += 5) {
-                        for (double deltaStop = 0.014; deltaStop <= 0.014; deltaStop += 0.005) {
-                            Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(symbol, 30 + deltaRSI, 70 - deltaRSI, deltaStop);
-                            upsert(currencies, symbol, deltaRSI, deltaStop, tradeOptionalROE);
-                        }
+            for (String symbol : ConfigSetup.getCurrencies()) {
+                for (int deltaRSI = -20; deltaRSI <= -20; deltaRSI += 5) {
+                    for (double deltaStop = 0.014; deltaStop <= 0.014; deltaStop += 0.005) {
+                        Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(symbol, 30 + deltaRSI, 70 - deltaRSI, deltaStop);
+                        upsert(currencies, symbol, deltaRSI, deltaStop, tradeOptionalROE);
                     }
                 }
-            } else {
-                Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(CURRENCY, 10, 90, 0.014);
-                upsert(currencies, CURRENCY, -20, 0.014, tradeOptionalROE);
             }
             try {
-                System.out.println(currencies.get(0));
                 while (true) {
                     System.out.println("Update profit in database");
                     for (Currency currency : currencies) {

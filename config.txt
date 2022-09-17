@@ -1,5 +1,5 @@
 Leverage:5
-Currencies to track:KNC, XRP, WAVES, NKN, OMG, ALGO, ZIL, VET, BAT, SOL, TOMO, SXP
+Currencies to track:BTC, KNC, XRP, WAVES, TOMO
 Main currency:KNC
 FIAT:USDT
 test:false
