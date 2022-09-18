@@ -69,7 +69,7 @@ public class Currency {
                 candleTime += 1000L * 60L;
                 log(this.toString());
             }
-//            accept(new PriceBean(newTime, newPrice));
+            accept(new PriceBean(newTime, newPrice));
         }), null);
         log("---SETUP DONE FOR " + this);
     }
