@@ -66,7 +66,7 @@ public class Currency {
 
             if (newTime > candleTime) {
                 accept(new PriceBean(candleTime, newPrice, true));
-                candleTime += 1000L * 60L * 15L;
+                candleTime += 1000L * 60L;
                 log(this.toString());
             }
 //            accept(new PriceBean(newTime, newPrice));
@@ -125,11 +125,8 @@ public class Currency {
     }
 
     private void updatePrices() {
-        counter++;
-        double sellRoe = SELL_ROE + counter * 0;
-        double goalRoe = GOAL_ROE + counter * 0;
-        sellPrice = inShort ? currentPrice * (1 + sellRoe) : currentPrice * (1 - sellRoe);
-        goalPrice = inShort ? currentPrice * (1 - goalRoe) : currentPrice * (1 + goalRoe);
+        sellPrice = inShort ? currentPrice * (1 + SELL_ROE) : currentPrice * (1 - SELL_ROE);
+        goalPrice = inShort ? currentPrice * (1 - GOAL_ROE) : currentPrice * (1 + GOAL_ROE);
     }
 
     private void update() {
