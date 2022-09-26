@@ -140,7 +140,7 @@ public class Currency {
                 BuySell.close(this, true);
                 inLongWaiting = indicators.get(0).getTemp(currentPrice) < longOpenRSI;
             }
-            if (currentPrice >= entryPrice * 1.013){
+            if (currentPrice >= entryPrice * 1.014){
                 inLong = false;
                 log(this + " close");
                 BuySell.close(this, true);
@@ -156,7 +156,7 @@ public class Currency {
                 BuySell.close(this, false);
                 inShortWaiting = indicators.get(0).getTemp(currentPrice) > shortOpenRSI;
             }
-            if (currentPrice <= entryPrice * 0.987){
+            if (currentPrice <= entryPrice * 0.986){
                 inShort = false;
                 log(this + " close");
                 BuySell.close(this, false);
