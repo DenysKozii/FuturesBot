@@ -76,16 +76,16 @@ public class RSI implements Indicator {
     @Override
     public int check(double newPrice, Currency currency) {
         double temp = getTemp(newPrice);
-        if (!currency.isInShort() && !currency.isInLong() && !currency.isInShortWaiting() && !currency.isInLongWaiting() && temp < currency.getLongOpenRSI()) {
+        if (!currency.isInShort() && !currency.isInLong() && !currency.isInShortWaiting() && !currency.isInLongWaiting() && temp > currency.getShortOpenRSI()) {
             return currency.CONFLUENCE_LONG_OPEN;
         }
-        if (!currency.isInShort() && !currency.isInLong() && !currency.isInShortWaiting() && !currency.isInLongWaiting() && temp > currency.getShortOpenRSI()) {
+        if (!currency.isInShort() && !currency.isInLong() && !currency.isInShortWaiting() && !currency.isInLongWaiting() && temp < currency.getLongOpenRSI()) {
             return currency.CONFLUENCE_SHORT_OPEN;
         }
-        if (currency.isInShortWaiting() && temp <= currency.getShortOpenRSI()) {
+        if (currency.isInShortWaiting() && temp >= currency.getLongOpenRSI()) {
             return currency.CONFLUENCE_UNLOCK;
         }
-        if (currency.isInLongWaiting() && temp >= currency.getLongOpenRSI()) {
+        if (currency.isInLongWaiting() && temp <= currency.getShortOpenRSI()) {
             return currency.CONFLUENCE_UNLOCK;
         }
         return 0;
