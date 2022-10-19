@@ -54,7 +54,7 @@ public final class Live {
             List<Currency> currencies = new ArrayList<>();
             for (String symbol : ConfigSetup.getCurrencies()) {
                 for (int deltaRSI = -22; deltaRSI <= -22; deltaRSI += 5) {
-                    for (double deltaStop = 0.006; deltaStop <= 0.006; deltaStop += 0.005) {
+                    for (double deltaStop = 0.005; deltaStop <= 0.005; deltaStop += 0.005) {
                         Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(symbol, 30 + deltaRSI, 70 - deltaRSI, deltaStop);
                         upsert(currencies, symbol, deltaRSI, deltaStop, tradeOptionalROE);
                     }
