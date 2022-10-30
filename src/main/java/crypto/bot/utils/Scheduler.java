@@ -26,4 +26,24 @@ public class Scheduler {
             client.execute(request);
         }
     }
+
+    @Scheduled(cron = "58 59 */8 * * *", zone = "GMT-1")
+    public void open() throws IOException {
+        System.out.println("Open");
+        System.out.println("Open");
+        System.out.println("Open");
+        System.out.println("Open");
+        System.out.println("Open");
+        System.out.println("Open");
+    }
+
+    @Scheduled(cron = "1 0 */8 * * *", zone = "GMT+0")
+    public void close() throws IOException {
+        System.out.println("close");
+        System.out.println("close");
+        System.out.println("close");
+        System.out.println("close");
+        System.out.println("close");
+        System.out.println("close");
+    }
 }
