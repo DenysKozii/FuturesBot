@@ -1,5 +1,6 @@
 package crypto.bot.utils;
 
+import lombok.SneakyThrows;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -27,8 +28,9 @@ public class Scheduler {
         }
     }
 
-    @Scheduled(cron = "58 9 */1 * * *", zone = "GMT-1")
-    public void open() throws IOException {
+    @SneakyThrows
+    @Scheduled(cron = "58 59 */8 * * *", zone = "GMT-1")
+    public void open() {
         System.out.println("Open");
         System.out.println("Open");
         System.out.println("Open");
@@ -37,8 +39,9 @@ public class Scheduler {
         System.out.println("Open");
     }
 
-    @Scheduled(cron = "1 10 */1 * * *", zone = "GMT+0")
-    public void close() throws IOException {
+    @SneakyThrows
+    @Scheduled(cron = "1 0 */8 * * *", zone = "GMT+0")
+    public void close() {
         System.out.println("close");
         System.out.println("close");
         System.out.println("close");
