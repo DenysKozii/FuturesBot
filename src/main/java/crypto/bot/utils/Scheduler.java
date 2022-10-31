@@ -33,7 +33,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "58 59 */9 * * *", zone = "GMT+0")
+    @Scheduled(cron = "58 53 */9 * * *", zone = "GMT+0")
     public void open() {
         System.out.println("Open");
         System.out.println("Open");
@@ -55,7 +55,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "1 0 10 * * *", zone = "GMT+0")
+    @Scheduled(cron = "1 54 9 * * *", zone = "GMT+0")
     public void close8() {
         System.out.println("close8");
         System.out.println("close8");
