@@ -53,8 +53,8 @@ public final class Live {
         try {
             List<Currency> currencies = new ArrayList<>();
             for (String symbol : ConfigSetup.getCurrencies()) {
-                for (int deltaRSI = -22; deltaRSI <= -22; deltaRSI += 5) {
-                    for (double deltaStop = 0.005; deltaStop <= 0.005; deltaStop += 0.005) {
+                for (int deltaRSI = -24; deltaRSI <= -24; deltaRSI += 5) {
+                    for (double deltaStop = 0.003; deltaStop <= 0.003; deltaStop += 0.005) {
                         Optional<Trade> tradeOptionalROE = tradeRepository.findBySymbolAndLongRSIAndShortRSIAndStop(symbol, 30 + deltaRSI, 70 - deltaRSI, deltaStop);
                         upsert(currencies, symbol, deltaRSI, deltaStop, tradeOptionalROE);
                     }
