@@ -1,6 +1,7 @@
 package crypto.bot.utils;
 
 import lombok.SneakyThrows;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -29,6 +30,20 @@ public class Scheduler {
         try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
             HttpUriRequest request = new HttpGet(URL);
             client.execute(request);
+        }
+    }
+
+    @SneakyThrows
+    @Scheduled(cron = "1 3 * * * *", zone = "GMT+0")
+    public void read() {
+        try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
+            HttpUriRequest request = new HttpGet("https://www.binance.com/fapi/v1/premiumIndex");
+            CloseableHttpResponse closeableHttpResponse = client.execute(request);
+            System.out.println("--read--");
+            System.out.println(closeableHttpResponse.toString());
+            System.out.println(closeableHttpResponse.toString());
+            System.out.println(closeableHttpResponse.toString());
+            System.out.println(closeableHttpResponse.toString());
         }
     }
 
