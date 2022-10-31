@@ -34,16 +34,14 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "1 3 * * * *", zone = "GMT+0")
+    @Scheduled(cron = "1 6 * * * *", zone = "GMT+0")
     public void read() {
         try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
             HttpUriRequest request = new HttpGet("https://www.binance.com/fapi/v1/premiumIndex");
             CloseableHttpResponse closeableHttpResponse = client.execute(request);
             System.out.println("--read--");
             System.out.println(closeableHttpResponse.toString());
-            System.out.println(closeableHttpResponse.toString());
-            System.out.println(closeableHttpResponse.toString());
-            System.out.println(closeableHttpResponse.toString());
+            System.out.println(closeableHttpResponse.getEntity().toString());
         }
     }
 
