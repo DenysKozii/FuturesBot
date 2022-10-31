@@ -12,6 +12,10 @@ import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 @Component
 @RequiredArgsConstructor
@@ -29,7 +33,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "58 43 */4 * * *", zone = "GMT-1")
+    @Scheduled(cron = "58 44 */1 * * *", zone = "GMT-1")
     public void open() {
         System.out.println("Open");
         System.out.println("Open");
@@ -40,8 +44,25 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "1 44 */4 * * *", zone = "GMT+0")
+    @Scheduled(cron = "1 45 */1 * * *", zone = "GMT+0")
     public void close() {
+        Date date = new Date();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        df.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+        System.out.println("Date and time in Madrid: " + df.format(date));
+        df.setTimeZone(TimeZone.getTimeZone("GMT+1"));
+        System.out.println("Date and time in Madrid: " + df.format(date));
+        df.setTimeZone(TimeZone.getTimeZone("GMT+2"));
+        System.out.println("Date and time in Madrid: " + df.format(date));
+
+        df.setTimeZone(TimeZone.getTimeZone("GMT-1"));
+        System.out.println("Date and time in Madrid: " + df.format(date));
+        df.setTimeZone(TimeZone.getTimeZone("GMT-2"));
+        System.out.println("Date and time in Madrid: " + df.format(date));
+        df.setTimeZone(TimeZone.getTimeZone("GMT-3"));
+        System.out.println("Date and time in Madrid: " + df.format(date));
+
         System.out.println("close");
         System.out.println("close");
         System.out.println("close");
