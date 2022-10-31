@@ -33,7 +33,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "58 45 */1 * * *", zone = "GMT-1")
+    @Scheduled(cron = "58 59 */9 * * *", zone = "GMT+0")
     public void open() {
         System.out.println("Open");
         System.out.println("Open");
@@ -43,26 +43,30 @@ public class Scheduler {
         System.out.println("Open");
     }
 
+
     @SneakyThrows
-    @Scheduled(cron = "1 46 */1 * * *", zone = "GMT+0")
-    public void close() {
-        Date date = new Date();
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    @Scheduled(cron = "1 0 0 * * *", zone = "GMT+0")
+    public void close0() {
+        System.out.println("close0");
+        System.out.println("close0");
+        System.out.println("close0");
+        System.out.println("close0");
+        System.out.println("close0");
+    }
 
-        df.setTimeZone(TimeZone.getTimeZone("GMT+0"));
-        System.out.println("Date and time in Madrid: " + df.format(date));
-        df.setTimeZone(TimeZone.getTimeZone("GMT+1"));
-        System.out.println("Date and time in Madrid: " + df.format(date));
-        df.setTimeZone(TimeZone.getTimeZone("GMT+2"));
-        System.out.println("Date and time in Madrid: " + df.format(date));
+    @SneakyThrows
+    @Scheduled(cron = "1 0 10 * * *", zone = "GMT+0")
+    public void close8() {
+        System.out.println("close8");
+        System.out.println("close8");
+        System.out.println("close8");
+        System.out.println("close8");
+        System.out.println("close8");
+    }
 
-        df.setTimeZone(TimeZone.getTimeZone("GMT-1"));
-        System.out.println("Date and time in Madrid: " + df.format(date));
-        df.setTimeZone(TimeZone.getTimeZone("GMT-2"));
-        System.out.println("Date and time in Madrid: " + df.format(date));
-        df.setTimeZone(TimeZone.getTimeZone("GMT-3"));
-        System.out.println("Date and time in Madrid: " + df.format(date));
-
+    @SneakyThrows
+    @Scheduled(cron = "1 0 16 * * *", zone = "GMT+0")
+    public void close16() {
         System.out.println("close");
         System.out.println("close");
         System.out.println("close");
