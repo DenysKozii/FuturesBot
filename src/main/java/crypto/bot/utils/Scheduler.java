@@ -34,7 +34,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "1 6 * * * *", zone = "GMT+0")
+    @Scheduled(cron = "1 47 17 * * *", zone = "GMT+0")
     public void read() {
         try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
             HttpUriRequest request = new HttpGet("https://www.binance.com/fapi/v1/premiumIndex");
@@ -42,30 +42,44 @@ public class Scheduler {
             System.out.println("--read--");
             System.out.println(closeableHttpResponse.toString());
             System.out.println(closeableHttpResponse.getEntity().toString());
+            System.out.println(closeableHttpResponse.getEntity().getContent());
         }
     }
 
     @SneakyThrows
-    @Scheduled(cron = "1 0 */8 * * *", zone = "GMT+0")
-    public void close() {
-        System.out.println("close");
+    @Scheduled(cron = "57 59 0 * * *", zone = "GMT+0")
+    public void open1() {
+        System.out.println("open1");
     }
 
     @SneakyThrows
-    @Scheduled(cron = "57 59 23 * * *", zone = "GMT+0")
-    public void open0() {
-        System.out.println("open0");
+    @Scheduled(cron = "1 0 1 * * *", zone = "GMT+0")
+    public void close1() {
+        System.out.println("close1");
     }
 
     @SneakyThrows
-    @Scheduled(cron = "57 59 7 * * *", zone = "GMT+0")
+    @Scheduled(cron = "57 59 8 * * *", zone = "GMT+0")
     public void open8() {
         System.out.println("open8");
     }
 
     @SneakyThrows
-    @Scheduled(cron = "57 59 15 * * *", zone = "GMT+0")
+    @Scheduled(cron = "1 0 9 * * *", zone = "GMT+0")
+    public void close8() {
+        System.out.println("close8");
+    }
+
+    @SneakyThrows
+    @Scheduled(cron = "57 59 16 * * *", zone = "GMT+0")
     public void open16() {
         System.out.println("open16");
     }
+
+    @SneakyThrows
+    @Scheduled(cron = "1 0 17 * * *", zone = "GMT+0")
+    public void close16() {
+        System.out.println("close16");
+    }
+
 }
