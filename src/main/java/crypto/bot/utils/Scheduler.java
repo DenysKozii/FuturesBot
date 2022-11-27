@@ -156,7 +156,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "57 7 16 * * *", zone = "GMT+0")
+    @Scheduled(cron = "57 9 16 * * *", zone = "GMT+0")
     public void openTest() {
         log.info("test open");
         openPosition();
@@ -164,7 +164,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "1 8 16 * * *", zone = "GMT+0")
+    @Scheduled(cron = "1 10 16 * * *", zone = "GMT+0")
     public void closeTest() {
         log.info("test close");
         closePosition();
