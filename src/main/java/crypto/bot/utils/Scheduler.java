@@ -1,6 +1,9 @@
 package crypto.bot.utils;
 
 import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -12,37 +15,33 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 @EnableScheduling
 public class Scheduler {
 
-    private final static String URL = "https://bot-futures-prod.herokuapp.com/api";
+    private final static String URL = "https://cryptodenysserverjs-production.up.railway.app/data";
 
     @Scheduled(fixedRate = 1000 * 60 * 4)
     public void timer() throws IOException {
         try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
             HttpUriRequest request = new HttpGet(URL);
-            client.execute(request);
-        }
-    }
-
-    @SneakyThrows
-    @Scheduled(cron = "1 47 17 * * *", zone = "GMT+0")
-    public void read() {
-        try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
-            HttpUriRequest request = new HttpGet("https://www.binance.com/fapi/v1/premiumIndex");
-            CloseableHttpResponse closeableHttpResponse = client.execute(request);
-            System.out.println("--read--");
-            System.out.println(closeableHttpResponse.toString());
-            System.out.println(closeableHttpResponse.getEntity().toString());
-            System.out.println(closeableHttpResponse.getEntity().getContent());
+            HttpResponse response = client.execute(request);
+            var bufReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            String line;
+            while ((line = bufReader.readLine()) != null) {
+                System.out.println(line);
+                log.info(line);
+            }
         }
     }
 
