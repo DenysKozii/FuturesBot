@@ -45,7 +45,7 @@ public class Scheduler {
 
     private static double nextQuantity() {
         AccountInformation accountInformation = CurrentAPI.getClient().getAccountInformation();
-        double quantity = accountInformation.getAvailableBalance().doubleValue() - 5;
+        double quantity = accountInformation.getAvailableBalance().doubleValue() - 2;
         return Math.max(quantity, 0);
     }
 
@@ -117,58 +117,51 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "57 59 23 * * *", zone = "GMT+0")
+    @Scheduled(cron = "58 59 23 * * *", zone = "GMT+0")
     public void open1() {
-        System.out.println("open1");
+        log.info("open started");
+        openPosition();
+        log.info("open finished successfully");
     }
 
     @SneakyThrows
     @Scheduled(cron = "1 0 0 * * *", zone = "GMT+0")
     public void close1() {
-        System.out.println("close1");
+        log.info("close started");
+        closePosition();
+        log.info("close finished successfully");
     }
 
     @SneakyThrows
-    @Scheduled(cron = "57 59 7 * * *", zone = "GMT+0")
+    @Scheduled(cron = "58 59 7 * * *", zone = "GMT+0")
     public void open8() {
-        System.out.println("open8");
+        log.info("open started");
+        openPosition();
+        log.info("open finished successfully");
     }
 
     @SneakyThrows
     @Scheduled(cron = "1 0 8 * * *", zone = "GMT+0")
     public void close8() {
-        System.out.println("close8");
+        log.info("close started");
+        closePosition();
+        log.info("close finished successfully");
     }
 
     @SneakyThrows
-    @Scheduled(cron = "57 59 15 * * *", zone = "GMT+0")
+    @Scheduled(cron = "58 59 15 * * *", zone = "GMT+0")
     public void open16() {
-        log.info("open16");
+        log.info("open started");
         openPosition();
+        log.info("open finished successfully");
     }
 
     @SneakyThrows
     @Scheduled(cron = "1 0 16 * * *", zone = "GMT+0")
     public void close16() {
-        log.info("close16");
+        log.info("close started");
         closePosition();
+        log.info("close finished successfully");
     }
-
-    @SneakyThrows
-    @Scheduled(cron = "57 14 16 * * *", zone = "GMT+0")
-    public void openTest() {
-        log.info("test open");
-        openPosition();
-        log.info("test opened successfully");
-    }
-
-    @SneakyThrows
-    @Scheduled(cron = "1 15 16 * * *", zone = "GMT+0")
-    public void closeTest() {
-        log.info("test close");
-        closePosition();
-        log.info("test closed successfully");
-    }
-
 
 }
