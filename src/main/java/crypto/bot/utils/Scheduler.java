@@ -49,7 +49,7 @@ public class Scheduler {
         return Math.max(quantity, 0);
     }
 
-    public void closePosition() throws IOException {
+    public void closePosition() {
         Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(SYMBOL)).findFirst();
 
         if (position.isEmpty() || position.get().getPositionAmt().doubleValue() == 0) {
@@ -118,39 +118,58 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "57 59 0 * * *", zone = "GMT+0")
+    @Scheduled(cron = "57 59 23 * * *", zone = "GMT+0")
     public void open1() {
         System.out.println("open1");
     }
 
     @SneakyThrows
-    @Scheduled(cron = "1 0 1 * * *", zone = "GMT+0")
+    @Scheduled(cron = "1 0 0 * * *", zone = "GMT+0")
     public void close1() {
         System.out.println("close1");
     }
 
     @SneakyThrows
-    @Scheduled(cron = "57 59 8 * * *", zone = "GMT+0")
+    @Scheduled(cron = "57 59 7 * * *", zone = "GMT+0")
     public void open8() {
         System.out.println("open8");
     }
 
     @SneakyThrows
-    @Scheduled(cron = "1 0 9 * * *", zone = "GMT+0")
+    @Scheduled(cron = "1 0 8 * * *", zone = "GMT+0")
     public void close8() {
         System.out.println("close8");
     }
 
     @SneakyThrows
-    @Scheduled(cron = "57 59 16 * * *", zone = "GMT+0")
+    @Scheduled(cron = "57 59 15 * * *", zone = "GMT+0")
     public void open16() {
+        log.info("open16");
         openPosition();
     }
 
     @SneakyThrows
-    @Scheduled(cron = "1 0 17 * * *", zone = "GMT+0")
+    @Scheduled(cron = "1 0 16 * * *", zone = "GMT+0")
     public void close16() {
+        log.info("close16");
         closePosition();
     }
+
+    @SneakyThrows
+    @Scheduled(cron = "57 7 16 * * *", zone = "GMT+0")
+    public void openTest() {
+        log.info("test open");
+        openPosition();
+        log.info("test opened successfully");
+    }
+
+    @SneakyThrows
+    @Scheduled(cron = "1 8 16 * * *", zone = "GMT+0")
+    public void closeTest() {
+        log.info("test close");
+        closePosition();
+        log.info("test closed successfully");
+    }
+
 
 }
