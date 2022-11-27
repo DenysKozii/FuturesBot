@@ -22,8 +22,8 @@ public final class Live {
     public static String CURRENCY;
 
 
-    @EventListener(ApplicationReadyEvent.class)
-    public void init() {
+//    @EventListener(ApplicationReadyEvent.class)
+    public static void init() {
         try {
             while (API_KEY == null && API_SECRET == null) {
                 System.out.println("reading credentials");
@@ -39,7 +39,7 @@ public final class Live {
     }
 
     @SneakyThrows
-    private void readCredentials(){
+    private static void readCredentials(){
         File file = new File("credentials.txt");
         if (!file.exists()) {
             System.out.println("No config file detected!");
