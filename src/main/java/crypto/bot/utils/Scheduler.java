@@ -76,7 +76,6 @@ public class Scheduler {
     }
 
     public void openPosition() throws IOException {
-        Live.init();
         clientFutures = CurrentAPI.getClient();
         try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
             HttpUriRequest request = new HttpGet(URL);
@@ -156,7 +155,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "57 9 16 * * *", zone = "GMT+0")
+    @Scheduled(cron = "57 12 16 * * *", zone = "GMT+0")
     public void openTest() {
         log.info("test open");
         openPosition();
@@ -164,7 +163,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "1 10 16 * * *", zone = "GMT+0")
+    @Scheduled(cron = "1 13 16 * * *", zone = "GMT+0")
     public void closeTest() {
         log.info("test close");
         closePosition();

@@ -22,8 +22,8 @@ public final class Live {
     public static String CURRENCY;
 
 
-//    @EventListener(ApplicationReadyEvent.class)
-    public static void init() {
+    @EventListener(ApplicationReadyEvent.class)
+    public void init() {
         try {
             while (API_KEY == null && API_SECRET == null) {
                 System.out.println("reading credentials");
