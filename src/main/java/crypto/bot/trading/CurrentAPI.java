@@ -1,9 +1,5 @@
 package crypto.bot.trading;
 
-//import crypto.bot.api.BinanceApiInternalFactory;
-//import crypto.bot.api.RequestOptions;
-//import crypto.bot.api.SyncRequestClient;
-
 import com.binance.client.RequestOptions;
 import com.binance.client.SyncRequestClient;
 import com.binance.client.impl.BinanceApiInternalFactory;

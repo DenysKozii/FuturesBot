@@ -6,7 +6,6 @@ import crypto.bot.system.Formatter;
 
 public class LocalAccount {
     private AccountInformation realAccount;
-    public static boolean injected;
 
     public LocalAccount(String apiKey, String secretApiKey) {
         CurrentAPI.login(apiKey, secretApiKey);

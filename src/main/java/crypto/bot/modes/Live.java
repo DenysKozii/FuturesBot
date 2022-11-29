@@ -5,6 +5,7 @@ import crypto.bot.trading.BuySell;
 import crypto.bot.trading.LocalAccount;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public final class Live {
@@ -24,19 +26,21 @@ public final class Live {
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
         try {
-            System.out.println("API_KEY = " + API_KEY);
-            System.out.println("API_SECRET = " + API_SECRET);
+            log.info("API_KEY = {}", API_KEY);
+            log.info("API_SECRET = {}", API_SECRET);
             while (API_KEY == null && API_SECRET == null) {
-                System.out.println("reading credentials");
+                log.info("reading credentials");
                 readCredentials();
                 Thread.sleep(10 * 1000);
-                System.out.println("API_KEY = " + API_KEY);
-                System.out.println("API_SECRET = " + API_SECRET);
+                log.info("API_KEY = {}", API_KEY);
+                log.info("API_SECRET = {}", API_SECRET);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         ConfigSetup.readConfig();
+        log.info("API_KEY = {}", API_KEY);
+        log.info("API_SECRET = {}", API_SECRET);
         LocalAccount localAccount = new LocalAccount(API_KEY, API_SECRET);
         BuySell.setAccount(localAccount);
     }
