@@ -26,21 +26,15 @@ public final class Live {
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
         try {
-            log.info("API_KEY = {}", API_KEY);
-            log.info("API_SECRET = {}", API_SECRET);
             while (API_KEY == null && API_SECRET == null) {
                 log.info("reading credentials");
                 readCredentials();
                 Thread.sleep(10 * 1000);
-                log.info("API_KEY = {}", API_KEY);
-                log.info("API_SECRET = {}", API_SECRET);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         ConfigSetup.readConfig();
-        log.info("API_KEY = {}", API_KEY);
-        log.info("API_SECRET = {}", API_SECRET);
         LocalAccount localAccount = new LocalAccount(API_KEY, API_SECRET);
         BuySell.setAccount(localAccount);
     }

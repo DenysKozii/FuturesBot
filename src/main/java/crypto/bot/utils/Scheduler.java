@@ -124,6 +124,12 @@ public class Scheduler {
         }
     }
 
+    @Scheduled(cron = "0 55 23 * * *", zone = "GMT+0")
+    public void isAlive1() {
+        AccountInformation accountInformation = CurrentAPI.getClient().getAccountInformation();
+        log.info("Available balance check = {}", accountInformation.getAvailableBalance());
+    }
+
     @SneakyThrows
     @Scheduled(cron = "58 59 23 * * *", zone = "GMT+0")
     public void open1() {
@@ -164,6 +170,12 @@ public class Scheduler {
         log.info("buffer close 3 finished successfully");
     }
 
+    @Scheduled(cron = "0 55 7 * * *", zone = "GMT+0")
+    public void isAlive8() {
+        AccountInformation accountInformation = CurrentAPI.getClient().getAccountInformation();
+        log.info("Available balance check = {}", accountInformation.getAvailableBalance());
+    }
+
     @SneakyThrows
     @Scheduled(cron = "58 59 7 * * *", zone = "GMT+0")
     public void open8() {
@@ -202,6 +214,12 @@ public class Scheduler {
         log.info("buffer close 3 started");
         closePosition();
         log.info("buffer close 3 finished successfully");
+    }
+
+    @Scheduled(cron = "0 55 15 * * *", zone = "GMT+0")
+    public void isAlive16() {
+        AccountInformation accountInformation = CurrentAPI.getClient().getAccountInformation();
+        log.info("Available balance check = {}", accountInformation.getAvailableBalance());
     }
 
     @SneakyThrows

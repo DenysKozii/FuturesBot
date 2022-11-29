@@ -26,7 +26,7 @@ public class LocalAccount {
         }
         double fiatValue = realAccount.getAvailableBalance().doubleValue();
         BuySell.MONEY_LIMIT = fiatValue * BuySell.MONEY_PERCENTAGE_LIMIT;
-        System.out.println("---Starting FIAT: " + Formatter.formatDecimal(fiatValue) + ", money limit = " + BuySell.MONEY_LIMIT);
+        System.out.println("---Starting FIAT: " + Formatter.formatDecimal(fiatValue));
     }
 
     public AccountInformation getRealAccount() {
