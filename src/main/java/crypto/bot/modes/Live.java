@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +24,8 @@ public final class Live {
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
         try {
+            System.out.println("API_KEY = " + API_KEY);
+            System.out.println("API_SECRET = " + API_SECRET);
             while (API_KEY == null && API_SECRET == null) {
                 System.out.println("reading credentials");
                 readCredentials();
