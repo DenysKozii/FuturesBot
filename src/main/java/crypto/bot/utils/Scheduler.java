@@ -42,17 +42,24 @@ public class Scheduler {
     private static String SYMBOL;
     private static SyncRequestClient clientFutures;
     private static boolean inLong = false;
+    private static boolean closed = false;
 
     private static double nextQuantity() {
         AccountInformation accountInformation = CurrentAPI.getClient().getAccountInformation();
-        double quantity = accountInformation.getAvailableBalance().doubleValue() - 2;
-        return Math.max(quantity, 0);
+        double quantity = accountInformation.getAvailableBalance().doubleValue();
+        return Math.max(quantity * 0.9, 0);
     }
 
     public void closePosition() {
+        if (closed){
+            log.info("Buffer close for {} is ignored", SYMBOL);
+            return;
+        }
         Optional<Position> position = CurrentAPI.getClient().getAccountInformation().getPositions().stream().filter(o -> o.getSymbol().equals(SYMBOL)).findFirst();
 
         if (position.isEmpty() || position.get().getPositionAmt().doubleValue() == 0) {
+            log.info("Position {} is closed", SYMBOL);
+            closed = true;
             return;
         }
 
@@ -113,6 +120,7 @@ public class Scheduler {
                         SYMBOL, OrderSide.SELL, PositionSide.BOTH, OrderType.MARKET, null,
                         positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
             }
+            closed = false;
         }
     }
 
@@ -133,6 +141,30 @@ public class Scheduler {
     }
 
     @SneakyThrows
+    @Scheduled(cron = "3 0 0 * * *", zone = "GMT+0")
+    public void close11() {
+        log.info("buffer close 1 started");
+        closePosition();
+        log.info("buffer close 1 finished successfully");
+    }
+
+    @SneakyThrows
+    @Scheduled(cron = "4 0 0 * * *", zone = "GMT+0")
+    public void close12() {
+        log.info("buffer close 2 started");
+        closePosition();
+        log.info("buffer close 2 finished successfully");
+    }
+
+    @SneakyThrows
+    @Scheduled(cron = "6 0 0 * * *", zone = "GMT+0")
+    public void close13() {
+        log.info("buffer close 3 started");
+        closePosition();
+        log.info("buffer close 3 finished successfully");
+    }
+
+    @SneakyThrows
     @Scheduled(cron = "58 59 7 * * *", zone = "GMT+0")
     public void open8() {
         log.info("open started");
@@ -149,6 +181,30 @@ public class Scheduler {
     }
 
     @SneakyThrows
+    @Scheduled(cron = "3 0 8 * * *", zone = "GMT+0")
+    public void close81() {
+        log.info("buffer close 1 started");
+        closePosition();
+        log.info("buffer close 1 finished successfully");
+    }
+
+    @SneakyThrows
+    @Scheduled(cron = "4 0 8 * * *", zone = "GMT+0")
+    public void close82() {
+        log.info("buffer close 2 started");
+        closePosition();
+        log.info("buffer close 2 finished successfully");
+    }
+
+    @SneakyThrows
+    @Scheduled(cron = "6 0 8 * * *", zone = "GMT+0")
+    public void close83() {
+        log.info("buffer close 3 started");
+        closePosition();
+        log.info("buffer close 3 finished successfully");
+    }
+
+    @SneakyThrows
     @Scheduled(cron = "58 59 15 * * *", zone = "GMT+0")
     public void open16() {
         log.info("open started");
@@ -162,6 +218,30 @@ public class Scheduler {
         log.info("close started");
         closePosition();
         log.info("close finished successfully");
+    }
+
+    @SneakyThrows
+    @Scheduled(cron = "3 0 8 * * *", zone = "GMT+0")
+    public void close161() {
+        log.info("buffer close 1 started");
+        closePosition();
+        log.info("buffer close 1 finished successfully");
+    }
+
+    @SneakyThrows
+    @Scheduled(cron = "4 0 8 * * *", zone = "GMT+0")
+    public void close162() {
+        log.info("buffer close 2 started");
+        closePosition();
+        log.info("buffer close 2 finished successfully");
+    }
+
+    @SneakyThrows
+    @Scheduled(cron = "6 0 8 * * *", zone = "GMT+0")
+    public void close163() {
+        log.info("buffer close 3 started");
+        closePosition();
+        log.info("buffer close 3 finished successfully");
     }
 
 }
