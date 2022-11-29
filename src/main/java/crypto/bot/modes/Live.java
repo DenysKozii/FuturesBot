@@ -29,6 +29,8 @@ public final class Live {
                 System.out.println("reading credentials");
                 readCredentials();
                 Thread.sleep(10 * 1000);
+                System.out.println("API_KEY = " + API_KEY);
+                System.out.println("API_SECRET = " + API_SECRET);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
