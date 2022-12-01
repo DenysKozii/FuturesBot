@@ -66,6 +66,9 @@
                 <groupId>com.google.appengine</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
                 <version>1.9.9</version>
+                <configuration>
+                    <project>funding-bot-16012002</project>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
