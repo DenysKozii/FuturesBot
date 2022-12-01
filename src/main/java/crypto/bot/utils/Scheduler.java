@@ -16,6 +16,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -121,6 +123,28 @@ public class Scheduler {
                         positionAmount, null, null, null, null, null, null, null, null, null, NewOrderRespType.RESULT);
             }
             closed = false;
+        }
+    }
+
+    @SneakyThrows
+    @EventListener(ApplicationReadyEvent.class)
+    public void getFunding(){
+        try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
+            HttpUriRequest request = new HttpGet(URL);
+            HttpResponse response = client.execute(request);
+            var bufReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            String line;
+            SYMBOL = "BTCUSDT";
+            String rate = "0.001";
+            String price = "0.001";
+            while ((line = bufReader.readLine()) != null) {
+                SYMBOL = line.split(";")[0];
+                rate = line.split(";")[1];
+                price = line.split(";")[2];
+                log.info("symbol = {}", SYMBOL);
+                log.info("rate = {}", rate);
+                log.info("price = {}", price);
+            }
         }
     }
 
