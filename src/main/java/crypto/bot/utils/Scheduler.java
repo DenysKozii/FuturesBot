@@ -24,9 +24,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,10 +39,19 @@ import java.util.TimeZone;
 public class Scheduler {
 
     private final static String URL = "https://cryptodenysserverjs-production.up.railway.app/data";
+    private final static String HEROKU = "https://funding.herokuapp.com/api/v1";
     private static String SYMBOL;
     private static SyncRequestClient clientFutures;
     private static boolean inLong = false;
     private static boolean closed = false;
+
+    @Scheduled(fixedRate = 1000 * 60 * 4)
+    public void timer() throws IOException {
+        try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
+            HttpUriRequest request = new HttpGet(HEROKU);
+            client.execute(request);
+        }
+    }
 
     private static double nextQuantity() {
         AccountInformation accountInformation = CurrentAPI.getClient().getAccountInformation();
@@ -285,5 +292,4 @@ public class Scheduler {
         closePosition();
         log.info("buffer close 3 finished successfully");
     }
-
 }
