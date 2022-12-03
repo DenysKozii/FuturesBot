@@ -108,6 +108,10 @@ public class Scheduler {
                 log.info(SYMBOL);
                 log.info(rate);
             }
+            if (Double.parseDouble(rate) < 0.001){
+                log.info("rate is lower than limit {}", 0.001);
+                return;
+            }
             try {
                 clientFutures.changeMarginType(SYMBOL, MarginType.ISOLATED);
             } catch (Exception ignored) {
@@ -116,7 +120,7 @@ public class Scheduler {
             double amount = nextQuantity();
             amount *= 2;
             amount /= Double.parseDouble(price);
-            String positionAmount = String.valueOf(amount);
+            String positionAmount = String.valueOf((int) amount);
             log.info("positionAmount = {}", positionAmount);
             if (Double.parseDouble(rate) < 0) {
                 inLong = true;
@@ -178,7 +182,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "3 0 0 * * *", zone = "GMT+0")
+    @Scheduled(cron = "5 0 0 * * *", zone = "GMT+0")
     public void close11() {
         log.info("buffer close 1 started");
         closePosition();
@@ -186,7 +190,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "4 0 0 * * *", zone = "GMT+0")
+    @Scheduled(cron = "7 0 0 * * *", zone = "GMT+0")
     public void close12() {
         log.info("buffer close 2 started");
         closePosition();
@@ -194,7 +198,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "6 0 0 * * *", zone = "GMT+0")
+    @Scheduled(cron = "9 0 0 * * *", zone = "GMT+0")
     public void close13() {
         log.info("buffer close 3 started");
         closePosition();
@@ -224,7 +228,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "3 0 8 * * *", zone = "GMT+0")
+    @Scheduled(cron = "5 0 8 * * *", zone = "GMT+0")
     public void close81() {
         log.info("buffer close 1 started");
         closePosition();
@@ -232,7 +236,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "4 0 8 * * *", zone = "GMT+0")
+    @Scheduled(cron = "7 0 8 * * *", zone = "GMT+0")
     public void close82() {
         log.info("buffer close 2 started");
         closePosition();
@@ -240,7 +244,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "6 0 8 * * *", zone = "GMT+0")
+    @Scheduled(cron = "9 0 8 * * *", zone = "GMT+0")
     public void close83() {
         log.info("buffer close 3 started");
         closePosition();
@@ -270,7 +274,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "3 0 8 * * *", zone = "GMT+0")
+    @Scheduled(cron = "5 0 8 * * *", zone = "GMT+0")
     public void close161() {
         log.info("buffer close 1 started");
         closePosition();
@@ -278,7 +282,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "4 0 8 * * *", zone = "GMT+0")
+    @Scheduled(cron = "7 0 8 * * *", zone = "GMT+0")
     public void close162() {
         log.info("buffer close 2 started");
         closePosition();
@@ -286,7 +290,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "6 0 8 * * *", zone = "GMT+0")
+    @Scheduled(cron = "9 0 8 * * *", zone = "GMT+0")
     public void close163() {
         log.info("buffer close 3 started");
         closePosition();
