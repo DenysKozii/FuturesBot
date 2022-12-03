@@ -258,7 +258,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "58 59 15 * * *", zone = "GMT+0")
+    @Scheduled(cron = "0 0 16 * * *", zone = "GMT+0")
     public void open16() {
         log.info("open started");
         openPosition();
@@ -266,7 +266,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "0 0 16 * * *", zone = "GMT+0")
+    @Scheduled(cron = "1 0 16 * * *", zone = "GMT+0")
     public void close16() {
         log.info("close started");
         closePosition();
@@ -282,7 +282,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "7 0 8 * * *", zone = "GMT+0")
+    @Scheduled(cron = "8 0 8 * * *", zone = "GMT+0")
     public void close162() {
         log.info("buffer close 2 started");
         closePosition();
@@ -290,7 +290,7 @@ public class Scheduler {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "9 0 8 * * *", zone = "GMT+0")
+    @Scheduled(cron = "10 0 8 * * *", zone = "GMT+0")
     public void close163() {
         log.info("buffer close 3 started");
         closePosition();
