@@ -114,9 +114,9 @@ public class Scheduler {
             }
             clientFutures.changeInitialLeverage(SYMBOL, 2);
             double amount = nextQuantity();
-            amount /= Double.parseDouble(price);
             amount *= 2;
-            String positionAmount = String.valueOf((int) amount);
+            amount /= Double.parseDouble(price);
+            String positionAmount = String.valueOf(amount);
             log.info("positionAmount = {}", positionAmount);
             if (Double.parseDouble(rate) < 0) {
                 inLong = true;
