@@ -108,7 +108,7 @@ public class Scheduler {
                 log.info(SYMBOL);
                 log.info(rate);
             }
-            if (Double.parseDouble(rate) < 0.001){
+            if (Math.abs(Double.parseDouble(rate)) < 0.001){
                 log.info("rate is lower than limit {}", 0.001);
                 return;
             }
